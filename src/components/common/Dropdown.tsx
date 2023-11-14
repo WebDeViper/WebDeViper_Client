@@ -9,7 +9,7 @@ function classNames(...classes: string[]): string {
 interface DropdownProps {
   title: string;
   items: (string | number)[];
-  handleClick?: () => void;
+  handleClick: () => void;
 }
 
 export function SimpleDropdown({ title, items, handleClick }: DropdownProps) {
