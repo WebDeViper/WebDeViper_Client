@@ -4,10 +4,10 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 
 const user = {
-  name: 'Tom Cook',
+  nickname: '홍팀장',
   email: 'tom@example.com',
   imageUrl:
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    'https://i.namu.wiki/i/pPHmkt97I1QXcLxB9XE3qYhTJiUxs7JlAUUhXejk1RAecVdq0ng7c82ePwDzaXGCr8U9xiO8xvvi3zH8zzsH_Q4o6rSYr7Y_B0gXZy0SL8NQgcWR4PCxQMahlaUfwmx-JKgVvJmy1Gu0uthJxUOLQQ.webp',
 };
 const navigation = [
   { name: '공부하기', href: '/study', current: false },
@@ -31,7 +31,7 @@ export default function Example() {
         <Disclosure as="nav" className="bg-gray-800">
           {({ open }) => (
             <>
-              <div className="mx-auto container">
+              <div className={`mx-auto ${open ? 'w-full px-4 sm:px-6' : 'container'}`}>
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
@@ -78,7 +78,12 @@ export default function Example() {
                           <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm">
                             <span className="absolute -inset-1.5" />
                             <span className="sr-only">Open user menu</span>
-                            <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                            <div className="flex items-center gap-4">
+                              <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                              <div>
+                                <span className="text-white">{user.nickname}</span>
+                              </div>
+                            </div>
                           </Menu.Button>
                         </div>
                         <Transition
@@ -149,7 +154,7 @@ export default function Example() {
                       <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
                     </div>
                     <div className="ml-3">
-                      <div className="text-base font-medium leading-none text-white">{user.name}</div>
+                      <div className="text-base font-medium leading-none text-white">{user.nickname}</div>
                       <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
                     </div>
                     <button
