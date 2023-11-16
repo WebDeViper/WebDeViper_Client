@@ -1,12 +1,13 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 import { authUser, profileUser, loginUser } from './thunkFunctions';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 
 interface UserInfo {
   id: string;
   email: string;
   nickName: string;
-  category: string | null; // category가 어떤 타입인지에 따라 바꾸세요
+  category: string | null;
   profileImg: string;
 }
 
@@ -14,7 +15,7 @@ interface UserState {
   userInfo: UserInfo;
   isAuth: boolean;
   isLoading: boolean;
-  error: string;
+  error: any;
 }
 
 const initialState: UserState = {
@@ -34,8 +35,6 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    // 동기적으로 백에 요청 없이 프론트에서 로그아웃시키는 코드
-    // state 변경하고 로컬 스토리지 값을 초기화
     logout(state) {
       state.userInfo = initialState.userInfo;
       state.isAuth = false;
@@ -43,32 +42,29 @@ const userSlice = createSlice({
       state.error = '';
       localStorage.clear();
     },
-  }, // You can add reducer functions here if needed
+  },
   extraReducers: builder => {
     builder
-      .addCase(loginUser.pending, (state: UserState) => {
+      .addCase(loginUser.pending, state => {
         state.isLoading = true;
       })
-      .addCase(
-        loginUser.fulfilled,
-        (state: UserState, action: PayloadAction<{ userInfo: UserInfo; token: string }>) => {
-          state.isLoading = false;
-          state.userInfo = action.payload.userInfo;
-          state.isAuth = true;
-          state.error = '';
-          localStorage.setItem('accessToken', action.payload.token);
-        }
-      )
-      .addCase(loginUser.rejected, (state: UserState, action) => {
+      .addCase(loginUser.fulfilled, (state, action: PayloadAction<{ userInfo: UserInfo; token: string }>) => {
         state.isLoading = false;
-        state.error = action.payload as string;
-        toast.error(action.payload as string);
+        state.userInfo = action.payload.userInfo;
+        state.isAuth = true;
+        state.error = '';
+        localStorage.setItem('accessToken', action.payload.token);
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        // toast.error(action.payload);
       })
 
       .addCase(authUser.pending, state => {
         state.isLoading = true;
       })
-      .addCase(authUser.fulfilled, (state, action) => {
+      .addCase(authUser.fulfilled, (state, action: PayloadAction<{ userInfo: UserInfo; token: string }>) => {
         state.isLoading = false;
         state.userInfo = action.payload.userInfo;
         state.isAuth = true;
@@ -76,7 +72,7 @@ const userSlice = createSlice({
       })
       .addCase(authUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload as string;
+        state.error = action.payload;
         state.userInfo = initialState.userInfo;
         state.isAuth = false;
         localStorage.removeItem('accessToken');
@@ -84,7 +80,7 @@ const userSlice = createSlice({
       .addCase(profileUser.pending, state => {
         state.isLoading = true;
       })
-      .addCase(profileUser.fulfilled, (state, action) => {
+      .addCase(profileUser.fulfilled, (state, action: PayloadAction<{ userInfo: UserInfo; token: string }>) => {
         state.isLoading = false;
         state.userInfo = action.payload.userInfo;
         state.isAuth = true;
@@ -92,7 +88,7 @@ const userSlice = createSlice({
       })
       .addCase(profileUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload as string;
+        state.error = action.payload;
         state.userInfo = initialState.userInfo;
       });
   },
