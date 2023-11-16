@@ -1,5 +1,14 @@
+// User
+interface UserInfo {
+  id: string;
+  email: string;
+  nickName: string;
+  category: string | null;
+  profileImg: string;
+}
+
 // Group
-export interface GroupInfoType {
+interface GroupInfoType {
   _id: string;
   groupLeader: string;
   group_name: string;

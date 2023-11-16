@@ -7,13 +7,12 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import GroupItem from '../GroupItem';
 // import { Card } from 'flowbite-react';
 import 'swiper/css';
-import { GroupInfoType } from '../../../types/types';
 
-interface StudyGroupProps {
+interface Props {
   userId: string;
 }
 
-export default function StudyGroup({ userId }: StudyGroupProps) {
+export default function StudyGroup({ userId }: Props) {
   const [studyGroup, setStudyGroup] = useState([]);
 
   const navigate = useNavigate();

@@ -1,13 +1,12 @@
 import { Link } from 'react-router-dom';
 import { API } from '../../utils/axios';
 import { useEffect, useState } from 'react';
-import { GroupInfoType } from '../../types/types';
 
-interface GroupItemProps {
+interface Props {
   groupInfo: GroupInfoType;
 }
 
-export default function GroupItem({ groupInfo }: GroupItemProps) {
+export default function GroupItem({ groupInfo }: Props) {
   const { _id, group_name, group_category, group_description, group_image_path, group_maximum_member, members } =
     groupInfo;
   const [roomId, setRoomId] = useState(null);
