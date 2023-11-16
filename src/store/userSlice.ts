@@ -3,14 +3,6 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { authUser, profileUser, loginUser } from './thunkFunctions';
 // import { toast } from 'react-toastify';
 
-interface UserInfo {
-  id: string;
-  email: string;
-  nickName: string;
-  category: string | null;
-  profileImg: string;
-}
-
 interface UserState {
   userInfo: UserInfo;
   isAuth: boolean;
