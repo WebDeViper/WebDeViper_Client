@@ -13,10 +13,12 @@ interface UserState {
 const initialState: UserState = {
   userInfo: {
     id: '',
-    email: '',
-    nickName: '',
     category: null,
+    nickName: '',
     profileImg: '',
+    email: '',
+    statusMsg: '',
+    isServiceAdmin: 'n',
   },
   isAuth: false,
   isLoading: false,
@@ -40,12 +42,12 @@ const userSlice = createSlice({
       .addCase(loginUser.pending, state => {
         state.isLoading = true;
       })
-      .addCase(loginUser.fulfilled, (state, action: PayloadAction<{ userInfo: UserInfo; token: string }>) => {
+      .addCase(loginUser.fulfilled, (state, action: PayloadAction<{ userInfo: UserInfo; accessToken: string }>) => {
         state.isLoading = false;
         state.userInfo = action.payload.userInfo;
         state.isAuth = true;
         state.error = '';
-        localStorage.setItem('accessToken', action.payload.token);
+        localStorage.setItem('accessToken', action.payload.accessToken);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
