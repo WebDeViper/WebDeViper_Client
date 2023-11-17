@@ -17,7 +17,7 @@ interface GroupInfoType {
   group_image_path: string;
   group_maximum_member: string;
   dailyGoalTime: string;
-  isCameraOn: string;
+  isCameraOn: boolean;
   members: string[];
   join_requests: string[];
 }

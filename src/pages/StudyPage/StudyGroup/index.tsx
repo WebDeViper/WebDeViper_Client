@@ -33,7 +33,7 @@ export default function StudyGroup({ userId }: Props) {
   }, [userId]);
 
   const handleCreateGroup = () => {
-    navigate('/group/create');
+    navigate('/study/group/create');
   };
 
   return (

@@ -1,6 +1,6 @@
 interface ButtonProps {
   children: React.ReactNode;
-  handleClick: () => void;
+  handleClick?: () => void;
 }
 
 export function Button({ children, handleClick }: ButtonProps) {
