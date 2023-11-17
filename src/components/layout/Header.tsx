@@ -3,7 +3,8 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 import LoginModal from '../LoginModal';
-import { useAppSelector } from '../../store/store';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { logout } from '../../store/userSlice';
 
 const navigation = [
   { name: '공부하기', href: '/study', current: false },
@@ -13,7 +14,7 @@ const navigation = [
 ];
 const userNavigation = [
   { name: '프로필', href: '/profile' },
-  { name: '로그아웃', href: '/logout' },
+  // { name: '로그아웃', href: '/logout' },
 ];
 
 function classNames(...classes: string[]): string {
@@ -24,9 +25,14 @@ export default function Header() {
   const isAuth = useAppSelector(state => state.user.isAuth);
   const nickName = useAppSelector(state => state.user.userInfo.nickName);
   const [modalOpen, setModalOpen] = useState(false);
+  const dispatch = useAppDispatch();
 
   const handleModalOpen = () => {
     setModalOpen(true);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   const user = {
@@ -126,6 +132,12 @@ export default function Header() {
                                     )}
                                   </Menu.Item>
                                 ))}
+                                <button
+                                  onClick={handleLogout}
+                                  className="block px-4 py-2 text-sm text-gray-700 w-full text-left hover:bg-gray-100"
+                                >
+                                  로그아웃
+                                </button>
                               </Menu.Items>
                             </Transition>
                           </Menu>
@@ -211,6 +223,12 @@ export default function Header() {
                             {item.name}
                           </Disclosure.Button>
                         ))}
+                        <button
+                          onClick={handleLogout}
+                          className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white w-full text-left"
+                        >
+                          로그아웃
+                        </button>
                       </div>
                     </>
                   ) : (
