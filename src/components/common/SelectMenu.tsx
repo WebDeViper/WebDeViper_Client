@@ -4,15 +4,15 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
 interface Props {
   data: string[];
+  selected: string;
+  setSelected: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function classNames(...classes: (string | undefined | null)[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function SelectMenu({ data }: Props) {
-  const [selected, setSelected] = useState(data[0]);
-
+export default function SelectMenu({ data, selected, setSelected }: Props) {
   return (
     <Listbox value={selected} onChange={setSelected}>
       {({ open }) => (
@@ -21,7 +21,7 @@ export default function SelectMenu({ data }: Props) {
           <div className="relative mt-2">
             <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
               <span className="flex items-center">
-                <span className="ml-3 block truncate">{selected}</span>
+                <span className="block truncate">{selected}</span>
               </span>
               <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
                 <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -50,9 +50,7 @@ export default function SelectMenu({ data }: Props) {
                     {({ selected, active }) => (
                       <>
                         <div className="flex items-center">
-                          <span
-                            className={classNames(selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate')}
-                          >
+                          <span className={classNames(selected ? 'font-semibold' : 'font-normal', 'block truncate')}>
                             {value}
                           </span>
                         </div>
