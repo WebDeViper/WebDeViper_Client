@@ -1,3 +1,9 @@
+// Modal
+interface ModalProps {
+  open: boolean;
+  onClose: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 // User
 interface UserInfo {
   id: string;
@@ -5,6 +11,8 @@ interface UserInfo {
   nickName: string;
   category: string | null;
   profileImg: string;
+  statusMsg: string;
+  isServiceAdmin: 'n' | 'y';
 }
 
 // Group

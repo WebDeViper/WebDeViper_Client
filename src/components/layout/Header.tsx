@@ -1,14 +1,10 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
+import LoginModal from '../LoginModal';
+import { useAppSelector } from '../../store/store';
 
-const user = {
-  nickname: '홍팀장',
-  email: 'tom@example.com',
-  imageUrl:
-    'https://i.namu.wiki/i/pPHmkt97I1QXcLxB9XE3qYhTJiUxs7JlAUUhXejk1RAecVdq0ng7c82ePwDzaXGCr8U9xiO8xvvi3zH8zzsH_Q4o6rSYr7Y_B0gXZy0SL8NQgcWR4PCxQMahlaUfwmx-JKgVvJmy1Gu0uthJxUOLQQ.webp',
-};
 const navigation = [
   { name: '공부하기', href: '/study', current: false },
   { name: '캘린더', href: '/calendar', current: false },
@@ -25,8 +21,24 @@ function classNames(...classes: string[]): string {
 }
 
 export default function Header() {
+  const isAuth = useAppSelector(state => state.user.isAuth);
+  const nickName = useAppSelector(state => state.user.userInfo.nickName);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleModalOpen = () => {
+    setModalOpen(true);
+  };
+
+  const user = {
+    nickname: nickName,
+    email: 'tom@example.com',
+    imageUrl:
+      'https://i.namu.wiki/i/pPHmkt97I1QXcLxB9XE3qYhTJiUxs7JlAUUhXejk1RAecVdq0ng7c82ePwDzaXGCr8U9xiO8xvvi3zH8zzsH_Q4o6rSYr7Y_B0gXZy0SL8NQgcWR4PCxQMahlaUfwmx-JKgVvJmy1Gu0uthJxUOLQQ.webp',
+  };
+
   return (
     <header>
+      <LoginModal open={modalOpen} onClose={setModalOpen} />
       <div className="min-h-full">
         <Disclosure as="nav" className="bg-gray-800">
           {({ open }) => (
@@ -64,66 +76,76 @@ export default function Header() {
                   {/* header 우측 */}
                   <div className="hidden md:block">
                     <div className="ml-4 flex items-center md:ml-6">
-                      <button className="text-gray-300 text-sm font-medium hover:bg-gray-700 hover:text-white rounded-md px-3 py-2">
-                        로그인
-                      </button>
-                      <Link
-                        to="/signup"
-                        className="ml-4 text-gray-300 text-sm font-medium hover:bg-gray-700 hover:text-white rounded-md px-3 py-2"
-                      >
-                        회원가입
-                      </Link>
-                      {/* <button
-                        type="button"
-                        className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white"
-                      >
-                        <span className="absolute -inset-1.5" />
-                        <span className="sr-only">View notifications</span>
-                        <BellIcon className="h-6 w-6" aria-hidden="true" />
-                      </button> */}
-
-                      {/* Profile dropdown */}
-                      {/* <Menu as="div" className="relative ml-3">
-                        <div>
-                          <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm">
+                      {isAuth === true ? (
+                        <>
+                          <button
+                            type="button"
+                            className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white"
+                          >
                             <span className="absolute -inset-1.5" />
-                            <span className="sr-only">Open user menu</span>
-                            <div className="flex items-center gap-4">
-                              <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
-                              <div>
-                                <span className="text-white">{user.nickname}</span>
-                              </div>
+                            <span className="sr-only">View notifications</span>
+                            <BellIcon className="h-6 w-6" aria-hidden="true" />
+                          </button>
+
+                          {/* Profile dropdown */}
+                          <Menu as="div" className="relative ml-3">
+                            <div>
+                              <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm">
+                                <span className="absolute -inset-1.5" />
+                                <span className="sr-only">Open user menu</span>
+                                <div className="flex items-center gap-4">
+                                  <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
+                                  <div>
+                                    <span className="text-white">{user.nickname}</span>
+                                  </div>
+                                </div>
+                              </Menu.Button>
                             </div>
-                          </Menu.Button>
-                        </div>
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
-                        >
-                          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
-                            {userNavigation.map(item => (
-                              <Menu.Item key={item.name}>
-                                {({ active }) => (
-                                  <Link
-                                    to={item.href}
-                                    className={classNames(
-                                      active ? 'bg-gray-100' : '',
-                                      'block px-4 py-2 text-sm text-gray-700'
+                            <Transition
+                              as={Fragment}
+                              enter="transition ease-out duration-100"
+                              enterFrom="transform opacity-0 scale-95"
+                              enterTo="transform opacity-100 scale-100"
+                              leave="transition ease-in duration-75"
+                              leaveFrom="transform opacity-100 scale-100"
+                              leaveTo="transform opacity-0 scale-95"
+                            >
+                              <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
+                                {userNavigation.map(item => (
+                                  <Menu.Item key={item.name}>
+                                    {({ active }) => (
+                                      <Link
+                                        to={item.href}
+                                        className={classNames(
+                                          active ? 'bg-gray-100' : '',
+                                          'block px-4 py-2 text-sm text-gray-700'
+                                        )}
+                                      >
+                                        {item.name}
+                                      </Link>
                                     )}
-                                  >
-                                    {item.name}
-                                  </Link>
-                                )}
-                              </Menu.Item>
-                            ))}
-                          </Menu.Items>
-                        </Transition>
-                      </Menu> */}
+                                  </Menu.Item>
+                                ))}
+                              </Menu.Items>
+                            </Transition>
+                          </Menu>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={handleModalOpen}
+                            className="text-gray-300 text-sm font-medium hover:bg-gray-700 hover:text-white rounded-md px-3 py-2"
+                          >
+                            로그인
+                          </button>
+                          <Link
+                            to="/signup"
+                            className="ml-4 text-gray-300 text-sm font-medium hover:bg-gray-700 hover:text-white rounded-md px-3 py-2"
+                          >
+                            회원가입
+                          </Link>
+                        </>
+                      )}
                     </div>
                   </div>
                   <div className="-mr-2 flex md:hidden">
@@ -144,10 +166,9 @@ export default function Header() {
               <Disclosure.Panel className="md:hidden">
                 <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
                   {navigation.map(item => (
-                    <Disclosure.Button
+                    <Link
                       key={item.name}
-                      as="a"
-                      href={item.href}
+                      to={item.href}
                       className={classNames(
                         item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                         'block rounded-md px-3 py-2 text-base font-medium'
@@ -155,39 +176,59 @@ export default function Header() {
                       aria-current={item.current ? 'page' : undefined}
                     >
                       {item.name}
-                    </Disclosure.Button>
+                    </Link>
                   ))}
                 </div>
                 <div className="border-t border-gray-700 pb-3 pt-4">
-                  <div className="flex items-center px-5">
-                    <div className="flex-shrink-0">
-                      <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
-                    </div>
-                    <div className="ml-3">
-                      <div className="text-base font-medium leading-none text-white">{user.nickname}</div>
-                      <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
-                    </div>
-                    <button
-                      type="button"
-                      className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white"
-                    >
-                      <span className="absolute -inset-1.5" />
-                      <span className="sr-only">View notifications</span>
-                      <BellIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
-                  </div>
-                  <div className="mt-3 space-y-1 px-2">
-                    {userNavigation.map(item => (
-                      <Disclosure.Button
-                        key={item.name}
-                        as="a"
-                        href={item.href}
-                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                  {/* 모바일 header 우측 */}
+                  {isAuth ? (
+                    <>
+                      <div className="flex items-center px-5">
+                        <div className="flex-shrink-0">
+                          <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                        </div>
+                        <div className="ml-3">
+                          <div className="text-base font-medium leading-none text-white">{user.nickname}</div>
+                          <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
+                        </div>
+                        <button
+                          type="button"
+                          className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white"
+                        >
+                          <span className="absolute -inset-1.5" />
+                          <span className="sr-only">View notifications</span>
+                          <BellIcon className="h-6 w-6" aria-hidden="true" />
+                        </button>
+                      </div>
+                      <div className="mt-3 space-y-1 px-2">
+                        {userNavigation.map(item => (
+                          <Disclosure.Button
+                            key={item.name}
+                            as="a"
+                            href={item.href}
+                            className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                          >
+                            {item.name}
+                          </Disclosure.Button>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="px-3">
+                      <button
+                        onClick={handleModalOpen}
+                        className="text-gray-300 px-3 font-base hover:bg-gray-700 hover:text-white rounded-md py-2 w-full text-left font-medium"
                       >
-                        {item.name}
-                      </Disclosure.Button>
-                    ))}
-                  </div>
+                        로그인
+                      </button>
+                      <Link
+                        to="/signup"
+                        className=" text-gray-300 px-3 font-base hover:bg-gray-700 hover:text-white rounded-md py-2 block font-medium"
+                      >
+                        회원가입
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </Disclosure.Panel>
             </>
