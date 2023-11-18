@@ -5,7 +5,7 @@ type Size = 'sm' | 'md' | 'full';
 type Type = 'button' | 'submit';
 interface Props {
   children: ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
   color?: Color;
   size?: Size;
   type?: Type;
