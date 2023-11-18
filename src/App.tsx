@@ -6,6 +6,8 @@ import SignupPage from './pages/SignupPage';
 import { useAppDispatch, useAppSelector } from './store/store';
 import { useEffect } from 'react';
 import { authUser } from './store/thunkFunctions';
+import NoticePage from './pages/NoticePage';
+import CreateNoticePage from './pages/CreateNoticePage';
 
 function App() {
   const isAuth = useAppSelector(state => state.user.isAuth);
@@ -26,6 +28,8 @@ function App() {
         <Route index element={<MainPage />} />
         <Route path="/study" element={<StudyPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/notice" element={<NoticePage />} />
+        <Route path="/notice/create" element={<CreateNoticePage />} />
       </Route>
     </Routes>
   );
