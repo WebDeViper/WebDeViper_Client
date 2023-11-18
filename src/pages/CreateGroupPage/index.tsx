@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { SimpleDropdown } from '../../components/common/Dropdown';
 import categories from '../../data/category';
 import './index.css';
+import { useState } from 'react';
 
 interface GroupFormType {
   group_name: string;
@@ -82,11 +83,16 @@ export default function CreateGroupPage() {
         alert('올바른 파일 확장자를 사용해주세요.');
         // 선택 파일 초기화
         e.target.value = '';
+      } else {
+        setValue('group_image', selectedFile);
+        const url = URL.createObjectURL(selectedFile);
+        setImgUrl(`${url}`);
+        console.log(url);
       }
-    } else {
-      setValue('group_image', selectedFile);
     }
   };
+
+  const [imgUrl, setImgUrl] = useState<string>('');
 
   return (
     <div className="createGroupWrap container flex flex-col justify-center">
@@ -96,13 +102,18 @@ export default function CreateGroupPage() {
       <form className="groupInfoWrap flex flex-col gap-3 mb-5" onSubmit={handleSubmit(onSubmit)}>
         <div className="groupImage flex justify-between items-center">
           <div>그룹이미지</div>
-          <label
-            className="w-auto h-[200px] bg-primary-100 flex flex-col justify-center items-center text-center p-2 rounded-lg"
-            htmlFor="group_image"
-          >
-            <span className="font-semibold">그룹 이미지 등록</span>
-            <span className="text-sm">(확장자: png, jpg, jpeg / 용량 1MB 이하)</span>
-          </label>
+          {!watch('group_image') ? (
+            <label
+              className="w-auto h-[200px] bg-primary-100 flex flex-col justify-center items-center text-center p-2 rounded-lg"
+              htmlFor="group_image"
+            >
+              <span className="font-semibold">그룹 이미지 등록</span>
+              <span className="text-sm">(확장자: png, jpg, jpeg / 용량 1MB 이하)</span>
+            </label>
+          ) : (
+            <img src={imgUrl} className="w-auto h-[200px] p-2 rounded-lg border-2" />
+          )}
+
           <input
             type="file"
             {...register('group_image')}
