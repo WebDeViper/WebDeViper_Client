@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { authUser, profileUser, loginUser } from './thunkFunctions';
+import { toast } from 'react-toastify';
 // import { toast } from 'react-toastify';
 
 interface UserState {
@@ -39,6 +40,7 @@ const userSlice = createSlice({
     },
     getAlarmMessage(state, action) {
       state.userInfo.alarmMessage = [...state.userInfo.alarmMessage, action.payload];
+      toast.info('알림이 왔습니다.');
     },
   },
   extraReducers: builder => {
