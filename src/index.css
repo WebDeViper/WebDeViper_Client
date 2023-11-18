@@ -29,3 +29,9 @@
     }
   }
 }
+
+@layer components {
+  .badge {
+    @apply inline-flex items-center rounded-md font-medium ring-1 ring-inset;
+  }
+}

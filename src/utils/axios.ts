@@ -6,7 +6,8 @@ const apiUrl = () => {
 };
 
 export const API = axios.create({
-  baseURL: import.meta.env.PROD ? apiUrl() : import.meta.env.VITE_APP_API_URL,
+  // baseURL: import.meta.env.PROD ? apiUrl() : import.meta.env.VITE_APP_API_URL,
+  baseURL: 'http://localhost:8001/api',
 });
 
 API.interceptors.request.use(

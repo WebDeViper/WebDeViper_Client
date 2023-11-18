@@ -22,9 +22,10 @@ export default function StudyGroup({ userId }: Props) {
         const response = await API.get('/group/all');
         const data = response.data;
         console.log('내가 속한 스터디 빼고 모든 스터디그룹 :: ', data);
-        if (data.data) {
-          setStudyGroup(data.data.filter((group: GroupInfoType) => !group.members.includes(userId)));
-        }
+        // if (data.data) {
+        //   setStudyGroup(data.data.filter((group: GroupInfoType) => !group.members.includes(userId)));
+        // }
+        setStudyGroup(data.data);
       } catch (err) {
         console.error(err);
       }
@@ -67,14 +68,11 @@ export default function StudyGroup({ userId }: Props) {
           className="swiper_custom p-3 h-72"
         >
           {studyGroup?.map((item, index) => {
-            const { _id, is_private } = item;
-            if (is_private) {
-              //is_private이 true 면 보여주지않음
-              return null;
-            }
+            const { group_id } = item;
+
             return (
               <SwiperSlide key={index}>
-                <GroupItem key={_id} groupInfo={item} />
+                <GroupItem key={group_id} groupInfo={item} />
               </SwiperSlide>
             );
           })}

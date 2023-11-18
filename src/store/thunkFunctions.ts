@@ -13,10 +13,10 @@ interface CustomError extends Error {
   };
 }
 
-export const loginUser = createAsyncThunk('user/loginUser', async (body, thunkAPI) => {
+export const loginUser = createAsyncThunk('user/loginUser', async (body: object, thunkAPI) => {
   try {
     // const response = await API.post(`/user/join?provider=${provider}`, body);
-    const response = await API.post(`/user/join`, body);
+    const response = await API.post(`/user/login`, body);
 
     return response.data;
   } catch (error: unknown) {
