@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from '../store/store';
 import { loginUser } from '../store/thunkFunctions';
 import Modal from './common/Modal';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 
 type FormValues = {
   email: string;
@@ -20,7 +19,6 @@ export default function LoginModal({ open, onClose }: ModalProps) {
 
   const isAuth = useAppSelector(state => state.user.isAuth);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FormValues> = async data => {
     dispatch(loginUser(data));
@@ -29,10 +27,9 @@ export default function LoginModal({ open, onClose }: ModalProps) {
   useEffect(() => {
     if (isAuth) {
       reset();
-      navigate('/');
       onClose(false);
     }
-  }, [isAuth, navigate, reset, onClose]);
+  }, [isAuth, reset, onClose]);
 
   return (
     <Modal show={open} onClose={onClose}>

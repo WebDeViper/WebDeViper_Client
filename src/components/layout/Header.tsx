@@ -44,7 +44,7 @@ export default function Header() {
 
   return (
     <header>
-      <LoginModal open={modalOpen} onClose={setModalOpen} />
+      {!isAuth && <LoginModal open={modalOpen} onClose={setModalOpen} />}
       <div className="min-h-full">
         <Disclosure as="nav" className="bg-gray-800">
           {({ open }) => (
