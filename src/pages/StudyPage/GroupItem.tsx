@@ -7,20 +7,19 @@ interface Props {
 }
 
 export default function GroupItem({ groupInfo }: Props) {
-  const { _id, group_name, group_category, group_description, group_image_path, group_maximum_member, members } =
-    groupInfo;
+  const { group_id, name, category, description, img_path, member_max, member_count } = groupInfo;
   const [roomId, setRoomId] = useState(null);
   const maxLength = 20; // 원하는 최대 길이
   const truncatedDescription =
-    group_description && group_description.length > maxLength
-      ? group_description.slice(0, maxLength) + '...' // 긴 경우 잘라내고 '...'을 추가
-      : group_description; // 길이가 작은 경우 그대로 둡니다
+    description && description.length > maxLength
+      ? description.slice(0, maxLength) + '...' // 긴 경우 잘라내고 '...'을 추가
+      : description; // 길이가 작은 경우 그대로 둡니다
   useEffect(() => {
     const handleRooms = async () => {
       try {
         const res = await API.get('/group/rooms');
         // console.log('요청', res.data);
-        const foundRoom = res.data.find((room: any) => room.group === _id);
+        const foundRoom = res.data.find((room: any) => room.group === group_id);
         if (foundRoom) {
           setRoomId(foundRoom._id); // 찾은 roomId를 설정
         }
@@ -30,11 +29,11 @@ export default function GroupItem({ groupInfo }: Props) {
     };
 
     handleRooms();
-  }, [_id]);
+  }, [group_id]);
 
   return (
     <Link
-      to={`/group/${_id}`}
+      to={`/group/${group_id}`}
       state={{
         roomId: roomId,
         groupInfo,
@@ -44,21 +43,21 @@ export default function GroupItem({ groupInfo }: Props) {
         <div className={`flex items-center flex-col`}>
           <img
             className="rounded-full w-16 h-16"
-            src={`${import.meta.env.VITE_APP_BACK_URL}${group_image_path}`}
+            src={`${import.meta.env.VITE_APP_BACK_URL}${img_path}`}
             alt="귀여운 우유"
           />
           <div className="mt-4 h-24 flex flex-col">
-            <h3 className="font-bold text-center">{group_name}</h3>
+            <h3 className="font-bold text-center">{name}</h3>
             <p className="text-start" style={{ overflowWrap: 'anywhere' }}>
               {truncatedDescription}
             </p>
           </div>
           <div className="mt-2.5">
             <span className="block bg-indigo-100 text-indigo-800 left- text-md font-bold mr-2 px-2.5 py-0.5 rounded-full dark:bg-indigo-900 dark:text-indigo-300">
-              {group_category}
+              {category}
             </span>
             <div>
-              정원: {members.length} / {group_maximum_member}
+              정원: {member_count} / {member_max}
             </div>
           </div>
         </div>

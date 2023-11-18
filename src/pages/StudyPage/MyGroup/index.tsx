@@ -47,14 +47,14 @@ export default function MyGroup() {
           className="swiper_custom p-3 h-72"
         >
           {myGroups?.map((item, index) => {
-            const { _id, is_private } = item;
-            if (is_private) {
-              //is_private이 true 면 보여주지않음
-              return null;
-            }
+            const { group_id } = item;
+            // if (is_private) {
+            //   //is_private이 true 면 보여주지않음
+            //   return null;
+            // }
             return (
               <SwiperSlide key={index}>
-                <GroupItem key={_id} groupInfo={item} />
+                <GroupItem key={group_id} groupInfo={item} />
               </SwiperSlide>
             );
           })}
