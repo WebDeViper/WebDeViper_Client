@@ -23,7 +23,7 @@ function classNames(...classes: string[]): string {
 
 export default function Header() {
   const isAuth = useAppSelector(state => state.user.isAuth);
-  const nickName = useAppSelector(state => state.user.userInfo.nickName);
+  const userInfo = useAppSelector(state => state.user.userInfo);
   const alarmMessage = useAppSelector(state => state.user.userInfo.alarmMessage);
   const [modalOpen, setModalOpen] = useState(false);
   const dispatch = useAppDispatch();
@@ -35,13 +35,13 @@ export default function Header() {
 
   const handleLogout = () => {
     dispatch(logout());
+    setModalOpen(false);
   };
 
   const user = {
-    nickname: nickName,
-    email: 'tom@example.com',
-    imageUrl:
-      'https://i.namu.wiki/i/pPHmkt97I1QXcLxB9XE3qYhTJiUxs7JlAUUhXejk1RAecVdq0ng7c82ePwDzaXGCr8U9xiO8xvvi3zH8zzsH_Q4o6rSYr7Y_B0gXZy0SL8NQgcWR4PCxQMahlaUfwmx-JKgVvJmy1Gu0uthJxUOLQQ.webp',
+    nickname: userInfo.nickName,
+    email: userInfo.email,
+    imageUrl: 'https://data.onnada.com/character/201105/C3528_2048931593_266362f8_3.JPG',
   };
 
   return (
@@ -210,7 +210,7 @@ export default function Header() {
                         </div>
                         <div className="ml-3">
                           <div className="text-base font-medium leading-none text-white">{user.nickname}</div>
-                          <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
+                          <div className="text-sm font-medium leading-none text-gray-400 mt-1">{user.email}</div>
                         </div>
                         <button
                           type="button"
