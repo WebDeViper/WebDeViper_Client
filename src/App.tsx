@@ -10,6 +10,7 @@ import NoticePage from './pages/NoticePage';
 import CreateNoticePage from './pages/CreateNoticePage';
 import NotAdminRoutes from './routes/NotAdminRoutes';
 import { io } from 'socket.io-client';
+import { getAlarmMessage } from './store/userSlice';
 export const socket = io('http://localhost:8001');
 
 function App() {
@@ -23,9 +24,10 @@ function App() {
   useEffect(() => {
     socket.on('newNotice', message => {
       console.log(message);
+      dispatch(getAlarmMessage(message));
     });
     console.log(socket);
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (isAuth) {
