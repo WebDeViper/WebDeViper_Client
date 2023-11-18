@@ -19,6 +19,7 @@ const initialState: UserState = {
     email: '',
     statusMsg: '',
     isServiceAdmin: 'n',
+    alarmMessage: [],
   },
   isAuth: false,
   isLoading: false,
