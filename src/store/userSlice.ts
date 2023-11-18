@@ -37,6 +37,9 @@ const userSlice = createSlice({
       state.error = '';
       localStorage.clear();
     },
+    getAlarmMessage(state, action) {
+      state.userInfo.alarmMessage = [...state.userInfo.alarmMessage, action.payload];
+    },
   },
   extraReducers: builder => {
     builder
@@ -90,4 +93,4 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const { logout } = userSlice.actions;
+export const { logout, getAlarmMessage } = userSlice.actions;
