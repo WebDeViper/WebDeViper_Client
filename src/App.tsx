@@ -2,6 +2,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import Layout from './components/layout';
 import StudyPage from './pages/StudyPage';
+import CreateGroupPage from './pages/CreateGroupPage';
 import SignupPage from './pages/SignupPage';
 import { useAppDispatch, useAppSelector } from './store/store';
 import { useEffect } from 'react';
@@ -40,6 +41,7 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<MainPage />} />
         <Route path="/study" element={<StudyPage />} />
+        <Route path="/study/group/create" element={<CreateGroupPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/notice" element={<NoticePage isServiceAdmin={isServiceAdmin} />} />
         <Route element={<NotAdminRoutes isServiceAdmin={isServiceAdmin} />}>
