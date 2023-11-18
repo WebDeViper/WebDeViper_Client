@@ -9,6 +9,8 @@ import { authUser } from './store/thunkFunctions';
 import NoticePage from './pages/NoticePage';
 import CreateNoticePage from './pages/CreateNoticePage';
 import NotAdminRoutes from './routes/NotAdminRoutes';
+import { io } from 'socket.io-client';
+export const socket = io('http://localhost:8001');
 
 function App() {
   const isAuth = useAppSelector(state => state.user.isAuth);
@@ -17,6 +19,13 @@ function App() {
   const category = useAppSelector(state => state.user.userInfo.category);
 
   const { pathname } = useLocation();
+
+  useEffect(() => {
+    socket.on('newNotice', message => {
+      console.log(message);
+    });
+    console.log(socket);
+  }, []);
 
   useEffect(() => {
     if (isAuth) {

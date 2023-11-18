@@ -24,9 +24,11 @@ function classNames(...classes: string[]): string {
 export default function Header() {
   const isAuth = useAppSelector(state => state.user.isAuth);
   const nickName = useAppSelector(state => state.user.userInfo.nickName);
+  const alarmMessage = useAppSelector(state => state.user.userInfo.alarmMessage);
   const [modalOpen, setModalOpen] = useState(false);
   const dispatch = useAppDispatch();
 
+  console.log(alarmMessage);
   const handleModalOpen = () => {
     setModalOpen(true);
   };
@@ -91,6 +93,11 @@ export default function Header() {
                             <span className="absolute -inset-1.5" />
                             <span className="sr-only">View notifications</span>
                             <BellIcon className="h-6 w-6" aria-hidden="true" />
+                            {alarmMessage && alarmMessage.length > 0 && (
+                              <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
+                                {alarmMessage.length}
+                              </span>
+                            )}
                           </button>
 
                           {/* Profile dropdown */}
