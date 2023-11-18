@@ -8,9 +8,11 @@ import { useEffect } from 'react';
 import { authUser } from './store/thunkFunctions';
 import NoticePage from './pages/NoticePage';
 import CreateNoticePage from './pages/CreateNoticePage';
+import NotAdminRoutes from './routes/NotAdminRoutes';
 
 function App() {
   const isAuth = useAppSelector(state => state.user.isAuth);
+  const isServiceAdmin = useAppSelector(state => state.user.userInfo.isServiceAdmin);
   const dispatch = useAppDispatch();
   const category = useAppSelector(state => state.user.userInfo.category);
 
@@ -28,8 +30,10 @@ function App() {
         <Route index element={<MainPage />} />
         <Route path="/study" element={<StudyPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/notice" element={<NoticePage />} />
-        <Route path="/notice/create" element={<CreateNoticePage />} />
+        <Route path="/notice" element={<NoticePage isServiceAdmin={isServiceAdmin} />} />
+        <Route element={<NotAdminRoutes isServiceAdmin={isServiceAdmin} />}>
+          <Route path="/notice/create" element={<CreateNoticePage />} />
+        </Route>
       </Route>
     </Routes>
   );

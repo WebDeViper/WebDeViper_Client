@@ -4,6 +4,8 @@ interface ModalProps {
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+type IsServiceAdmin = 'n' | 'y';
+
 // User
 interface UserInfo {
   id: string;
@@ -12,7 +14,8 @@ interface UserInfo {
   category: string | null;
   profileImg: string;
   statusMsg: string;
-  isServiceAdmin: 'n' | 'y';
+  isServiceAdmin: IsServiceAdmin;
+  alarmMessage: string[];
 }
 
 // Group

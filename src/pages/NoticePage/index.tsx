@@ -12,11 +12,14 @@ type Notice = {
   createdAt: Date;
   updatedAt: Date;
 };
-export default function NoticePage() {
+
+interface Props {
+  isServiceAdmin: IsServiceAdmin;
+}
+
+export default function NoticePage({ isServiceAdmin }: Props) {
   const [notice, setNotice] = useState<Notice[]>([]);
   const navigate = useNavigate();
-
-  const isServiceAdmin = useAppSelector(state => state.user?.userInfo?.isServiceAdmin);
 
   useEffect(() => {
     const fetchNotices = async () => {
@@ -70,7 +73,7 @@ export default function NoticePage() {
           ))}
         </tbody>
       </table>
-      <div>{isServiceAdmin && <Button onClick={handleCreateNotice}>글쓰기</Button>}</div>
+      <div>{isServiceAdmin === 'y' && <Button onClick={handleCreateNotice}>글쓰기</Button>}</div>
     </div>
   );
 }
