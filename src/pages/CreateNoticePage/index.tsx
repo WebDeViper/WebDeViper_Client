@@ -5,7 +5,7 @@ import { Button } from '../../components/common/Button';
 import '../../styles/editor.css';
 import { toast } from 'react-toastify';
 import { API } from '../../utils/axios';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const modules = {
   toolbar: {
@@ -30,6 +30,28 @@ export default function MyComponent() {
   const [content, setContent] = useState('');
   const navigate = useNavigate();
   const titleRef = useRef<HTMLTextAreaElement>(null);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const location = useLocation();
+
+  const noticeId = location.state?.noticeId;
+
+  useEffect(() => {
+    if (!noticeId) return;
+    setIsUpdate(true);
+    const getNotice = async () => {
+      try {
+        const response = await API.get(`/notice/${noticeId}`);
+        const data = await response.data;
+        setTitle(data.title);
+        setContent(data.content);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getNotice();
+  }, [location]);
+
+  console.log(isUpdate);
 
   useEffect(() => {
     if (titleRef.current) {
@@ -47,12 +69,17 @@ export default function MyComponent() {
       content,
     };
     try {
-      const response = await API.post('/notice', data);
-      const result = response.data;
+      if (isUpdate) {
+        const response = await API.patch(`/notice/${noticeId}`, data);
+        const result = response.data;
+        console.log(result);
+      } else {
+        const response = await API.post('/notice', data);
+        const result = response.data;
+      }
       setTitle('');
       setContent('');
       navigate('/notice');
-      console.log(result);
     } catch (err) {
       console.log(err);
     }
