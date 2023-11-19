@@ -8,13 +8,13 @@ import './index.css';
 import { useState } from 'react';
 
 interface GroupFormType {
-  group_name: string;
-  group_category: string;
-  group_description: string;
-  group_image: File | null;
-  group_maximum_member: string;
+  name: string;
+  category: string;
+  description: string;
+  groupImgFile: File | null;
+  maximumNumberMember: string;
   dailyGoalTime: string;
-  isCameraOn: boolean;
+  // isCameraOn: boolean;
 }
 
 export default function CreateGroupPage() {
@@ -24,13 +24,13 @@ export default function CreateGroupPage() {
   const { register, handleSubmit, setValue, watch } = useForm<GroupFormType>({
     mode: 'onSubmit',
     defaultValues: {
-      group_name: '',
-      group_category: '',
-      group_description: '',
-      group_image: null,
-      group_maximum_member: '',
+      name: '',
+      category: '',
+      description: '',
+      groupImgFile: null,
+      maximumNumberMember: '',
       dailyGoalTime: '',
-      isCameraOn: false,
+      // isCameraOn: false,
     },
   });
 
@@ -59,7 +59,7 @@ export default function CreateGroupPage() {
     const targetElement = e.currentTarget;
     console.log('카테고리 선택 잘 되나요?', targetElement.textContent);
     if (targetElement.textContent) {
-      setValue('group_category', targetElement.textContent);
+      setValue('category', targetElement.textContent);
     }
   };
 
@@ -84,7 +84,7 @@ export default function CreateGroupPage() {
         // 선택 파일 초기화
         e.target.value = '';
       } else {
-        setValue('group_image', selectedFile);
+        setValue('groupImgFile', selectedFile);
         const url = URL.createObjectURL(selectedFile);
         setImgUrl(`${url}`);
         console.log(url);
@@ -102,10 +102,10 @@ export default function CreateGroupPage() {
       <form className="groupInfoWrap flex flex-col gap-3 mb-5" onSubmit={handleSubmit(onSubmit)}>
         <div className="groupImage flex justify-between items-center">
           <div>그룹이미지</div>
-          {!watch('group_image') ? (
+          {!watch('groupImgFile') ? (
             <label
               className="w-auto h-[200px] bg-primary-100 flex flex-col justify-center items-center text-center p-2 rounded-lg"
-              htmlFor="group_image"
+              htmlFor="groupImgFile"
             >
               <span className="font-semibold">그룹 이미지 등록</span>
               <span className="text-sm">(확장자: png, jpg, jpeg / 용량 1MB 이하)</span>
@@ -116,8 +116,8 @@ export default function CreateGroupPage() {
 
           <input
             type="file"
-            {...register('group_image')}
-            id="group_image"
+            {...register('groupImgFile')}
+            id="groupImgFile"
             className="hidden"
             accept="image/png, image/jpg, image/jpeg"
             onChange={handleGroupImg}
@@ -127,7 +127,7 @@ export default function CreateGroupPage() {
           <label>그룹명</label>
           <input
             type="text"
-            {...register('group_name', {
+            {...register('name', {
               required: '그룹명을 작성해주세요!',
             })}
           />
@@ -135,26 +135,26 @@ export default function CreateGroupPage() {
         <div className="groupCategory flex justify-between items-center">
           <label>카테고리</label>
           <SimpleDropdown
-            title={watch('group_category') ? watch('group_category') : '카테고리'}
+            title={watch('category') ? watch('category') : '카테고리'}
             items={categories}
             handleClick={handleSelectCategory}
           ></SimpleDropdown>
           <input
             type="hidden"
-            {...register('group_category', {
+            {...register('category', {
               required: '카테고리를 선택해주세요!',
             })}
           />
         </div>
         <div className="groupDescription flex justify-between items-center">
           <label>그룹 설명</label>
-          <input type="text" {...register('group_description')} />
+          <input type="text" {...register('description')} />
         </div>
         <div className="groupMaximumMember flex justify-between">
           <label>모집인원</label>
           <input
             type="number"
-            {...register('group_maximum_member', {
+            {...register('maximumNumberMember', {
               required: '그룹 모집인원을 선택해주세요!',
             })}
           />
@@ -173,11 +173,11 @@ export default function CreateGroupPage() {
             })}
           />
         </div>
-        <div className="GroupIsCameraOn flex justify-between items-center mb-5">
+        {/* <div className="GroupIsCameraOn flex justify-between items-center mb-5">
           <label>줌 여부</label>
           <input type="checkbox" {...register('isCameraOn')} />
-        </div>
-        <Button>생성</Button>
+        </div> */}
+        <Button type={'submit'}>생성</Button>
       </form>
     </div>
   );
