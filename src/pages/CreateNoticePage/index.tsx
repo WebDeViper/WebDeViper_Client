@@ -1,27 +1,56 @@
+import { useEffect, useRef, useState } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import { Button } from '../../components/common/Button';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import '../../styles/editor.css';
+import { toast } from 'react-toastify';
 import { API } from '../../utils/axios';
 import { useNavigate } from 'react-router-dom';
 
-type FormValues = {
-  title: string;
-  content: string;
+const modules = {
+  toolbar: {
+    container: [
+      [{ header: [1, 2, 3, false] }],
+      [{ align: [] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{ list: 'ordered' }, { list: 'bullet' }, 'link'],
+      [
+        {
+          color: [],
+        },
+        { background: [] },
+      ],
+      ['clean'],
+    ],
+  },
 };
 
-export default function CreateNoticePage() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<FormValues>();
+export default function MyComponent() {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const navigate = useNavigate();
+  const titleRef = useRef<HTMLTextAreaElement>(null);
 
-  const onSubmit: SubmitHandler<FormValues> = async data => {
+  useEffect(() => {
+    if (titleRef.current) {
+      titleRef.current.focus();
+    }
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (title.trim() === '') return toast.info('제목을 입력하세요', { type: toast.TYPE.ERROR });
+    if (content.trim() === '') return toast.info('내용을 입력하세요', { type: toast.TYPE.ERROR });
+
+    const data = {
+      title,
+      content,
+    };
     try {
       const response = await API.post('/notice', data);
       const result = response.data;
-      reset();
+      setTitle('');
+      setContent('');
       navigate('/notice');
       console.log(result);
     } catch (err) {
@@ -29,32 +58,24 @@ export default function CreateNoticePage() {
     }
   };
 
+  const handleTitleOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTitle(e.target.value);
+  };
+
   return (
     <div className="container">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="border-b-2 pb-2">
+      <form onSubmit={handleSubmit}>
+        <div className="border-b-2 mb-5">
           <textarea
             className="w-full h-10 leading-10 pl-3"
             placeholder="제목을 입력하세요."
-            {...register('title', {
-              required: '제목을 입력하세요.',
-            })}
+            value={title}
+            onChange={handleTitleOnChange}
+            ref={titleRef}
           ></textarea>
         </div>
-        <div>
-          <textarea
-            className="w-full p-2"
-            cols={30}
-            rows={10}
-            placeholder="내용을 입력하세요."
-            {...register('content', {
-              required: '내용을 입력하세요.',
-            })}
-          ></textarea>
-        </div>
-        {errors.title && <div className="text-danger">{errors.title?.message}</div>}
-        {errors.content && <div className="text-danger">{errors.content?.message}</div>}
-        <div>
+        <ReactQuill theme="snow" modules={modules} value={content} onChange={setContent} />
+        <div className="text-right mt-4">
           <Button type="submit">작성</Button>
         </div>
       </form>
