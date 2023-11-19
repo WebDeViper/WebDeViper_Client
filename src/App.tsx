@@ -12,6 +12,7 @@ import CreateNoticePage from './pages/CreateNoticePage';
 import NotAdminRoutes from './routes/NotAdminRoutes';
 import { io } from 'socket.io-client';
 import { getAlarmMessage } from './store/userSlice';
+import DetailNoticePage from './pages/DetailNoticePage';
 export const socket = io('http://localhost:8001');
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
         <Route path="/study/group/create" element={<CreateGroupPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/notice" element={<NoticePage isServiceAdmin={isServiceAdmin} />} />
+        <Route path="/notice/:noticeId" element={<DetailNoticePage isServiceAdmin={isServiceAdmin} />} />
         <Route element={<NotAdminRoutes isServiceAdmin={isServiceAdmin} />}>
           <Route path="/notice/create" element={<CreateNoticePage />} />
         </Route>
