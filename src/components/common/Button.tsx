@@ -9,12 +9,13 @@ interface Props {
   color?: Color;
   size?: Size;
   type?: Type;
+  className?: string;
 }
 
-export function Button({ children, onClick, color = 'primary', type = 'button', size = 'md' }: Props) {
+export function Button({ children, onClick, color = 'primary', type = 'button', size = 'md', className = '' }: Props) {
   return (
     <button
-      className={`${buttonTheme.color[color]} ${buttonTheme.size[size]} align-middle text-center rounded-md font-semibold uppercase transition-all active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none`}
+      className={`${buttonTheme.color[color]} ${buttonTheme.size[size]} align-middle text-center rounded-md font-semibold uppercase transition-all active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ${className}`}
       type={type}
       onClick={onClick}
     >

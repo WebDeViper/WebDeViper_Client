@@ -1,23 +1,18 @@
 import { useEffect, useState } from 'react';
 import { API } from '../../utils/axios';
-// import { chatSocket } from '../../utils/socketServer';
-import { socket } from '../../App';
+// import { socket } from '../../App';
 import { useParams, useNavigate } from 'react-router-dom';
-// import { IoMdArrowRoundBack } from 'react-icons/io';
-// import Button from '../../components/common/Button';
 import { Button } from '../../components/common/Button';
-// import ChatPage from '../ChatPage';
-// import './index.css';
 import Badge from '../../components/common/Badge';
 import { useAppSelector } from '../../store/store';
+import ChatPage from '../ChatPage';
 
 export default function DetailGroupPage() {
   // groupId를 params로 가져옴
   const { groupId } = useParams() as { groupId: string };
+  // 그룹에 멤버인지 판단할 로그인한 유저의 id 리덕스에서 가져옴
   const { id: userId, nickName: userName } = useAppSelector(state => state.user?.userInfo);
-  // const location = useLocation();
-  // console.log('@@@#$@#$#@$#@$@#$ location 새로고침>>>>', location);
-  // const { groupInfo } = location.state;
+  // params로 가져온 그룹 정보를 설정할 state 초기값
   const [groupInfo, setGroupInfo] = useState<GroupInfoType>({
     group_id: '',
     leader_id: '',
@@ -27,8 +22,11 @@ export default function DetailGroupPage() {
     img_path: '',
     member_max: '',
     goal_time: '',
-    member_count: '',
+    members: [],
   });
+  // state 구조분해
+  const { leader_id, name, category, description, member_max, goal_time, members } = groupInfo;
+
   const [isPending, setIsPending] = useState<boolean | null>(null);
   const [leaderName, setLeaderName] = useState('');
   const [profileImgPath, setProfileImgPath] = useState('');
@@ -38,16 +36,17 @@ export default function DetailGroupPage() {
 
   // 채팅창 이동
   const handleChat = () => {
-    socket.emit('login', userName, (res: any) => {
-      if (res && res.isOk) {
-        console.log('successfully login', res);
-        // navigate(`/group/chat/${groupId}`);
-        setIsChatOn(true);
-      } else {
-        console.log('fail to login', res);
-        alert('로그인해주세요!');
-      }
-    });
+    setIsChatOn(!isChatOn);
+    // socket.emit('login', userName, (res: any) => {
+    //   if (res && res.isOk) {
+    //     console.log('successfully login', res);
+    //     // navigate(`/group/chat/${groupId}`);
+    //     // setIsChatOn(true);
+    //   } else {
+    //     console.log('fail to login', res);
+    //     alert('로그인해주세요!');
+    //   }
+    // });
   };
 
   // 뒤로가기
@@ -80,48 +79,56 @@ export default function DetailGroupPage() {
   };
 
   useEffect(() => {
-    // groupId로 그룹 정보 조회 (groupId 바뀔 때 리랜더링)
-    const getGroupInfo = async () => {
-      try {
-        const res = await API.get(`/group/find/${groupId}`);
-        if (res.data.isSuccess) {
-          setGroupInfo(prevGroupInfo => {
-            const newGroupInfo = res.data.GroupInfo;
-            if (Object.keys(newGroupInfo).length > 0) {
-              // 응답으로 받은 groupInfo에 대해 그룹장 프로필사진, 이름 얻어오기
-              (async () => {
-                const leaderRes = await API.get(`/user/${newGroupInfo.leader_id}`);
-                if (leaderRes.data.isSuccess) {
-                  const leaderInfo = leaderRes.data.userInfo;
-                  setLeaderName(leaderInfo.nick_name);
-                  setProfileImgPath(leaderInfo.image_path);
-                }
-              })();
-            }
-            return newGroupInfo;
-          });
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
+    // console.log('@#$@#$', groupInfo);
     getGroupInfo();
   }, [groupId]);
 
   useEffect(() => {
-    // 로그인한 유저의 신청중인 그룹 가져오기
-    const getPendingGroups = async () => {
-      try {
-        const res = await API.get('/group/pendingGroups');
-        console.log('신청중인 그룹 :: ', res.data.pendingGroups);
-        setIsPending(res.data.pendingGroups.includes(groupId) ? true : false);
-      } catch (error) {
-        console.error('Error fetching pending groups:', error);
-      }
-    };
+    console.log('그룹 정보 잘 설정되나 :: ', groupInfo);
+  }, [groupInfo]);
+
+  useEffect(() => {
     getPendingGroups();
   }, [groupId, isPending]);
 
+  // groupId로 그룹 정보 조회 (groupId 바뀔 때 리랜더링)
+  const getGroupInfo = async () => {
+    try {
+      const res = await API.get(`/group/find/${groupId}`);
+      if (res.data.isSuccess) {
+        setGroupInfo(prevGroupInfo => {
+          const newGroupInfo = res.data.groupInfo;
+          if (Object.keys(newGroupInfo).length) {
+            // 응답으로 받은 groupInfo에 대해 그룹장 프로필사진, 이름 얻어오기
+            (async () => {
+              const leaderRes = await API.get(`/user/${newGroupInfo.leader_id}`);
+              if (leaderRes.data.isSuccess) {
+                const leaderInfo = leaderRes.data.userInfo;
+                setLeaderName(leaderInfo.nick_name);
+                setProfileImgPath(leaderInfo.image_path);
+              }
+            })();
+          }
+          return newGroupInfo;
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // 로그인한 유저의 신청중인 그룹 가져오기
+  const getPendingGroups = async () => {
+    try {
+      const res = await API.get('/group/pendingGroups');
+      console.log('신청중인 그룹 :: ', res.data.pendingGroups);
+      res.data.pendingGroups.map((group: GroupInfoType) => (group.group_id === groupId ? setIsPending(true) : ''));
+    } catch (error) {
+      console.error('Error fetching pending groups:', error);
+    }
+  };
+
+  // 그룹 가입 요청
   const handleGroupRequest = async (groupId: string) => {
     try {
       const res = await API.post(`/group/studyGroup/${groupId}/join`);
@@ -132,12 +139,13 @@ export default function DetailGroupPage() {
       } else {
         alert(`${res.data.message}`);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err.message);
       alert('요청 처리 중 오류가 발생했습니다.');
     }
   };
 
+  // 그룹 요청 취소
   const handleCancelRequest = async () => {
     try {
       const res = await API.delete(`/group/studyGroup/${groupId}/joinRequests`);
@@ -145,13 +153,10 @@ export default function DetailGroupPage() {
         setIsPending(false);
         alert(`${res.data.message}`);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
     }
   };
-
-  console.log('그룹 정보 잘 설정되나 :: ', groupInfo);
-  const { name, category, description, member_max, goal_time, member_count } = groupInfo;
 
   return (
     <div className="container">
@@ -166,7 +171,9 @@ export default function DetailGroupPage() {
               ) : (
                 <Button onClick={() => handleGroupRequest(groupId)}>신청하기</Button>
               )}
-              <Button onClick={handleChat}>채팅하기</Button>
+              <Button className="ms-2" onClick={handleChat}>
+                채팅하기
+              </Button>
             </div>
             {/* 그룹 제목 */}
             <h2>{name}</h2>
@@ -198,7 +205,7 @@ export default function DetailGroupPage() {
                     인원
                   </Badge>
                   <span className="font-semibold">
-                    {member_count} / {member_max}
+                    {members.length} / {member_max}
                   </span>
                 </li>
               </ul>
@@ -212,17 +219,17 @@ export default function DetailGroupPage() {
             </div>
 
             <div className="studyContent_btnWrap self-center">
-              {/* {members.includes(userId) &&
+              {members.includes(userId) &&
                 (leader_id === userId ? (
                   <Button onClick={deleteGroup}>그룹삭제</Button>
                 ) : (
                   <Button onClick={leaveGroup}>그룹탈퇴</Button>
-                ))} */}
+                ))}
             </div>
           </div>
         )}
         {isChatOn && (
-          <div className="chatPage h-screen">{/* <ChatPage setIsChatOn={setIsChatOn} groupId={groupId} /> */}</div>
+          <div className="chatPage h-screen">{<ChatPage setIsChatOn={setIsChatOn} groupId={groupId} />}</div>
         )}
       </div>
     </div>

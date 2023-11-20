@@ -19,8 +19,8 @@ const ChatPage = ({ setIsChatOn, groupId }: Props) => {
   const userInfo = useAppSelector(state => state.user?.userInfo);
   // const { groupId } = useParams(); // 유저가 조인한 방의 아이디를 url에서 가져온다
   const room = groupId;
-  console.log('그룹 아이디>>', room);
-  const [chatLog, setChatLog] = useState<{ message: string }[]>([]); // 배열로 변경
+  // console.log('그룹 아이디>>', room);
+  const [chatLog, setChatLog] = useState<any[]>([]); // 배열로 변경
   const [message, setMessage] = useState('');
   // const navigate = useNavigate();
 
@@ -36,17 +36,16 @@ const ChatPage = ({ setIsChatOn, groupId }: Props) => {
 
   // console.log('message List', chatLog);
   // console.log('룸아이디???', room);
+
   // 채팅 화면 처음 들어올 때
   useEffect(() => {
-    // console.log('유저는>>', userInfo);
-
     socket.emit('joinRoom', userInfo.nickName, room, (res: any) => {
       if (res && res.isOk) {
         console.log('successfully join', res);
         console.log(res.data, 'resDAta');
         setChatLog(res.data);
       } else {
-        // console.log('fail to join', res);
+        console.log('fail to join', res);
       }
     });
 
@@ -57,20 +56,25 @@ const ChatPage = ({ setIsChatOn, groupId }: Props) => {
       console.log('서버로부터 메시지 수신:', message, '라고?');
       setChatLog((prev: { message: string }[]) => [...prev, message]);
     });
-  }, []);
+  }, [room, userInfo.nickName]);
 
-  console.log(chatLog, 'chatLogchatLogchatLogchatLog');
-  //
-  const sendMessage = () => {
-    socket.emit('sendMessage', room, user, message, (res: any) => {
-      if (!res.isOk) {
-        console.log('error message', res.error);
-      }
-      setMessage('');
-    });
+  // console.log(chatLog, 'chatLogchatLogchatLogchatLog');
+
+  const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
+    // 일단 폼 제출하는거 막음
+    e.preventDefault();
+    if (message.trim() !== '') {
+      console.log('하이하이하이');
+      socket.emit('sendMessage', room, user, message, (res: any) => {
+        if (!res.isOk) {
+          console.log('error message', res.error);
+        }
+        setMessage('');
+      });
+    }
   };
 
-  console.log(chatLog, 'chatLogchatLogchatLogchatLog');
+  // console.log(chatLog, 'chatLogchatLogchatLogchatLog');
 
   return (
     <div

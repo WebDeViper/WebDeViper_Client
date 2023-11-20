@@ -21,7 +21,7 @@ export default function StudyGroup({ userId }: Props) {
       try {
         const response = await API.get('/group/all');
         const data = response.data;
-        console.log('모든 스터디그룹 :: ', data);
+        console.log('모든 스터디그룹 :: ', data.data);
         // if (data.data) {
         //   setStudyGroup(data.data.filter((group: GroupInfoType) => !group.members.includes(userId)));
         // }
