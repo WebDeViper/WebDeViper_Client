@@ -33,7 +33,7 @@ export default function GroupItem({ groupInfo }: Props) {
 
   return (
     <Link
-      to={`/group/${group_id}`}
+      to={`/study/group/${group_id}`}
       state={{
         roomId: roomId,
         groupInfo,
