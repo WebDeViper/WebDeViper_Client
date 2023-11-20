@@ -14,13 +14,14 @@ import { io } from 'socket.io-client';
 import { getAlarmMessage } from './store/userSlice';
 import DetailNoticePage from './pages/DetailNoticePage';
 import AlarmPage from './pages/AlarmPage';
+import DetailGroupPage from './pages/DetailGroupPage';
 export const socket = io('http://localhost:8001');
 
 function App() {
   const isAuth = useAppSelector(state => state.user.isAuth);
   const isServiceAdmin = useAppSelector(state => state.user.userInfo.isServiceAdmin);
   const dispatch = useAppDispatch();
-  const category = useAppSelector(state => state.user.userInfo.category);
+  // const category = useAppSelector(state => state.user.userInfo.category);
 
   const { pathname } = useLocation();
 
@@ -43,6 +44,7 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<MainPage />} />
         <Route path="/study" element={<StudyPage />} />
+        <Route path="/study/group/:groupId" element={<DetailGroupPage />} />
         <Route path="/study/group/create" element={<CreateGroupPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/alarm" element={<AlarmPage />} />
