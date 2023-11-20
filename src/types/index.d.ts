@@ -15,7 +15,7 @@ interface UserInfo {
   profileImg: string;
   statusMsg: string;
   isServiceAdmin: IsServiceAdmin;
-  alarmMessage: string[];
+  alarmMessage: Alarm[];
 }
 
 // Group
@@ -31,5 +31,18 @@ interface GroupInfoType {
   member_count: string;
   // join_requests: string[];
 }
+
+// Alarm
+type Alarm = {
+  content: string;
+  content_id: string;
+  group_id: null | string;
+  is_read: 'n' | 'y';
+  notification_kind: 'new_notice';
+  updated_at: Date;
+  user_id: string;
+  __v: number;
+  _id: string;
+};
 
 // TODO: room에 대한 타입도 지정할건지 ..
