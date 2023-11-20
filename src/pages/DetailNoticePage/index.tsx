@@ -26,7 +26,7 @@ export default function DetailNoticePage({ isServiceAdmin }: Props) {
     const getNotice = async () => {
       try {
         const response = await API.get(`/notice/${noticeId}`);
-        const data = await response.data;
+        const data = response.data;
         setNotice(data);
       } catch (err) {
         console.error(err);
@@ -42,7 +42,16 @@ export default function DetailNoticePage({ isServiceAdmin }: Props) {
       },
     });
   };
-  const handleDelete = async () => {};
+  const handleDelete = async () => {
+    try {
+      const response = await API.delete(`/notice/${noticeId}`);
+      const data = response.data;
+      navigate('/notice');
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="container">
