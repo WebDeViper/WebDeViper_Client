@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import categories from '../../data/category';
 import SelectMenu from '../../components/common/SelectMenu';
 import { API } from '../../utils/axios';
+import { useNavigate } from 'react-router-dom';
 
 type FormValues = {
   nickName: string;
@@ -18,8 +19,10 @@ export default function SignupPage() {
     formState: { errors },
     reset,
     watch,
+    setError,
   } = useForm<FormValues>();
   const [selected, setSelected] = useState(categories[0]);
+  const navigate = useNavigate();
   const onSubmit: SubmitHandler<FormValues> = async data => {
     const body = {
       ...data,
@@ -27,11 +30,59 @@ export default function SignupPage() {
     };
     try {
       const response = await API.post('/user/register', body);
-      const result = await response.data;
-      console.log(result);
-      reset();
+      const result = response.data;
+      if (result.isSuccess) {
+        reset();
+        navigate('/');
+      }
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const handleBlurNickName = async () => {
+    const nickName = watch('nickName');
+    try {
+      const response = await API.get(`/user/nick/${nickName}/duplicateCheck`);
+      const data = response.data;
+      if (data.isDuplicate) {
+        setError(
+          'nickName',
+          {
+            message: '중복 닉네임 입니다.',
+          },
+          { shouldFocus: true }
+        );
+      } else {
+        setError('nickName', {
+          message: '',
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleBlurEmail = async () => {
+    const email = watch('email');
+    try {
+      const response = await API.get(`/user/email/${email}/duplicateCheck`);
+      const data = response.data;
+      if (data.isDuplicate) {
+        setError(
+          'email',
+          {
+            message: '중복 닉네임 입니다.',
+          },
+          { shouldFocus: true }
+        );
+      } else {
+        setError('email', {
+          message: '',
+        });
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -53,6 +104,7 @@ export default function SignupPage() {
                   {...register('nickName', {
                     required: '닉네임을 입력하세요 !',
                   })}
+                  onBlur={handleBlurNickName}
                 />
               </div>
               {errors.nickName && <span className="text-danger">{errors.nickName?.message}</span>}
@@ -70,6 +122,7 @@ export default function SignupPage() {
                   {...register('email', {
                     required: '이메일을 입력하세요 !',
                   })}
+                  onBlur={handleBlurEmail}
                 />
               </div>
               {errors.email && <span className="text-danger">{errors.email?.message}</span>}
