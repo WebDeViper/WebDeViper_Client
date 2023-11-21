@@ -28,7 +28,7 @@ interface GroupInfoType {
   img_path: string;
   member_max: string;
   goal_time: string;
-  member_count: string;
+  members: string[];
   // join_requests: string[];
 }
 

@@ -1,41 +1,38 @@
 import { Link } from 'react-router-dom';
-import { API } from '../../utils/axios';
-import { useEffect, useState } from 'react';
 
 interface Props {
   groupInfo: GroupInfoType;
 }
 
 export default function GroupItem({ groupInfo }: Props) {
-  const { group_id, name, category, description, img_path, member_max, member_count } = groupInfo;
-  const [roomId, setRoomId] = useState(null);
+  const { group_id, name, category, description, img_path, member_max, members } = groupInfo;
   const maxLength = 20; // 원하는 최대 길이
   const truncatedDescription =
     description && description.length > maxLength
       ? description.slice(0, maxLength) + '...' // 긴 경우 잘라내고 '...'을 추가
       : description; // 길이가 작은 경우 그대로 둡니다
-  useEffect(() => {
-    const handleRooms = async () => {
-      try {
-        const res = await API.get('/group/rooms');
-        // console.log('요청', res.data);
-        const foundRoom = res.data.find((room: any) => room.group === group_id);
-        if (foundRoom) {
-          setRoomId(foundRoom._id); // 찾은 roomId를 설정
-        }
-      } catch (err) {
-        console.error('에러!!!', err);
-      }
-    };
+  // useEffect(() => {
+  //   const handleRooms = async () => {
+  //     try {
+  //       const res = await API.get('/group/rooms');
+  //       console.log('요청', res.data);
 
-    handleRooms();
-  }, [group_id]);
+  //       const foundRoom = res.data.data.find((room: any) => room.group_id === group_id);
+  //       if (foundRoom) {
+  //         setRoomId(foundRoom._id); // 찾은 roomId를 설정
+  //       }
+  //     } catch (err) {
+  //       console.error('에러!!!', err);
+  //     }
+  //   };
+
+  //   handleRooms();
+  // }, [group_id]);
 
   return (
     <Link
       to={`/study/group/${group_id}`}
       state={{
-        roomId: roomId,
         groupInfo,
       }}
     >
@@ -57,7 +54,7 @@ export default function GroupItem({ groupInfo }: Props) {
               {category}
             </span>
             <div>
-              정원: {member_count} / {member_max}
+              정원: {members && (members.length ? members.length : '1')} / {member_max}
             </div>
           </div>
         </div>

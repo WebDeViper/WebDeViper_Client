@@ -13,7 +13,7 @@ export default function MyGroup() {
     const getMyGroups = async () => {
       try {
         const res = await API.get('/group/studyGroups/users');
-        console.log('내가 속한 그룹 ', res.data);
+        console.log('내가 속한 그룹 ', res.data.study_groups);
         setMyGroups(res.data.study_groups);
       } catch (err) {
         console.error('에러!!!', err);
@@ -48,10 +48,6 @@ export default function MyGroup() {
         >
           {myGroups?.map((item, index) => {
             const { group_id } = item;
-            // if (is_private) {
-            //   //is_private이 true 면 보여주지않음
-            //   return null;
-            // }
             return (
               <SwiperSlide key={index}>
                 <GroupItem key={group_id} groupInfo={item} />

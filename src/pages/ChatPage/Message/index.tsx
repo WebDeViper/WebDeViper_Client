@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import './index.css';
-import { Container } from '@mui/system';
-import { Box } from '@mui/material';
+// import { Container } from '@mui/system';
+// import { Box } from '@mui/material';
 
 const colorList = ['00FF00', '3f3fe1', '5F9EA0', 'B22222', '2E8B57', '191970', '008000', 'D2691E', 'FF0000'];
 
 interface Props {
-  chatLog: { message: { user: { name: string }; chat: string } };
-  user: string;
+  chatLog: any[];
+  user: UserInfo;
 }
 
 const Message = ({ chatLog, user }: Props) => {
@@ -22,7 +22,7 @@ const Message = ({ chatLog, user }: Props) => {
   }, [chatLog]);
   return (
     <div className="mb-5 max-h-[80%]">
-      <Box
+      <div
         ref={messageContainerRef}
         className="message-container mt-12"
         style={{
@@ -30,24 +30,24 @@ const Message = ({ chatLog, user }: Props) => {
           overflowY: 'auto', // 세로 스크롤을 자동으로 활성화합니다.
         }}
       >
-        {chatLog?.map((message: { user: { name: string }; chat: string }, index: number) => {
+        {chatLog?.map((message, index) => {
           console.log(message, 'messagemessage');
           // console.log('index', index);
           return (
-            <Container key={index}>
+            <div key={index}>
               {/* <Container key={message._id} className="message-container"> */}
               <div className="message-one-container flex items-center gap-2">
                 {/* <img src="/profile.jpeg" className="profile-image" /> */}
-                <span className={`user-name meta${index % colorList.length}`}>{message.user.name}</span>
+                {/* <span className={`user-name meta${index % colorList.length}`}>{message.user.name}</span>
                 <div className="colon">:</div>
-                <div className="message">{message.chat}</div>
+                <div className="message">{message.chat}</div> */}
                 <br />
                 {/* <div>{message.sendAt}</div> */}
               </div>
-            </Container>
+            </div>
           );
         })}
-      </Box>
+      </div>
     </div>
   );
 };
