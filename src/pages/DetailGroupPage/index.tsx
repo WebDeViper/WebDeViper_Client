@@ -5,6 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/common/Button';
 import Badge from '../../components/common/Badge';
 import { useAppSelector } from '../../store/store';
+import { IoArrowBackOutline } from 'react-icons/io5';
 import ChatPage from '../ChatPage';
 
 export default function DetailGroupPage() {
@@ -50,9 +51,9 @@ export default function DetailGroupPage() {
   };
 
   // 뒤로가기
-  // const handleGoBack = () => {
-  //   navigate(-1);
-  // };
+  const handleGoBack = () => {
+    navigate(-1);
+  };
 
   // 그룹 삭제
   const deleteGroup = async () => {
@@ -96,7 +97,7 @@ export default function DetailGroupPage() {
     try {
       const res = await API.get(`/group/find/${groupId}`);
       if (res.data.isSuccess) {
-        setGroupInfo(prevGroupInfo => {
+        setGroupInfo(() => {
           const newGroupInfo = res.data.groupInfo;
           if (Object.keys(newGroupInfo).length) {
             // 응답으로 받은 groupInfo에 대해 그룹장 프로필사진, 이름 얻어오기
@@ -161,19 +162,23 @@ export default function DetailGroupPage() {
   return (
     <div className="container">
       <div className={`allWrap relative ${isChatOn ? 'chat-open' : ''}`}>
-        {groupInfo && Object.keys(groupInfo).length === 0 && <div className="loading">로딩 중...</div>}
-        {!groupInfo && <div className="loading">로딩 중...</div>}
+        {Object.keys(groupInfo).length === 0 && <div className="loading">로딩 중...</div>}
         {groupInfo && Object.keys(groupInfo).length > 0 && (
           <div className="studyContentWrap flex flex-col break-all">
-            <div className="btnWrap flex justify-end items-center mb-5">
-              {isPending ? (
-                <Button onClick={handleCancelRequest}>신청취소</Button>
-              ) : (
-                <Button onClick={() => handleGroupRequest(groupId)}>신청하기</Button>
-              )}
-              <Button className="ms-2" onClick={handleChat}>
-                채팅하기
-              </Button>
+            <div className="btnWrap flex justify-between items-center mb-5">
+              <button className="text-2xl font-semibold" onClick={handleGoBack}>
+                <IoArrowBackOutline />
+              </button>
+              <div className="requestBtn">
+                {isPending ? (
+                  <Button onClick={handleCancelRequest}>신청취소</Button>
+                ) : (
+                  <Button onClick={() => handleGroupRequest(groupId)}>신청하기</Button>
+                )}
+                <Button className="ms-2" onClick={handleChat}>
+                  채팅하기
+                </Button>
+              </div>
             </div>
             {/* 그룹 제목 */}
             <h2>{name}</h2>
@@ -192,19 +197,19 @@ export default function DetailGroupPage() {
                   <Badge color="indigo" size="md">
                     카테고리
                   </Badge>
-                  <span className="font-semibold">{category}</span>
+                  <span>{category}</span>
                 </li>
                 <li className="flex md:flex-row flex-col items-center gap-2">
                   <Badge color="indigo" size="md">
-                    목표시간
+                    하루 목표시간
                   </Badge>
-                  <span className="font-semibold">{goal_time}</span>
+                  <span>{goal_time}시간</span>
                 </li>
                 <li className="flex md:flex-row flex-col items-center gap-2">
                   <Badge color="indigo" size="md">
                     인원
                   </Badge>
-                  <span className="font-semibold">
+                  <span>
                     {members.length} / {member_max}
                   </span>
                 </li>
@@ -213,18 +218,28 @@ export default function DetailGroupPage() {
 
             <h3>그룹 소개</h3>
             <div className="mb-5">
-              <div className="studyContent_postContent w-full p-5 shadow-md min-h-[200px] break-all md:break-keep">
+              <div className="studyContent_postContent rounded-md w-full p-5 shadow-md min-h-[200px] break-all md:break-keep">
                 {description ? description : ''}
               </div>
             </div>
 
             <div className="studyContent_btnWrap self-center">
-              {members.includes(userId) &&
-                (leader_id === userId ? (
-                  <Button onClick={deleteGroup}>그룹삭제</Button>
-                ) : (
-                  <Button onClick={leaveGroup}>그룹탈퇴</Button>
-                ))}
+              {userId ? (
+                <>
+                  {members.includes(userId) &&
+                    (leader_id === userId ? (
+                      <Button onClick={deleteGroup} color="red">
+                        그룹삭제
+                      </Button>
+                    ) : (
+                      <Button onClick={leaveGroup} color="red">
+                        그룹탈퇴
+                      </Button>
+                    ))}
+                </>
+              ) : (
+                ''
+              )}
             </div>
           </div>
         )}

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-type Color = 'primary' | 'blue';
+type Color = 'primary' | 'blue' | 'red';
 type Size = 'sm' | 'md' | 'full';
 type Type = 'button' | 'submit';
 interface Props {
@@ -27,7 +27,8 @@ export function Button({ children, onClick, color = 'primary', type = 'button', 
 const buttonTheme = {
   color: {
     primary: 'text-white bg-primary-500 shadow-primary-500/20 hover:shadow-primary-500/40 hover:shadow-lg shadow-md',
-    blue: 'bg-indigo-600 hover:bg-indigo-500 text-white',
+    blue: 'text-white bg-indigo-500 shadow-indigo-500/20 hover:shadow-indigo-500/40 hover:shadow-lg shadow-md',
+    red: 'text-white bg-red-500 shadow-red-500/20 hover:shadow-red-500/40 hover:shadow-lg shadow-md',
   },
 
   size: {
