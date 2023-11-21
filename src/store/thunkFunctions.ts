@@ -60,3 +60,16 @@ export const createGroup = createAsyncThunk('group/createGroup', async (body, th
     return thunkAPI.rejectWithValue(customErr.response?.data || customErr.message);
   }
 });
+
+export const deleteAlarm = createAsyncThunk('/notification', async (body: object, thunkAPI) => {
+  try {
+    const response = await API.patch(`/notification`, body);
+    if (response.data.isSuccess) {
+      return response.data;
+    }
+  } catch (error: unknown) {
+    const customErr = error as CustomError;
+    console.log(customErr);
+    return thunkAPI.rejectWithValue(customErr.response?.data || customErr.message);
+  }
+});

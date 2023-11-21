@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { authUser, profileUser, loginUser } from './thunkFunctions';
+import { authUser, profileUser, loginUser, deleteAlarm } from './thunkFunctions';
 import { toast } from 'react-toastify';
 // import { toast } from 'react-toastify';
 
@@ -59,6 +59,20 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
         // toast.error(action.payload);
+      })
+
+      .addCase(deleteAlarm.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(deleteAlarm.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const newAlarmMessage = state.userInfo.alarmMessage.filter(item => item._id !== action.payload._id);
+        state.userInfo.alarmMessage = newAlarmMessage;
+        state.error = '';
+      })
+      .addCase(deleteAlarm.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       })
 
       .addCase(authUser.pending, state => {
