@@ -4,12 +4,14 @@ import categories from '../../data/category';
 // import DropDown from '../../components/common/DropDown';
 // import UserRank from './userRank';
 // import GroupRank from './groupRank';
+import UserRank from './UserRank';
+import GroupRank from './GroupRank';
 // import { Badge } from 'flowbite-react';
 import calculateTime from '../../utils/calculateTime';
 import { useAppSelector } from '../../store/store';
 import Badge from '../../components/common/Badge';
 import SelectMenu from '../../components/common/SelectMenu';
-// import './index.css';
+import './index.css';
 
 const items = [...categories];
 
@@ -17,7 +19,7 @@ export default function RankingPage() {
   // 디폴트로 보여주기 위해 로그인한 유저가 속한 카테고리 선택
   const userCategory = useAppSelector(state => state.user?.userInfo?.category);
   // 카테고리 변경, top3, top3제외 를 관리하기 위한 state
-  const [category, setCategory] = useState(categories[0]);
+  const [category, setCategory] = useState(userCategory ? userCategory : categories[0]);
   const [groupRanking, setGroupRanking] = useState([]);
   const [userRanking, setUserRanking] = useState([]);
 
@@ -54,8 +56,10 @@ export default function RankingPage() {
   // 카테고리별 탑텐 요청하는 함수.. 카테고리 바뀔때만 함수 재정의(useCallback)
   const getCategory = useCallback(async () => {
     // 바뀐 카테고리에 해당하는 랭킹 데이터 요청
+    console.log('카테고리 바뀔 때 마다 다시 정의하는 getCategory 함수 실행!!');
     try {
       const res = await API.get(`/ranking?category=${category}`);
+      // console.log('카테고리 바뀐 후 랭킹 데이터 :: ', res.data);
       setRank(res.data);
     } catch (err) {
       console.error(err);
@@ -88,8 +92,8 @@ export default function RankingPage() {
         <Badge color="pink">어제 기준 랭킹 12시마다 업데이트</Badge>
       </div>
       <div className="mb-3 w-1/4"></div>
-      {/* <UserRank userRanking={userRanking} calculateTime={calculateTime} />
-      <GroupRank groupRanking={groupRanking} calculateTime={calculateTime} /> */}
+      <UserRank userRanking={userRanking} calculateTime={calculateTime} />
+      <GroupRank groupRanking={groupRanking} calculateTime={calculateTime} />
     </div>
   );
 }

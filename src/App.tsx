@@ -15,7 +15,7 @@ import { getAlarmMessage } from './store/userSlice';
 import DetailNoticePage from './pages/DetailNoticePage';
 import AlarmPage from './pages/AlarmPage';
 import DetailGroupPage from './pages/DetailGroupPage';
-import RankingPage from './pages/RankPage';
+import RankingPage from './pages/RankingPage';
 export const socket = io('http://localhost:8001');
 
 function App() {
