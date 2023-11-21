@@ -173,7 +173,9 @@ export default function SignupPage() {
               {errors.password_confirm && <span className="text-danger">{errors.password_confirm?.message}</span>}
             </div>
             <div className="!mb-12">
-              {categories && <SelectMenu data={categories} selected={selected} setSelected={setSelected} />}
+              {categories && (
+                <SelectMenu title="카테고리" data={categories} selected={selected} setSelected={setSelected} />
+              )}
             </div>
 
             <div>

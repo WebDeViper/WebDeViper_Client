@@ -15,6 +15,7 @@ import { getAlarmMessage } from './store/userSlice';
 import DetailNoticePage from './pages/DetailNoticePage';
 import AlarmPage from './pages/AlarmPage';
 import DetailGroupPage from './pages/DetailGroupPage';
+import RankingPage from './pages/RankPage';
 export const socket = io('http://localhost:8001');
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
         <Route path="/study/group/create" element={<CreateGroupPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/alarm" element={<AlarmPage />} />
+        <Route path="/ranking" element={<RankingPage />} />
         <Route path="/notice" element={<NoticePage isServiceAdmin={isServiceAdmin} />} />
         <Route path="/notice/:noticeId" element={<DetailNoticePage isServiceAdmin={isServiceAdmin} />} />
         <Route element={<NotAdminRoutes isServiceAdmin={isServiceAdmin} />}>

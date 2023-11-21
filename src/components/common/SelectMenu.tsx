@@ -1,8 +1,9 @@
-import { Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
 interface Props {
+  title?: string;
   data: string[];
   selected: string;
   setSelected: React.Dispatch<React.SetStateAction<string>>;
@@ -12,12 +13,12 @@ function classNames(...classes: (string | undefined | null)[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function SelectMenu({ data, selected, setSelected }: Props) {
+export default function SelectMenu({ data, selected, setSelected, title }: Props) {
   return (
     <Listbox value={selected} onChange={setSelected}>
       {({ open }) => (
         <>
-          <Listbox.Label className="block text-sm font-medium leading-6 text-gray-900">카테고리</Listbox.Label>
+          <Listbox.Label className="block text-sm font-medium leading-6 text-gray-900">{title}</Listbox.Label>
           <div className="relative mt-2">
             <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
               <span className="flex items-center">
