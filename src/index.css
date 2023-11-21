@@ -28,6 +28,24 @@
       font-size: 14px;
     }
   }
+
+  table {
+    @apply w-full;
+  }
+  thead {
+    @apply border-b-2 border-black;
+  }
+
+  tbody tr {
+    @apply border-b-[1px] border-[rgba(0,0,0,0.3)];
+  }
+
+  table th {
+    @apply p-2;
+  }
+  table td {
+    @apply p-3;
+  }
 }
 
 @layer components {

@@ -10,13 +10,12 @@ import { authUser } from './store/thunkFunctions';
 import NoticePage from './pages/NoticePage';
 import CreateNoticePage from './pages/CreateNoticePage';
 import NotAdminRoutes from './routes/NotAdminRoutes';
-import { io } from 'socket.io-client';
 import { getAlarmMessage } from './store/userSlice';
 import DetailNoticePage from './pages/DetailNoticePage';
 import AlarmPage from './pages/AlarmPage';
 import DetailGroupPage from './pages/DetailGroupPage';
 import RankingPage from './pages/RankingPage';
-export const socket = io('http://localhost:8001');
+import { socket } from './utils/socket';
 
 function App() {
   const isAuth = useAppSelector(state => state.user.isAuth);
