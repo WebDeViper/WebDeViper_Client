@@ -4,14 +4,6 @@
   display: none;
 }
 
-.message-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  /* margin-bottom: 5px; */
-  align-items: center;
-}
-
 .message-one-container {
   display: flex;
   align-items: center;
@@ -19,9 +11,6 @@
   line-height: 1.5em;
   margin-top: 0.9em;
   font-weight: 400;
-}
-
-.message {
 }
 
 .message-container > div {
