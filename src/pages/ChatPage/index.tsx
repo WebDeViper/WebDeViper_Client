@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 // import { useParams, useNavigate } from 'react-router-dom';
 // import { socket } from '../../utils/socketServer';
 // import { socket } from '../../App';
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
+import { chatSocket } from '../../utils/socket';
 import './index.css';
 import InputField from './InputField';
 import Message from './Message';
@@ -15,7 +16,6 @@ interface Props {
 }
 
 const ChatPage = ({ setIsChatOn, groupId }: Props) => {
-  const chatSocket = io(import.meta.env.VITE_APP_SOCKET_CHAT_SERVER_URL);
   // console.log('유저정보는', user);
   const user = useAppSelector(state => state.user?.userInfo.nickName);
   const userInfo = useAppSelector(state => state.user?.userInfo);
