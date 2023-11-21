@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { API } from '../../utils/axios';
-import { socket } from '../../App';
+// import { socket } from '../../App';
+// import { socket } from '../../utils/socket';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/common/Button';
 import Badge from '../../components/common/Badge';
@@ -13,7 +14,7 @@ export default function DetailGroupPage() {
   // groupId를 params로 가져옴
   const { groupId } = useParams() as { groupId: string };
   // 그룹에 멤버인지 판단할 로그인한 유저의 id 리덕스에서 가져옴
-  const { id: userId, nickName: userName } = useAppSelector(state => state.user?.userInfo);
+  const { id: userId } = useAppSelector(state => state.user?.userInfo);
   // params로 가져온 그룹 정보를 설정할 state 초기값
   const [groupInfo, setGroupInfo] = useState<GroupInfoType>({
     group_id: '',
@@ -38,17 +39,25 @@ export default function DetailGroupPage() {
 
   // 채팅창 이동
   const handleChat = () => {
-    setIsChatOn(!isChatOn);
-    socket.emit('login', userName, (res: any) => {
-      if (res && res.isOk) {
-        console.log('successfully login', res);
-        // navigate(`/group/chat/${groupId}`);
-        // setIsChatOn(true);
+    if (userId) {
+      if (members.includes(userId)) {
+        setIsChatOn(!isChatOn);
+        // socket.emit('login', userName, (res: any) => {
+        //   if (res && res.isOk) {
+        //     console.log('successfully login', res);
+        //     // navigate(`/group/chat/${groupId}`);
+        //     // setIsChatOn(true);
+        //   } else {
+        //     console.log('fail to login', res);
+        //     alert('로그인해주세요!');
+        //   }
+        // });
       } else {
-        console.log('fail to login', res);
-        alert('로그인해주세요!');
+        alert('그룹 가입 후 이용 가능합니다.');
       }
-    });
+    } else {
+      alert('로그인 후 이용해주세요!');
+    }
   };
 
   // 뒤로가기
@@ -124,7 +133,9 @@ export default function DetailGroupPage() {
     try {
       const res = await API.get('/group/pendingGroups');
       console.log('신청중인 그룹 :: ', res.data.pendingGroups);
-      res.data.pendingGroups.map((group: GroupInfoType) => (group.group_id === groupId ? setIsPending(true) : ''));
+      res.data.pendingGroups.map((group: GroupInfoType) =>
+        group.group_id === groupId ? setIsPending(true) : setIsPending(false)
+      );
     } catch (error) {
       console.error('Error fetching pending groups:', error);
     }
@@ -132,18 +143,22 @@ export default function DetailGroupPage() {
 
   // 그룹 가입 요청
   const handleGroupRequest = async (groupId: string) => {
-    try {
-      const res = await API.post(`/group/studyGroup/${groupId}/join`);
-      if (!res.data.isFull) {
-        const data = res.data.message;
-        setIsPending(true);
-        alert(data);
-      } else {
-        alert(`${res.data.message}`);
+    if (userId) {
+      try {
+        const res = await API.post(`/group/studyGroup/${groupId}/join`);
+        if (!res.data.isFull) {
+          const data = res.data.message;
+          setIsPending(true);
+          alert(data);
+        } else {
+          alert(`${res.data.message}`);
+        }
+      } catch (err: any) {
+        console.error(err.message);
+        alert('요청 처리 중 오류가 발생했습니다.');
       }
-    } catch (err: any) {
-      console.error(err.message);
-      alert('요청 처리 중 오류가 발생했습니다.');
+    } else {
+      alert('로그인 후 이용해주세요!');
     }
   };
 
@@ -176,6 +191,7 @@ export default function DetailGroupPage() {
                 ) : (
                   <Button onClick={() => handleGroupRequest(groupId)}>신청하기</Button>
                 )}
+
                 <Button className="ms-2" onClick={handleChat}>
                   채팅하기
                 </Button>

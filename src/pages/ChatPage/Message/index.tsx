@@ -31,8 +31,6 @@ const Message = ({ chatLog, user }: Props) => {
         }}
       >
         {chatLog?.map((message, index) => {
-          console.log(message, 'messagemessage');
-          // console.log('index', index);
           const { chat, sender } = message;
           return (
             <div key={index} className="message-container flex flex-col justify-center items-start">
