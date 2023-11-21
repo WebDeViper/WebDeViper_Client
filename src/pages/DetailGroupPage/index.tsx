@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { API } from '../../utils/axios';
-// import { socket } from '../../App';
+import { socket } from '../../App';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/common/Button';
 import Badge from '../../components/common/Badge';
 import { useAppSelector } from '../../store/store';
 import { IoArrowBackOutline } from 'react-icons/io5';
 import ChatPage from '../ChatPage';
+import './index.css';
 
 export default function DetailGroupPage() {
   // groupId를 params로 가져옴
@@ -38,16 +39,16 @@ export default function DetailGroupPage() {
   // 채팅창 이동
   const handleChat = () => {
     setIsChatOn(!isChatOn);
-    // socket.emit('login', userName, (res: any) => {
-    //   if (res && res.isOk) {
-    //     console.log('successfully login', res);
-    //     // navigate(`/group/chat/${groupId}`);
-    //     // setIsChatOn(true);
-    //   } else {
-    //     console.log('fail to login', res);
-    //     alert('로그인해주세요!');
-    //   }
-    // });
+    socket.emit('login', userName, (res: any) => {
+      if (res && res.isOk) {
+        console.log('successfully login', res);
+        // navigate(`/group/chat/${groupId}`);
+        // setIsChatOn(true);
+      } else {
+        console.log('fail to login', res);
+        alert('로그인해주세요!');
+      }
+    });
   };
 
   // 뒤로가기

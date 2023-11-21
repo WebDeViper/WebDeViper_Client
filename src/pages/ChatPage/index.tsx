@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 // import { useParams, useNavigate } from 'react-router-dom';
 // import { socket } from '../../utils/socketServer';
-import { socket } from '../../App';
+// import { socket } from '../../App';
+import { io } from 'socket.io-client';
 import './index.css';
 import InputField from './InputField';
 import Message from './Message';
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const ChatPage = ({ setIsChatOn, groupId }: Props) => {
+  const chatSocket = io(import.meta.env.VITE_APP_SOCKET_CHAT_SERVER_URL);
   // console.log('유저정보는', user);
   const user = useAppSelector(state => state.user?.userInfo.nickName);
   const userInfo = useAppSelector(state => state.user?.userInfo);
@@ -26,7 +28,7 @@ const ChatPage = ({ setIsChatOn, groupId }: Props) => {
 
   // 채팅창 떠날 때
   const leaveRoom = () => {
-    socket.emit('leaveRoom', user, (res: any) => {
+    chatSocket.emit('leaveRoom', userInfo.nickName, room, (res: any) => {
       if (res.isOk) {
         setIsChatOn(false);
         // navigate(-1); // 다시 채팅방 리스트 페이지로 돌아감
@@ -39,7 +41,7 @@ const ChatPage = ({ setIsChatOn, groupId }: Props) => {
 
   // 채팅 화면 처음 들어올 때
   useEffect(() => {
-    socket.emit('joinRoom', userInfo.nickName, room, (res: any) => {
+    chatSocket.emit('joinRoom', userInfo.nickName, room, (res: any) => {
       if (res && res.isOk) {
         console.log('successfully join', res);
         console.log(res.data, 'resDAta');
@@ -49,14 +51,14 @@ const ChatPage = ({ setIsChatOn, groupId }: Props) => {
       }
     });
 
-    socket.on('message', message => {
+    chatSocket.on('message', message => {
       // message 이벤트를 수신하면 이 함수가 실행됩니다.
       // 여기서 message는 서버에서 보낸 데이터입니다.
       // setChatLog(prevChatLog => [...prevChatLog, message]);
       console.log('서버로부터 메시지 수신:', message, '라고?');
-      setChatLog((prev: { message: string }[]) => [...prev, message]);
+      setChatLog((prev: any[]) => [...prev, message]);
     });
-  }, [room, userInfo.nickName]);
+  }, [room]);
 
   // console.log(chatLog, 'chatLogchatLogchatLogchatLog');
 
@@ -65,7 +67,7 @@ const ChatPage = ({ setIsChatOn, groupId }: Props) => {
     e.preventDefault();
     if (message.trim() !== '') {
       console.log('하이하이하이');
-      socket.emit('sendMessage', room, user, message, (res: any) => {
+      chatSocket.emit('sendMessage', room, user, message, (res: any) => {
         if (!res.isOk) {
           console.log('error message', res.error);
         }

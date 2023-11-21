@@ -33,14 +33,14 @@ const Message = ({ chatLog, user }: Props) => {
         {chatLog?.map((message, index) => {
           console.log(message, 'messagemessage');
           // console.log('index', index);
+          const { chat, sender } = message;
           return (
-            <div key={index}>
-              {/* <Container key={message._id} className="message-container"> */}
+            <div key={index} className="message-container flex flex-col justify-center items-start">
               <div className="message-one-container flex items-center gap-2">
-                {/* <img src="/profile.jpeg" className="profile-image" /> */}
-                {/* <span className={`user-name meta${index % colorList.length}`}>{message.user.name}</span>
+                <img src="/profile.jpeg" className="profile-image" />
+                <span className={`user-name meta${index % colorList.length}`}>{sender.name}</span>
                 <div className="colon">:</div>
-                <div className="message">{message.chat}</div> */}
+                <div className="message">{chat}</div>
                 <br />
                 {/* <div>{message.sendAt}</div> */}
               </div>
