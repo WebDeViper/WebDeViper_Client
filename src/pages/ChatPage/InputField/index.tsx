@@ -1,5 +1,4 @@
 import { Button } from '../../../components/common/Button';
-import './index.css';
 
 interface Props {
   message: string;
