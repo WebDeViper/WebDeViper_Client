@@ -1,10 +1,10 @@
-import { Fragment, useState } from 'react';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import LoginModal from '../LoginModal';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { logout } from '../../store/userSlice';
+import { GoBell } from 'react-icons/go';
+import { HiMiniBars3 } from 'react-icons/hi2';
 
 const navigation = [
   { name: '공부하기', href: '/study', current: false },
@@ -12,14 +12,6 @@ const navigation = [
   { name: '랭킹', href: '/ranking', current: false },
   { name: '공지사항', href: '/notice', current: false },
 ];
-const userNavigation = [
-  { name: '프로필', href: '/profile' },
-  // { name: '로그아웃', href: '/logout' },
-];
-
-function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(' ');
-}
 
 export default function Header() {
   const isAuth = useAppSelector(state => state.user.isAuth);
@@ -45,222 +37,75 @@ export default function Header() {
   };
 
   return (
-    <header>
+    <header className="bg-gray-800">
       {!isAuth && <LoginModal open={modalOpen} onClose={setModalOpen} />}
-      <div className="min-h-full">
-        <Disclosure as="nav" className="bg-gray-800">
-          {({ open }) => (
-            <>
-              <div className={`mx-auto ${open ? 'w-full px-4 sm:px-6' : 'container'}`}>
-                <div className="flex h-16 items-center justify-between">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <Link to={'/'}>
-                        <img
-                          className="h-8 w-8"
-                          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                          alt="Your Company"
-                        />
-                      </Link>
-                    </div>
-                    <div className="hidden md:block">
-                      <div className="ml-10 flex items-baseline space-x-4">
-                        {navigation.map(item => (
-                          <Link
-                            key={item.name}
-                            to={item.href}
-                            className={classNames(
-                              item.current
-                                ? 'bg-gray-900 text-white'
-                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                              'rounded-md px-3 py-2 text-sm font-medium'
-                            )}
-                            aria-current={item.current ? 'page' : undefined}
-                          >
-                            {item.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  {/* header 우측 */}
-                  <div className="hidden md:block">
-                    <div className="ml-4 flex items-center md:ml-6">
-                      {isAuth === true ? (
-                        <>
-                          <button
-                            type="button"
-                            className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white"
-                          >
-                            <span className="absolute -inset-1.5" />
-                            <span className="sr-only">View notifications</span>
-                            <BellIcon className="h-6 w-6" aria-hidden="true" />
-                            {alarmMessage && alarmMessage.length > 0 && (
-                              <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
-                                {alarmMessage.length}
-                              </span>
-                            )}
-                          </button>
-
-                          {/* Profile dropdown */}
-                          <Menu as="div" className="relative ml-3">
-                            <div>
-                              <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm">
-                                <span className="absolute -inset-1.5" />
-                                <span className="sr-only">Open user menu</span>
-                                <div className="flex items-center gap-4">
-                                  <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="" />
-                                  <div>
-                                    <span className="text-white">{user.nickname}</span>
-                                  </div>
-                                </div>
-                              </Menu.Button>
-                            </div>
-                            <Transition
-                              as={Fragment}
-                              enter="transition ease-out duration-100"
-                              enterFrom="transform opacity-0 scale-95"
-                              enterTo="transform opacity-100 scale-100"
-                              leave="transition ease-in duration-75"
-                              leaveFrom="transform opacity-100 scale-100"
-                              leaveTo="transform opacity-0 scale-95"
-                            >
-                              <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5">
-                                {userNavigation.map(item => (
-                                  <Menu.Item key={item.name}>
-                                    {({ active }) => (
-                                      <Link
-                                        to={item.href}
-                                        className={classNames(
-                                          active ? 'bg-gray-100' : '',
-                                          'block px-4 py-2 text-sm text-gray-700'
-                                        )}
-                                      >
-                                        {item.name}
-                                      </Link>
-                                    )}
-                                  </Menu.Item>
-                                ))}
-                                <button
-                                  onClick={handleLogout}
-                                  className="block px-4 py-2 text-sm text-gray-700 w-full text-left hover:bg-gray-100"
-                                >
-                                  로그아웃
-                                </button>
-                              </Menu.Items>
-                            </Transition>
-                          </Menu>
-                        </>
-                      ) : (
-                        <>
-                          <button
-                            onClick={handleModalOpen}
-                            className="text-gray-300 text-sm font-medium hover:bg-gray-700 hover:text-white rounded-md px-3 py-2"
-                          >
-                            로그인
-                          </button>
-                          <Link
-                            to="/signup"
-                            className="ml-4 text-gray-300 text-sm font-medium hover:bg-gray-700 hover:text-white rounded-md px-3 py-2"
-                          >
-                            회원가입
-                          </Link>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                  <div className="-mr-2 flex md:hidden">
-                    {/* Mobile menu button */}
-                    <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white">
-                      <span className="absolute -inset-0.5" />
-                      <span className="sr-only">Open main menu</span>
-                      {open ? (
-                        <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
-                      ) : (
-                        <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
-                      )}
-                    </Disclosure.Button>
-                  </div>
-                </div>
+      <div className="container">
+        <div className="flex h-16 items-center justify-between">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <Link to={'/'}>
+                <img className="h-8 w-8" src="https://avatars.githubusercontent.com/u/148475509?s=48&v=4" alt="로고" />
+              </Link>
+            </div>
+            {/* pc 좌측 */}
+            <div className="hidden md:block">
+              <div className="ml-10 flex items-baseline space-x-4">
+                {navigation.map(item => (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className="hover:bg-gray-700 hover:text-white text-white rounded-md px-3 py-2 text-sm font-medium"
+                  >
+                    {item.name}
+                  </Link>
+                ))}
               </div>
-
-              <Disclosure.Panel className="md:hidden">
-                <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                  {navigation.map(item => (
-                    <Link
-                      key={item.name}
-                      to={item.href}
-                      className={classNames(
-                        item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'block rounded-md px-3 py-2 text-base font-medium'
-                      )}
-                      aria-current={item.current ? 'page' : undefined}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </div>
-                <div className="border-t border-gray-700 pb-3 pt-4">
-                  {/* 모바일 header 우측 */}
-                  {isAuth ? (
-                    <>
-                      <div className="flex items-center px-5">
-                        <div className="flex-shrink-0">
-                          <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
-                        </div>
-                        <div className="ml-3">
-                          <div className="text-base font-medium leading-none text-white">{user.nickname}</div>
-                          <div className="text-sm font-medium leading-none text-gray-400 mt-1">{user.email}</div>
-                        </div>
-                        <button
-                          type="button"
-                          className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white"
-                        >
-                          <span className="absolute -inset-1.5" />
-                          <span className="sr-only">View notifications</span>
-                          <BellIcon className="h-6 w-6" aria-hidden="true" />
-                        </button>
-                      </div>
-                      <div className="mt-3 space-y-1 px-2">
-                        {userNavigation.map(item => (
-                          <Disclosure.Button
-                            key={item.name}
-                            as="a"
-                            href={item.href}
-                            className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                          >
-                            {item.name}
-                          </Disclosure.Button>
-                        ))}
-                        <button
-                          onClick={handleLogout}
-                          className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white w-full text-left"
-                        >
-                          로그아웃
-                        </button>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="px-3">
-                      <button
-                        onClick={handleModalOpen}
-                        className="text-gray-300 px-3 font-base hover:bg-gray-700 hover:text-white rounded-md py-2 w-full text-left font-medium"
-                      >
-                        로그인
-                      </button>
-                      <Link
-                        to="/signup"
-                        className=" text-gray-300 px-3 font-base hover:bg-gray-700 hover:text-white rounded-md py-2 block font-medium"
-                      >
-                        회원가입
-                      </Link>
-                    </div>
-                  )}
-                </div>
-              </Disclosure.Panel>
-            </>
-          )}
-        </Disclosure>
+            </div>
+            {/* mobile 좌측 */}
+            <div className="md:hidden">모바일 일 때 여기 코드</div>
+          </div>
+          {/* pc 우측 */}
+          <div className="hidden md:block">
+            <div className="flex items-center md:ml-6 gap-4">
+              {/* 로그인 사용자만 보일 수 있게 처리 */}
+              {isAuth ? (
+                <>
+                  <button className="text-2xl text-gray-400 hover:text-white p-1">
+                    <GoBell />
+                  </button>
+                  <button className="p-1">
+                    <img
+                      className="h-8 w-8 rounded-full"
+                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5allhVIDcWziGtl4Rhu3Ccm5SkkTi50ageg&usqp=CAU"
+                      alt="profile"
+                    />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={handleModalOpen}
+                    className="text-gray-300 text-sm font-medium hover:bg-gray-700 hover:text-white rounded-md px-3 py-2"
+                  >
+                    로그인
+                  </button>
+                  <Link
+                    to="/signup"
+                    className="text-gray-300 text-sm font-medium hover:bg-gray-700 hover:text-white rounded-md px-3 py-2"
+                  >
+                    회원가입
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+          {/* mobile 우측 */}
+          <div className="md:hidden">
+            <button className="text-2xl rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white">
+              <HiMiniBars3 />
+            </button>
+          </div>
+        </div>
       </div>
     </header>
   );
