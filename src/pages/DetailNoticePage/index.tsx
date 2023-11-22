@@ -73,7 +73,7 @@ export default function DetailNoticePage({ isServiceAdmin }: Props) {
             </div>
 
             {/* 버튼을 추가합니다 */}
-            {isServiceAdmin && (
+            {isServiceAdmin === 'y' && (
               <div>
                 <button onClick={handleUpdate} className="bg-white shadow-md text-black p-2 rounded-md mr-2">
                   수정
