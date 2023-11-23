@@ -20,6 +20,11 @@ export default {
         secondary: '#bfd9ff',
         danger: '#e74c3c',
       },
+      screens: {
+        lg: '1200px',
+        md: '768px',
+        sm: '640px',
+      },
       container: {
         screens: {
           lg: '1200px',
