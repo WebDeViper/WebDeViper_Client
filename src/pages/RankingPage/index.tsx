@@ -22,6 +22,7 @@ export default function RankingPage() {
   const [category, setCategory] = useState(userCategory ? userCategory : categories[0]);
   const [groupRanking, setGroupRanking] = useState([]);
   const [userRanking, setUserRanking] = useState([]);
+  const [rankType, setRankType] = useState('user');
 
   // console.log('뭐지??', top3, other);
 
@@ -87,13 +88,34 @@ export default function RankingPage() {
       <h2>랭킹</h2>
       <SelectMenu selected={category} data={items} setSelected={setCategory}></SelectMenu>
       {/* 초단위 */}
-
       <div className="absolute top-2 right-0">
         <Badge color="pink">어제 기준 랭킹 12시마다 업데이트</Badge>
       </div>
-      <div className="mb-3 w-1/4"></div>
-      <UserRank userRanking={userRanking} calculateTime={calculateTime} />
-      <GroupRank groupRanking={groupRanking} calculateTime={calculateTime} />
+      <ul className="rankTypeWrap flex my-2">
+        <li
+          className={`-mb-px mr-3 bg-white inline-block rounded-t cursor-pointer ${
+            rankType === 'user' ? 'text-blue-700 font-semibold !cursor-default' : ''
+          }`}
+          onClick={() => setRankType('user')}
+        >
+          개인 랭킹
+        </li>
+        <li
+          className={`bg-white inline-block rounded-t cursor-pointer ${
+            rankType === 'group' ? 'text-blue-700 font-semibold !cursor-default' : ''
+          }`}
+          onClick={() => setRankType('group')}
+        >
+          그룹 랭킹
+        </li>
+      </ul>
+      {rankType === 'user' ? (
+        <>
+          <UserRank userRanking={userRanking} calculateTime={calculateTime} />
+        </>
+      ) : (
+        <GroupRank groupRanking={groupRanking} calculateTime={calculateTime} />
+      )}
     </div>
   );
 }
