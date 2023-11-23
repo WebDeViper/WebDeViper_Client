@@ -1,18 +1,21 @@
 // import { Card } from 'flowbite-react';
 // import React from 'react';
 import { useMediaQuery } from 'react-responsive';
-
-interface GroupRank extends GroupInfoType {
-  averageTime: number;
-}
-
 interface Props {
   groupRanking: GroupRank[];
   calculateTime: (seconds: number) => string;
 }
 
+interface GroupRank {
+  averageTime: number;
+  group_name: string;
+  group_img_path?: string;
+}
+
 export default function GroupRank({ groupRanking, calculateTime }: Props) {
   const isTablet = useMediaQuery({ maxWidth: 768 });
+
+  console.log('그룹 랭킹 :: ', groupRanking);
 
   return (
     <section>
@@ -24,7 +27,7 @@ export default function GroupRank({ groupRanking, calculateTime }: Props) {
             <div className="top3 flex gap-3 md:flex-row flex-col md:justify-evenly md:mb-5">
               {groupRanking?.slice(0, 3)?.map((group: GroupRank, index: number) => (
                 <div
-                  key={index}
+                  key={Math.random() * 1000000000000}
                   className={`rank${
                     index + 1
                   } flex justify-between md:items-center md:w-1/3 mb-3 shadow-xl rounded-lg py-2`}
@@ -33,14 +36,14 @@ export default function GroupRank({ groupRanking, calculateTime }: Props) {
                     <div className="w-1/2 flex justify-center">
                       <img
                         className="w-3/4 h-full rounded-lg"
-                        src={import.meta.env.VITE_APP_BACK_URL + group.img_path}
+                        src={import.meta.env.VITE_APP_BACK_URL + group.group_img_path}
                         alt="그룹 이미지"
                       />
                     </div>
                   )}
                   <div className="groupInfoWrap flex md:flex-col w-full md:w-1/2 md:gap-0 items-center justify-between gap-5 px-5 md:px-0">
                     <span className="font-extrabold text-lg">{index + 1}등</span>
-                    <span className="font-bold">{group.name}</span>
+                    <span className="font-bold">{group.group_name}</span>
                     <span>{group.averageTime ? calculateTime(group.averageTime) : '00:00:00'}</span>
                   </div>
                 </div>
@@ -54,13 +57,13 @@ export default function GroupRank({ groupRanking, calculateTime }: Props) {
                 >
                   {!isTablet && (
                     <img
-                      src={import.meta.env.VITE_APP_BACK_URL + group.img_path}
+                      src={import.meta.env.VITE_APP_BACK_URL + group.group_img_path}
                       alt="그룹 이미지"
                       className="h-full rounded-lg"
                     />
                   )}
                   <div className="flex flex-col">
-                    <span className="font-bold">{group.name}</span>
+                    <span className="font-bold">{group.group_name}</span>
                     <span>{group.averageTime ? calculateTime(group.averageTime) : '00:00:00'}</span>
                   </div>
                 </div>
