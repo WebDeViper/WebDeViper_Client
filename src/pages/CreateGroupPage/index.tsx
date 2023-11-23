@@ -46,7 +46,7 @@ export default function CreateGroupPage() {
 
       if (res.data) {
         alert('그룹 생성 완료');
-        navigate('/');
+        navigate('/study');
       }
     } catch (err) {
       console.error(err);
@@ -55,7 +55,7 @@ export default function CreateGroupPage() {
 
   // 드롭다운으로 input 값 설정하기
   const handleSelectCategory = (e: React.MouseEvent<HTMLDivElement>) => {
-    // e.preventDefault();
+    e.stopPropagation();
     const targetElement = e.currentTarget;
     console.log('카테고리 선택 잘 되나요?', targetElement.textContent);
     if (targetElement.textContent) {
@@ -64,7 +64,7 @@ export default function CreateGroupPage() {
   };
 
   const handleSelectTime = (e: React.MouseEvent<HTMLDivElement>) => {
-    // e.preventDefault();
+    e.stopPropagation();
     const targetElement = e.currentTarget;
     console.log('그룹시간 선택 잘 되나요?', targetElement.textContent);
     if (targetElement.textContent) {
