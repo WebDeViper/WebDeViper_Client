@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import Badge from '../../../components/common/Badge';
+import { MdOutlinePerson } from 'react-icons/md';
 
 interface Props {
   groupInfo: GroupInfoType;
@@ -36,26 +38,25 @@ export default function GroupItem({ groupInfo }: Props) {
         groupInfo,
       }}
     >
-      <div className={`rounded-[4px] shadow-xl px-9 pb-5 pt-[25px] h-full`}>
-        <div className={`flex items-center flex-col`}>
+      <div className="rounded-[4px] shadow-xl px-9 h-full flex items-center justify-center">
+        <div className="flex items-center flex-col w-full">
           <img
             className="rounded-full w-16 h-16"
             src={`${import.meta.env.VITE_APP_BACK_URL}${img_path}`}
             alt="귀여운 우유"
           />
           <div className="mt-4 h-24 flex flex-col">
-            <h3 className="font-bold text-center">{name}</h3>
+            <h3 className="font-bold text-center">{name.length > 10 ? name.slice(0, 9) + '...' : name}</h3>
             <p className="text-start" style={{ overflowWrap: 'anywhere' }}>
               {truncatedDescription}
             </p>
           </div>
           <div className="mt-2.5">
-            <span className="block bg-indigo-100 text-indigo-800 text-center text-md font-bold mr-2 px-2.5 py-0.5 rounded-full dark:bg-indigo-900 dark:text-indigo-300">
-              {category}
-            </span>
-            <div>
-              정원: {members && (members.length ? members.length : '1')} / {member_max}
-            </div>
+            <Badge color="yellow">{category}</Badge>
+          </div>
+          <div className="flex items-center gap-2">
+            <MdOutlinePerson />
+            {members && (members.length ? members.length : '1')} / {member_max}
           </div>
         </div>
       </div>

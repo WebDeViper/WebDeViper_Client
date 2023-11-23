@@ -10,7 +10,8 @@ interface Props {
 
 export default function StudyGroup({ userId }: Props) {
   const [studyGroup, setStudyGroup] = useState<GroupInfoType[]>([]);
-  // const [lastGroupId, setLastGroupId] = useState(studyGroup[studyGroup.length - 1].group_id);
+  const [lastGroupId, setLastGroupId] = useState('');
+  const [hasMoreGroup, setHasMoreGroup] = useState(true);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -18,11 +19,15 @@ export default function StudyGroup({ userId }: Props) {
       try {
         const response = await API.get(`/group/all`);
         const data = response.data;
-        console.log('모든 스터디그룹 :: ', data.data);
+        console.log('모든 스터디그룹 :: ', data);
         // if (data.data) {
         //   setStudyGroup(data.data.filter((group: GroupInfoType) => !group.members.includes(userId)));
         // }
         setStudyGroup(data.data);
+        setLastGroupId(data.data[data.data.length - 1].group_id);
+        if (data.isEnd) {
+          setHasMoreGroup(false);
+        }
       } catch (err) {
         console.error(err);
       }
@@ -34,21 +39,28 @@ export default function StudyGroup({ userId }: Props) {
     navigate('/study/group/create');
   };
 
-  // const handleMoreGroup = async () => {
-  //   try {
-  //     const response = await API.get(`/group/all/${lastGroupId}`);
-  //     const data = response.data;
-  //     console.log('모든 스터디그룹 :: ', data.data);
-  //     // if (data.data) {
-  //     //   setStudyGroup(data.data.filter((group: GroupInfoType) => !group.members.includes(userId)));
-  //     // }
-  //     const newStudyGroup = studyGroup.concat(data.data);
-  //     setStudyGroup(newStudyGroup);
-  //     setLastGroupId(newStudyGroup[newStudyGroup.length - 1].group_id);
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
+  const handleMoreGroup = async () => {
+    try {
+      const response = await API.get(`/group/all/${lastGroupId}`);
+      const data = response.data;
+      console.log('모든 스터디그룹 :: ', data);
+      // if (data.data) {
+      //   setStudyGroup(data.data.filter((group: GroupInfoType) => !group.members.includes(userId)));
+      // }
+      if (data.data.length) {
+        const newStudyGroup = studyGroup.concat(data.data);
+        setStudyGroup(newStudyGroup);
+        setLastGroupId(newStudyGroup[newStudyGroup.length - 1].group_id);
+        if (data.isEnd) {
+          setHasMoreGroup(false);
+        }
+      } else {
+        setHasMoreGroup(false);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <section className="relative flex flex-col">
@@ -71,8 +83,11 @@ export default function StudyGroup({ userId }: Props) {
           })}
         </div>
       )}
-      {/* <Button className="self-center mt-3" onClick={handleMoreGroup}> */}
-      <Button className="self-center mt-3">더보기</Button>
+      {hasMoreGroup && (
+        <Button className="self-center mt-3" onClick={handleMoreGroup}>
+          더보기
+        </Button>
+      )}
     </section>
   );
 }
