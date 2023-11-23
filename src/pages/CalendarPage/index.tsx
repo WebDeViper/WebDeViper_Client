@@ -65,7 +65,7 @@ export default function CalendarPage() {
     <div className="container">
       <h2 className="mt-10">일정</h2>
       <div className="calendar">
-        <div className="flex shadow-2xl md:flex-row flex-col">
+        <div className="flex shadow-2xl lg:flex-row flex-col">
           <Calendar
             onChange={setSelectedDate}
             value={selectedDate}
