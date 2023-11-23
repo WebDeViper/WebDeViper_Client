@@ -7,16 +7,7 @@ import TodoList from './TodoList';
 import { API } from '../../utils/axios';
 
 type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
-type Todo = {
-  _id: string;
-  user_id: string;
-  title: string;
-  content: string;
-  start_time: Date;
-  end_time: Date;
-  done: 'y' | 'n';
-};
+export type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 type TodoCalendarTileProps = {
   date: Date;
@@ -25,8 +16,8 @@ type TodoCalendarTileProps = {
 export default function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState<Value>(new Date());
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
 
-  console.log(todos);
   useEffect(() => {
     const fetchTodoList = async () => {
       const response = await API.get('/todo_lists');
@@ -35,6 +26,16 @@ export default function CalendarPage() {
     };
     fetchTodoList();
   }, []);
+
+  useEffect(() => {
+    const selectedTodos = [...todos].filter(date => {
+      const formattedDate = getFormattedDate(selectedDate as Date);
+      const eventStartDate = getFormattedDate(date.start_time);
+      const eventEndDate = getFormattedDate(date.end_time);
+      return formattedDate >= eventStartDate && formattedDate <= eventEndDate;
+    });
+    setFilteredTodos(selectedTodos);
+  }, [selectedDate, todos]);
 
   const getFormattedDate = (date: Date) => moment(date).format('YYYY-MM-DD');
 
@@ -64,21 +65,22 @@ export default function CalendarPage() {
     <div className="container">
       <h2 className="mt-10">일정</h2>
       <div className="calendar">
-        <Calendar
-          onChange={setSelectedDate}
-          value={selectedDate}
-          minDetail="year"
-          formatDay={(_, date) => moment(date).format('D')}
-          className="mx-auto flex-1 relative p-3 z-10"
-          tileContent={TodoCalendarTile}
-          // showNeighboringMonth={false}
-        />
-        {/* <TodoList
-          selectedDate={selectedDate}
-          filteredTodos={filteredTodos}
-          handleUpdateTodo={handleUpdateTodo}
-          handleAddTodo={handleAddTodo}
-        /> */}
+        <div className="flex shadow-2xl md:flex-row flex-col">
+          <Calendar
+            onChange={setSelectedDate}
+            value={selectedDate}
+            minDetail="year"
+            formatDay={(_, date) => moment(date).format('D')}
+            className="mx-auto flex-1 relative p-3 z-10"
+            tileContent={TodoCalendarTile}
+            // showNeighboringMonth={false}
+          />
+          <TodoList
+            selectedDate={selectedDate}
+            filteredTodos={filteredTodos}
+            // handleAddTodo={handleAddTodo}
+          />
+        </div>
       </div>
     </div>
   );

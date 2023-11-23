@@ -45,4 +45,14 @@ type Alarm = {
   _id: string;
 };
 
-// TODO: room에 대한 타입도 지정할건지 ..
+// TODO
+
+type Todo = {
+  todo_id: string;
+  user_id: string;
+  title: string;
+  content: string;
+  start_time: Date;
+  end_time: Date;
+  done: 'y' | 'n';
+};
