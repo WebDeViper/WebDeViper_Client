@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { authUser, profileUser, loginUser, deleteAlarm } from './thunkFunctions';
 import { toast } from 'react-toastify';
-// import { toast } from 'react-toastify';
 
 interface UserState {
   userInfo: UserInfo;
@@ -55,10 +54,11 @@ const userSlice = createSlice({
         state.error = '';
         localStorage.setItem('accessToken', action.payload.accessToken);
       })
-      .addCase(loginUser.rejected, (state, action) => {
+      .addCase(loginUser.rejected, (state, action: any) => {
         state.isLoading = false;
         state.error = action.payload;
         // toast.error(action.payload);
+        alert('로그인 정보를 확인 해주세요!');
       })
 
       .addCase(deleteAlarm.pending, state => {
