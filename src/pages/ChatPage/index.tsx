@@ -8,7 +8,6 @@ import './index.css';
 import InputField from './InputField';
 import Message from './Message';
 import { useAppSelector } from '../../store/store';
-import { Button } from '../../components/common/Button';
 
 interface Props {
   setIsChatOn: (isChatOn: boolean) => void;
@@ -83,8 +82,10 @@ const ChatPage = ({ setIsChatOn, groupId }: Props) => {
       className="chatContainer flex flex-col h-full"
       // style={{ backgroundImage: "url('../../../public/img/background.png')" }}
     >
-      <nav>
-        <Button onClick={leaveRoom}>←</Button>
+      <nav className="chatNav">
+        <button className="p-3 text-lg font-bold cursor-pointer" onClick={leaveRoom}>
+          ←
+        </button>
       </nav>
       <div className="max-h-[100%]">
         {chatLog.length > 0 ? <Message chatLog={chatLog} user={userInfo} /> : <div className="h-full"></div>}

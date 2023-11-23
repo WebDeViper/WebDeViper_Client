@@ -4,7 +4,7 @@
   height: 900px;
 }
 
-nav {
+nav.chatNav {
   display: flex;
   justify-content: flex-start;
   align-items: center;
