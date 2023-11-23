@@ -1,0 +1,72 @@
+.calendar .react-calendar {
+  @apply w-full shadow-xl border-none;
+}
+
+.react-calendar .react-calendar__navigation button {
+  @apply sm:text-2xl text-xl;
+}
+
+.react-calendar .react-calendar__tile--active {
+  @apply relative bg-transparent text-inherit;
+}
+
+.react-calendar .react-calendar__month-view__days__day::before {
+  @apply content-[''];
+  transition: border-color 0.25s;
+}
+
+.react-calendar .react-calendar__month-view__days__day.react-calendar__tile--active::before {
+  @apply absolute m-auto w-10/12 h-5/6 rounded-full border border-slate-500 inset-0;
+}
+
+/* 날짜 텍스트 */
+.react-calendar .react-calendar__month-view__days__day abbr {
+  position: relative;
+  z-index: 10;
+}
+
+/* 모든 날짜 */
+.react-calendar .react-calendar__month-view__days__day:hover::before {
+  @apply rounded-full w-10/12 h-5/6 absolute bg-slate-300;
+}
+
+/* 모든 날짜 마우스 오버시 */
+.react-calendar .react-calendar__tile:enabled:hover,
+.react-calendar .react-calendar__tile:enabled:focus {
+  @apply bg-inherit;
+}
+
+.react-calendar .react-calendar__month-view__weekdays {
+  @apply mb-6;
+}
+
+/* 빨간날 */
+.react-calendar .react-calendar__month-view__days__day--weekend {
+  color: initial;
+}
+
+.react-calendar .react-calendar__month-view__days__day {
+  @apply aspect-square flex justify-center items-center flex-col p-1 relative;
+}
+
+/* 할 일 달력에 표시 */
+.react-calendar .react-calendar__month-view__days__day p {
+  @apply truncate mb-1 absolute lg:h-1 md:h-[3px] h-[2px] bg-red-400 rounded-sm lg:top-1 lg:w-7 w-5;
+}
+
+/* 오늘 날짜 selected */
+.react-calendar .react-calendar__tile--now {
+  @apply relative bg-inherit;
+}
+.react-calendar .react-calendar__tile--now:before {
+  @apply w-10/12 h-5/6 !bg-indigo-400 rounded-full absolute;
+}
+
+.react-calendar abbr {
+  text-decoration: none;
+}
+
+/* 모달  */
+.calendar-modal .time-period button {
+  @apply flex justify-center;
+}
