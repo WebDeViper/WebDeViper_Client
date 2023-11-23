@@ -1,4 +1,4 @@
-import GroupItem from '../GroupItem';
+import GroupItem from './GroupItem';
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard, Autoplay } from 'swiper/modules';
@@ -24,7 +24,9 @@ export default function MyGroup() {
   }, []);
   return (
     <section>
-      <h2 className="font-bold text-2xl mb-5">내가 속한 그룹</h2>
+      <h2 className="font-bold text-2xl mb-5 underline decoration-4 decoration-primary-500/60 underline-offset-8">
+        내가 속한 그룹
+      </h2>
       {!myGroups.length && (
         <div className="h-20 w-full flex flex-col justify-center p-2 shadow-lg rounded-lg">
           <h1 className="text-lg font-medium">아직 생성된 스터디그룹이 없어요!</h1>
