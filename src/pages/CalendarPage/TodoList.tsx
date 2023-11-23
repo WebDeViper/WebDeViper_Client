@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { Value } from './index';
+import TodoListItem from './TodoListItem';
 
 interface Props {
   selectedDate: Value;
@@ -11,7 +12,7 @@ interface Props {
 
 export default function TodoList({ selectedDate, filteredTodos, handleAddTodo }: Props) {
   return (
-    <div className="py-20 px-10 bg-white relative lg:w-96 md:w-72 w-full">
+    <div className="py-20 px-8 bg-white relative lg:w-96 w-full">
       <button
         onClick={handleAddTodo}
         className="rounded-full bg-lime-400 p-2.5 text-xl absolute top-6 hover:rotate-180 transition right-7"
@@ -23,7 +24,7 @@ export default function TodoList({ selectedDate, filteredTodos, handleAddTodo }:
       </div>
       <div>
         {filteredTodos.length ? (
-          filteredTodos.map((item, index) => <div key={item.todo_id}>{item.content}</div>)
+          filteredTodos.map((item, index) => <TodoListItem item={item} />)
         ) : (
           <p className="text-slate-400">일정이 없습니다.</p>
         )}
