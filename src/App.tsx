@@ -15,12 +15,15 @@ import DetailNoticePage from './pages/DetailNoticePage';
 import AlarmPage from './pages/AlarmPage';
 import DetailGroupPage from './pages/DetailGroupPage';
 import RankingPage from './pages/RankingPage';
-import { socket } from './utils/socket';
+// import { socket } from './utils/socket';
 import CalendarPage from './pages/CalendarPage';
+import { io } from 'socket.io-client';
 
 function App() {
   const isAuth = useAppSelector(state => state.user.isAuth);
   const isServiceAdmin = useAppSelector(state => state.user.userInfo.isServiceAdmin);
+  const userId = useAppSelector(state => state.user.userInfo.id);
+  const socket = io('http://localhost:8001/', { auth: { userId } });
   const dispatch = useAppDispatch();
   // const category = useAppSelector(state => state.user.userInfo.category);
 
@@ -31,8 +34,9 @@ function App() {
       socket.on('newNotice', message => {
         dispatch(getAlarmMessage(message));
       });
+      console.log(socket);
     }
-  }, [dispatch, isAuth]);
+  }, [dispatch, isAuth, socket]);
 
   useEffect(() => {
     if (isAuth) {
