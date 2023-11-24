@@ -33,17 +33,17 @@ export default function TodoList({ selectedDate, filteredTodos, handleModalOpen 
   }, [selectedDate]);
 
   return (
-    <div className="py-20 px-8 bg-white relative lg:w-96 w-full">
+    <div className="pt-20 pb-16 bg-white relative lg:w-96 w-full">
       <button
         onClick={handleModalOpen}
         className="rounded-full bg-lime-400 p-2.5 text-xl absolute top-6 hover:rotate-180 transition right-7"
       >
         <AiOutlinePlus />
       </button>
-      <div className="mb-6 font-semibold">
+      <div className="mb-3 font-semibold px-8">
         <span>{moment(selectedDate as Date).format('yyyy년 MM월 DD일')}</span>
       </div>
-      <div>
+      <div className="overflow-y-scroll md:h-[32rem] h-96 px-8 py-4 flex flex-col gap-5">
         {filteredTodos.length ? (
           filteredTodos.map((item, index) => (
             <TodoListItem key={item.todo_id} item={item} selectedMenu={selectedMenu} handleMenuOpen={handleMenuOpen} />
