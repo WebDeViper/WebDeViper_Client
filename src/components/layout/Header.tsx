@@ -26,7 +26,10 @@ export default function Header() {
   const [isMobileMenu, setIsMobileMenu] = useState(false);
   const isPC = useMediaQuery({ query: '(min-width: 768px)' });
 
-  console.log(alarmMessage);
+  useEffect(() => {
+    console.log(alarmMessage);
+  }, [alarmMessage]);
+
   const handleModalOpen = () => {
     setModalOpen(true);
   };

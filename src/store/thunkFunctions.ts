@@ -37,7 +37,7 @@ export const authUser = createAsyncThunk('user/authUser', async (_, thunkAPI) =>
   }
 });
 
-export const profileUser = createAsyncThunk('user/profileUser', async (body, thunkAPI) => {
+export const profileUser = createAsyncThunk('user/profileUser', async (body: object, thunkAPI) => {
   try {
     const response = await API.patch('/user/profile', body);
     console.log(response);

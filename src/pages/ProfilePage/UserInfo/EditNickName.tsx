@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
-import Button from '../../../components/common/Button';
+import { useState } from 'react';
+import { Button } from '../../../components/common/Button';
 import { API } from '../../../utils/axios';
-import { profileUser } from '../../../reducers/thunkFunctions';
+import { profileUser } from '../../../store/thunkFunctions';
+import { AppDispatch } from '../../../store/store';
 
-export default function EditNickName({ dispatch }) {
+interface Props {
+  dispatch: AppDispatch;
+}
+
+export default function EditNickName({ dispatch }: Props) {
   const [message, setMessage] = useState('');
   const [nickName, setNickName] = useState('');
   const [isDuplicate, setIsDuplicate] = useState(true);
@@ -15,7 +20,7 @@ export default function EditNickName({ dispatch }) {
     setMessage(!res.data ? '사용 가능' : '닉네임 중복');
     setIsDuplicate(!res.data ? false : true);
   };
-  const handleInputChange = e => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputNick = e.target.value;
     // console.log(inputNick.trim().length);
     inputNick.trim() ? setNickName(inputNick) : setNickName('');
@@ -26,7 +31,7 @@ export default function EditNickName({ dispatch }) {
     }
   };
 
-  const checkValidate = input => {
+  const checkValidate = (input: string) => {
     const pattern = /^[A-Za-z0-9가-힣ㄱ-ㅎㅏ-ㅣ]{2,10}$/;
     if (!pattern.test(input.trim())) {
       setMessage('닉네임은 한글, 영문, 숫자를 포함한 2~10자 이하입니다!');
@@ -39,7 +44,7 @@ export default function EditNickName({ dispatch }) {
   console.log('닉네임 상태>>>', nickName);
 
   // input에서 엔터로 중복체크
-  const handleKeyDown = e => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.code === 'Enter') {
       isValidate ? handleCheckDuplicate() : '';
     }
@@ -56,16 +61,16 @@ export default function EditNickName({ dispatch }) {
     }
   };
   const messageStyled = !isDuplicate ? 'text-primary' : 'text-red-600';
-  const buttonStyled = isValidate ? '!bg-primary' : '!bg-gray-500';
+  const buttonStyled = isValidate ? '!bg-blue-400' : '!bg-gray-500';
   return (
-    <div className="flex flex-col items-start justify-center border-2 rounded-lg border-semi_primary p-2 md:mb-3 mb-1">
+    <div className="flex flex-col items-between justify-center border-2 rounded-lg border-semi_primary p-2 md:mb-3 mb-1">
       <div className="mb-5">
         <span className="text-lg font-semibold">닉네임 변경</span>
       </div>
-      <div className="flex w-full justify-between">
+      <div className="flex w-full justify-end items-center">
         <div className="nickInputWrap border-2 rounded-lg border-primary ps-5 pe-2 w-fit flex items-center me-2">
           <input
-            className="font-bold w-[12rem] h-[3rem] border-transparent focus:ring-0 focus:border-transparent"
+            className="font-medium w-[12rem] h-[3rem] border-transparent focus:ring-0 focus:border-transparent focus:outline-none"
             type="text"
             placeholder="닉네임 입력"
             // value={nickName}
@@ -74,19 +79,14 @@ export default function EditNickName({ dispatch }) {
           />
           {/* <Button handleClick={handleCheckDuplicate}>중복체크</Button> */}
           <button
-            className={`text-white w-fit text-sm leading-6 font-bold tracking-wider py-[5px] px-2.5 rounded-lg ${buttonStyled}`}
+            className={`text-white w-fit text-sm leading-6 font-medium tracking-wider py-[5px] px-2.5 rounded-lg ${buttonStyled}`}
             onClick={handleCheckDuplicate}
             disabled={isValidate ? false : true}
           >
             중복체크
           </button>
         </div>
-        <Button
-          handleClick={handleUserInfo}
-          customStyle={`border-2 p-3 self-center bg-transparent !text-primary border-primary border-2 text-lg`}
-        >
-          완료
-        </Button>
+        <Button onClick={handleUserInfo}>완료</Button>
       </div>
       {message ? <span className={`font-semibold text-sm mt-2 ms-2 ${messageStyled}`}>{message}</span> : <br />}
     </div>

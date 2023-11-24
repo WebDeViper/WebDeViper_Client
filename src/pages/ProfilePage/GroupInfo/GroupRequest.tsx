@@ -1,21 +1,27 @@
-import React from 'react';
+// import React from 'react';
 import { useState } from 'react';
 import { API } from '../../../utils/axios';
-import { Card } from 'flowbite-react';
+// import { Card } from 'flowbite-react';
 
-export default function GroupRequest({ requests, groupName, groupId }) {
-  const [request, setRequest] = useState(requests);
+interface Props {
+  requests: [];
+  groupName: string;
+  groupId: string;
+}
+
+export default function GroupRequest({ requests, groupName, groupId }: Props) {
+  const [request, setRequest] = useState<any[]>(requests);
   console.log('requests는 useState -> ', request);
-  const handleAccept = async requestId => {
+  const handleAccept = async (requestId: string) => {
     console.log('수락!!!', requests);
     console.log(requestId);
     const res = await API.post(`/group/studyGroup/${groupId}/${requestId}/requests/accept`);
     console.log(res.data, '수락 응답!!');
-
+    const newRequest = request.filter(item => item.user_id !== requestId);
     // 요청을 수락한 후 해당 요청을 배열에서 제거
-    setRequest(request.filter(item => item.user_id !== requestId));
+    setRequest(newRequest);
   };
-  const handleReject = async requestId => {
+  const handleReject = async (requestId: string) => {
     console.log('거절!!!');
     const res = await API.post(`/group/studyGroup/${groupId}/${requestId}/requests/reject`);
     console.log(res.data, '거절 응답!!');

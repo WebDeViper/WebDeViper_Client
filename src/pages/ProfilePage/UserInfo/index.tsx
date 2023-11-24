@@ -7,7 +7,7 @@ export default function UserInfo() {
   const dispatch = useAppDispatch();
 
   return (
-    <div className="myPage-userInfo flex flex-col md:flex-row justify-between mb-5 md:gap-1">
+    <div className="myPage-userInfo flex flex-col md:flex-row justify-between mb-5 gap-1 mt-3">
       <EditProfileImage />
       <div className="myPage-userInfo-right-container w-full">
         <EditNickName dispatch={dispatch} />
