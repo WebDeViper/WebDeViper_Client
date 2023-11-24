@@ -1,5 +1,4 @@
 import moment from 'moment';
-import { useState } from 'react';
 import { FaCheck } from 'react-icons/fa6';
 import { FaTrash, FaPen, FaBars, FaTimes } from 'react-icons/fa';
 import { TodoSelectedMenu } from './TodoList';
@@ -7,15 +6,11 @@ import { TodoSelectedMenu } from './TodoList';
 
 interface Props {
   item: Todo;
-  selectedMenu: TodoSelectedMenu;
+  selectedMenu: TodoSelectedMenu | null;
   handleMenuOpen: (id: string) => void;
 }
 
 export default function TodoListItem({ selectedMenu, item, handleMenuOpen }: Props) {
-  // const [isUpdateOpen, setIsUpdateOpen] = useState(false);
-  // const handleToggleUpdateOpen = () => {
-  //   setIsUpdateOpen(prev => !prev);
-  // };
   return (
     <div className="py-3 relative">
       <div className="flex justify-between items-center">

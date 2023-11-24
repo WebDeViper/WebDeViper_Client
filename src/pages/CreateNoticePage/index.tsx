@@ -49,7 +49,7 @@ export default function MyComponent() {
       }
     };
     getNotice();
-  }, [location]);
+  }, [noticeId]);
 
   console.log(isUpdate);
 

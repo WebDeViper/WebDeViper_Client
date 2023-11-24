@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import moment from 'moment';
 import { AiOutlinePlus } from 'react-icons/ai';
-import { Value } from './index';
+import { TodoSelectedDateValue } from './index';
 import TodoListItem from './TodoListItem';
 
 interface Props {
-  selectedDate: Value;
+  selectedDate: TodoSelectedDateValue;
   filteredTodos: Todo[];
-  handleAddTodo: () => void;
+  handleModalOpen: () => void;
 }
 
 export type TodoSelectedMenu = {
@@ -15,7 +15,7 @@ export type TodoSelectedMenu = {
   isOpen: boolean;
 };
 
-export default function TodoList({ selectedDate, filteredTodos, handleAddTodo }: Props) {
+export default function TodoList({ selectedDate, filteredTodos, handleModalOpen }: Props) {
   const [selectedMenu, setSelectedMenu] = useState<TodoSelectedMenu | null>(null);
 
   const handleMenuOpen = (id: string) => {
@@ -35,7 +35,7 @@ export default function TodoList({ selectedDate, filteredTodos, handleAddTodo }:
   return (
     <div className="py-20 px-8 bg-white relative lg:w-96 w-full">
       <button
-        onClick={handleAddTodo}
+        onClick={handleModalOpen}
         className="rounded-full bg-lime-400 p-2.5 text-xl absolute top-6 hover:rotate-180 transition right-7"
       >
         <AiOutlinePlus />
