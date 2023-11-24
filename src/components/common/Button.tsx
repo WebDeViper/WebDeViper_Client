@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-type Color = 'primary' | 'blue' | 'red';
+type Color = 'primary' | 'blue' | 'red' | 'white';
 type Size = 'sm' | 'md' | 'full';
 type Type = 'button' | 'submit';
 interface Props {
@@ -29,11 +29,12 @@ const buttonTheme = {
     primary: 'text-white bg-primary-500 shadow-primary-500/20 hover:shadow-primary-500/40 hover:shadow-lg shadow-md',
     blue: 'text-white bg-indigo-500 shadow-indigo-500/20 hover:shadow-indigo-500/40 hover:shadow-lg shadow-md',
     red: 'text-white bg-red-500 shadow-red-500/20 hover:shadow-red-500/40 hover:shadow-lg shadow-md',
+    white: 'text-gray-900 bg-white-500 shadow-white-500/20 hover:shadow-white-500/40 hover:shadow-lg shadow-md',
   },
 
   size: {
     sm: 'px-2 py-1.5 text-sm',
-    md: 'px-2.5 py-2 text-base',
+    md: 'px-3 py-2 text-base',
     full: 'py-2 w-full text-base',
   },
 };

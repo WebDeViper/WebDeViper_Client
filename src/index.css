@@ -23,7 +23,7 @@
     @apply text-lg font-semibold mb-5;
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 640px) {
     html {
       font-size: 14px;
     }

@@ -1,14 +1,15 @@
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../../styles/calendar.css';
 import TodoList from './TodoList';
 import { API } from '../../utils/axios';
 import { useAppSelector } from '../../store/store';
+import AddTodoModal from './AddTodoModal';
 
 type ValuePiece = Date | null;
-export type Value = ValuePiece | [ValuePiece, ValuePiece];
+export type TodoSelectedDateValue = ValuePiece | [ValuePiece, ValuePiece];
 
 type TodoCalendarTileProps = {
   date: Date;
@@ -16,9 +17,10 @@ type TodoCalendarTileProps = {
 
 export default function CalendarPage() {
   const isAuth = useAppSelector(state => state.user.isAuth);
-  const [selectedDate, setSelectedDate] = useState<Value>(new Date());
+  const [selectedDate, setSelectedDate] = useState<TodoSelectedDateValue>(new Date());
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     if (isAuth) {
@@ -55,7 +57,7 @@ export default function CalendarPage() {
     });
   };
 
-  const TodoCalendarTile = ({ date }: TodoCalendarTileProps) => {
+  const todoCalendarTile = ({ date }: TodoCalendarTileProps) => {
     const matchingEvents = filterMatchingEvents(date, todos);
 
     return (
@@ -65,6 +67,10 @@ export default function CalendarPage() {
         ))}
       </div>
     );
+  };
+
+  const handleModalOpen = () => {
+    setOpenModal(true);
   };
 
   return (
@@ -78,15 +84,12 @@ export default function CalendarPage() {
             minDetail="year"
             formatDay={(_, date) => moment(date).format('D')}
             className="mx-auto flex-1 relative p-3 z-10"
-            tileContent={TodoCalendarTile}
+            tileContent={todoCalendarTile}
             // showNeighboringMonth={false}
           />
-          <TodoList
-            selectedDate={selectedDate}
-            filteredTodos={filteredTodos}
-            // handleAddTodo={handleAddTodo}
-          />
+          <TodoList selectedDate={selectedDate} filteredTodos={filteredTodos} handleModalOpen={handleModalOpen} />
         </div>
+        <AddTodoModal show={openModal} onClose={setOpenModal} selectedDate={selectedDate} />
       </div>
     </div>
   );
