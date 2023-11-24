@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { Value } from './index';
@@ -10,7 +10,28 @@ interface Props {
   handleAddTodo: () => void;
 }
 
+export type TodoSelectedMenu = {
+  id: string;
+  isOpen: boolean;
+};
+
 export default function TodoList({ selectedDate, filteredTodos, handleAddTodo }: Props) {
+  const [selectedMenu, setSelectedMenu] = useState<TodoSelectedMenu | null>(null);
+
+  const handleMenuOpen = (id: string) => {
+    if (!selectedMenu) {
+      setSelectedMenu({ id, isOpen: true });
+    } else if (selectedMenu.id === id) {
+      setSelectedMenu(null);
+    } else {
+      setSelectedMenu({ id, isOpen: true });
+    }
+  };
+
+  useEffect(() => {
+    setSelectedMenu(null);
+  }, [selectedDate]);
+
   return (
     <div className="py-20 px-8 bg-white relative lg:w-96 w-full">
       <button
@@ -24,7 +45,9 @@ export default function TodoList({ selectedDate, filteredTodos, handleAddTodo }:
       </div>
       <div>
         {filteredTodos.length ? (
-          filteredTodos.map((item, index) => <TodoListItem item={item} />)
+          filteredTodos.map((item, index) => (
+            <TodoListItem key={item.todo_id} item={item} selectedMenu={selectedMenu} handleMenuOpen={handleMenuOpen} />
+          ))
         ) : (
           <p className="text-slate-400">일정이 없습니다.</p>
         )}

@@ -1,19 +1,23 @@
 import moment from 'moment';
 import { useState } from 'react';
 import { FaCheck } from 'react-icons/fa6';
-import { FaTrash, FaPen } from 'react-icons/fa';
+import { FaTrash, FaPen, FaBars, FaTimes } from 'react-icons/fa';
+import { TodoSelectedMenu } from './TodoList';
+// import { RxHamburgerMenu } from 'react-icons/rx';
 
 interface Props {
   item: Todo;
+  selectedMenu: TodoSelectedMenu;
+  handleMenuOpen: (id: string) => void;
 }
 
-export default function TodoListItem({ item }: Props) {
-  const [isUpdateOpen, setIsUpdateOpen] = useState(false);
-  const handleToggleUpdateOpen = () => {
-    setIsUpdateOpen(prev => !prev);
-  };
+export default function TodoListItem({ selectedMenu, item, handleMenuOpen }: Props) {
+  // const [isUpdateOpen, setIsUpdateOpen] = useState(false);
+  // const handleToggleUpdateOpen = () => {
+  //   setIsUpdateOpen(prev => !prev);
+  // };
   return (
-    <div key={item.todo_id} className="py-3 relative">
+    <div className="py-3 relative">
       <div className="flex justify-between items-center">
         <div>
           <div className="mb-1 text-base">
@@ -24,8 +28,13 @@ export default function TodoListItem({ item }: Props) {
           <div className="text-gray-600">{item.content}</div>
         </div>
         {/* <div className=""> */}
-        <button onClick={handleToggleUpdateOpen} className="rounded-full border border-gray-200 w-6 h-6"></button>
-        {isUpdateOpen && (
+        <button
+          onClick={() => handleMenuOpen(item.todo_id)}
+          className="rounded-full flex justify-center items-center shadow-md w-6 h-6 text-blue-300 text-sm"
+        >
+          {selectedMenu && selectedMenu.id === item.todo_id && selectedMenu.isOpen ? <FaTimes /> : <FaBars />}
+        </button>
+        {selectedMenu && selectedMenu.id === item.todo_id && (
           <>
             <button className="absolute flex justify-center items-center shadow-md -top-3 right-9 text-blue-300 rounded-full shadow-sky-200 w-6 h-6">
               <FaCheck />

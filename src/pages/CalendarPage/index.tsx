@@ -5,6 +5,7 @@ import 'react-calendar/dist/Calendar.css';
 import '../../styles/calendar.css';
 import TodoList from './TodoList';
 import { API } from '../../utils/axios';
+import { useAppSelector } from '../../store/store';
 
 type ValuePiece = Date | null;
 export type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -14,18 +15,23 @@ type TodoCalendarTileProps = {
 };
 
 export default function CalendarPage() {
+  const isAuth = useAppSelector(state => state.user.isAuth);
   const [selectedDate, setSelectedDate] = useState<Value>(new Date());
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
-    const fetchTodoList = async () => {
-      const response = await API.get('/todo_lists');
-      const data = await response.data;
-      setTodos(data.todos);
-    };
-    fetchTodoList();
-  }, []);
+    if (isAuth) {
+      const fetchTodoList = async () => {
+        const response = await API.get('/todo_lists');
+        const data = await response.data;
+        setTodos(data.todos);
+      };
+      fetchTodoList();
+    } else {
+      setTodos([]);
+    }
+  }, [isAuth]);
 
   useEffect(() => {
     const selectedTodos = [...todos].filter(date => {
