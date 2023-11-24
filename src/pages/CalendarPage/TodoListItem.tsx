@@ -25,6 +25,26 @@ export default function TodoListItem({ selectedMenu, item, handleMenuOpen, setTo
       console.log(err);
     }
   };
+  const handleToggleTodoCompletion = async (item: Todo) => {
+    const body = {
+      ...item,
+      done: item.done === 'y' ? 'n' : 'y',
+    };
+
+    try {
+      await API.patch(`/todo_lists/${item.todo_id}`, body);
+      setTodos(prev => {
+        return prev.map(todo => {
+          if (todo.todo_id === item.todo_id) {
+            return { ...todo, done: item.done === 'y' ? 'n' : 'y' };
+          }
+          return todo;
+        });
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="py-3 px-2 relative rounded-md shadow-md shadow-cyan-200">
       <div className="flex justify-between items-center">
@@ -34,7 +54,9 @@ export default function TodoListItem({ selectedMenu, item, handleMenuOpen, setTo
             <span className="m-2 text-gray-300">~</span>
             <span className="text-gray-300">{moment(item.end_time).format('HH:mm')}</span>
           </div>
-          <div className="text-gray-600 truncate w-48">{item.title}</div>
+          <div className={`truncate w-48 ${item.done === 'n' ? 'text-gray-600' : 'line-through text-gray-300'}`}>
+            {item.title}
+          </div>
         </div>
         <button
           onClick={() => handleMenuOpen(item.todo_id)}
@@ -44,7 +66,10 @@ export default function TodoListItem({ selectedMenu, item, handleMenuOpen, setTo
         </button>
         {selectedMenu && selectedMenu.id === item.todo_id && (
           <>
-            <button className="bg-white absolute flex justify-center items-center shadow-md -top-3 right-9 text-blue-300 rounded-full shadow-sky-200 w-6 h-6">
+            <button
+              onClick={() => handleToggleTodoCompletion(item)}
+              className="bg-white absolute flex justify-center items-center shadow-md -top-3 right-9 text-blue-300 rounded-full shadow-sky-200 w-6 h-6"
+            >
               <FaCheck />
             </button>
             <button className="bg-white text-xs absolute flex justify-center items-center shadow-md top-0 bottom-0 my-auto right-[4.5rem] text-blue-300 rounded-full shadow-sky-200 w-6 h-6">
