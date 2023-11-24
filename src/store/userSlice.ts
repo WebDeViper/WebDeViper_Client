@@ -57,8 +57,7 @@ const userSlice = createSlice({
       .addCase(loginUser.rejected, (state, action: any) => {
         state.isLoading = false;
         state.error = action.payload;
-        // toast.error(action.payload);
-        alert('로그인 정보를 확인 해주세요!');
+        toast.info('로그인 정보를 확인 해주세요!', { type: toast.TYPE.ERROR });
       })
 
       .addCase(deleteAlarm.pending, state => {
