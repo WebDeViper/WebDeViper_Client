@@ -80,7 +80,6 @@ export default function AddTodoModal({ show, selectedDate, setTodos, setOpenModa
         if (startMinute > endMinute) return toast.error(ERR_MESSAGE);
       }
     }
-    console.log(data);
 
     try {
       const momentStartDate = moment(startDate).format('yyyy, MM, DD');
@@ -104,6 +103,7 @@ export default function AddTodoModal({ show, selectedDate, setTodos, setOpenModa
       const newData = response.data.result;
       console.log(newData);
       setTodos(prev => [...prev, newData]);
+      reset();
       setOpenModal(false);
     } catch (err) {
       console.log(err);
