@@ -26,7 +26,6 @@ export default function Header() {
   const [isMobileMenu, setIsMobileMenu] = useState(false);
   const isPC = useMediaQuery({ query: '(min-width: 768px)' });
 
-  console.log(alarmMessage);
   const handleModalOpen = () => {
     setModalOpen(true);
   };
@@ -85,8 +84,13 @@ export default function Header() {
               {/* 로그인 사용자만 보일 수 있게 처리 */}
               {isAuth ? (
                 <>
-                  <button className="text-2xl text-gray-400 hover:text-white p-1 focus:outline-none rounded-full">
+                  <button className="relative text-2xl text-gray-400 hover:text-white p-1 focus:outline-none rounded-full">
                     <GoBell />
+                    {alarmMessage && alarmMessage.length > 0 && (
+                      <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
+                        {alarmMessage.length}
+                      </span>
+                    )}
                   </button>
                   <button className="p-1" onClick={toggleProfileOpen}>
                     <img
@@ -188,8 +192,13 @@ export default function Header() {
                             <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
                           </div>
                         </div>
-                        <button className="text-2xl text-gray-400 hover:text-white p-1 focus:outline-none rounded-full">
+                        <button className="relative text-2xl text-gray-400 hover:text-white p-1 focus:outline-none rounded-full">
                           <GoBell />
+                          {alarmMessage && alarmMessage.length > 0 && (
+                            <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
+                              {alarmMessage.length}
+                            </span>
+                          )}
                         </button>
                       </div>
                       <div>

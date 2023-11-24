@@ -27,12 +27,12 @@ function App() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    socket.on('newNotice', message => {
-      console.log(message);
-      dispatch(getAlarmMessage(message));
-    });
-    console.log(socket);
-  }, [dispatch]);
+    if (isAuth) {
+      socket.on('newNotice', message => {
+        dispatch(getAlarmMessage(message));
+      });
+    }
+  }, [dispatch, isAuth]);
 
   useEffect(() => {
     if (isAuth) {
