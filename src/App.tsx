@@ -16,7 +16,6 @@ import AlarmPage from './pages/AlarmPage';
 import DetailGroupPage from './pages/DetailGroupPage';
 import RankingPage from './pages/RankingPage';
 import { socket } from './utils/socket';
-import TimerPage from './pages/TimerPage';
 import CalendarPage from './pages/CalendarPage';
 
 function App() {
@@ -51,7 +50,6 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/alarm" element={<AlarmPage />} />
         <Route path="/ranking" element={<RankingPage />} />
-        <Route path="/timer" element={<TimerPage />} />
         <Route path="/calendar" element={<CalendarPage />} />
         <Route path="/notice" element={<NoticePage isServiceAdmin={isServiceAdmin} />} />
         <Route path="/notice/:noticeId" element={<DetailNoticePage isServiceAdmin={isServiceAdmin} />} />
