@@ -47,6 +47,9 @@
     @apply p-3;
   }
 }
+.Toastify__toast--error {
+  font-size: 0.9rem;
+}
 
 @layer components {
   .badge {

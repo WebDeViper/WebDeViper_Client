@@ -89,7 +89,7 @@ export default function CalendarPage() {
           />
           <TodoList selectedDate={selectedDate} filteredTodos={filteredTodos} handleModalOpen={handleModalOpen} />
         </div>
-        <AddTodoModal show={openModal} onClose={setOpenModal} selectedDate={selectedDate} />
+        <AddTodoModal show={openModal} setOpenModal={setOpenModal} selectedDate={selectedDate} setTodos={setTodos} />
       </div>
     </div>
   );

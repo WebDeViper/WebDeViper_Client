@@ -20,9 +20,8 @@ export default function TodoListItem({ selectedMenu, item, handleMenuOpen }: Pro
             <span className="m-2 text-gray-300">-</span>
             <span className="text-gray-300">{moment(item.end_time).format('HH:mm')}</span>
           </div>
-          <div className="text-gray-600">{item.content}</div>
+          <div className="text-gray-600">{item.title}</div>
         </div>
-        {/* <div className=""> */}
         <button
           onClick={() => handleMenuOpen(item.todo_id)}
           className="rounded-full flex justify-center items-center shadow-md w-6 h-6 text-blue-300 text-sm"
