@@ -2,15 +2,29 @@ import moment from 'moment';
 import { FaCheck } from 'react-icons/fa6';
 import { FaTrash, FaPen, FaBars, FaTimes } from 'react-icons/fa';
 import { TodoSelectedMenu } from './TodoList';
+import { API } from '../../utils/axios';
 // import { RxHamburgerMenu } from 'react-icons/rx';
 
 interface Props {
   item: Todo;
   selectedMenu: TodoSelectedMenu | null;
   handleMenuOpen: (id: string) => void;
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 }
 
-export default function TodoListItem({ selectedMenu, item, handleMenuOpen }: Props) {
+export default function TodoListItem({ selectedMenu, item, handleMenuOpen, setTodos }: Props) {
+  const handleDeleteTodo = async (id: string) => {
+    try {
+      await API.delete(`/todo_list/${id}`);
+      setTodos(prev => {
+        // 이전 상태를 기반으로 새로운 배열 생성
+        const updatedTodos = prev.filter(todo => todo.todo_id !== id);
+        return updatedTodos;
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="py-3 px-2 relative rounded-md shadow-md shadow-cyan-200">
       <div className="flex justify-between items-center">
@@ -36,7 +50,10 @@ export default function TodoListItem({ selectedMenu, item, handleMenuOpen }: Pro
             <button className="bg-white text-xs absolute flex justify-center items-center shadow-md top-0 bottom-0 my-auto right-[4.5rem] text-blue-300 rounded-full shadow-sky-200 w-6 h-6">
               <FaPen />
             </button>
-            <button className="bg-white text-xs absolute flex justify-center items-center shadow-md -bottom-3 right-9 text-blue-300 rounded-full shadow-sky-200 w-6 h-6">
+            <button
+              onClick={() => handleDeleteTodo(item.todo_id)}
+              className="bg-white text-xs absolute flex justify-center items-center shadow-md -bottom-3 right-9 text-blue-300 rounded-full shadow-sky-200 w-6 h-6"
+            >
               <FaTrash />
             </button>
           </>

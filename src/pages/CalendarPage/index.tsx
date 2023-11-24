@@ -87,7 +87,12 @@ export default function CalendarPage() {
             tileContent={todoCalendarTile}
             // showNeighboringMonth={false}
           />
-          <TodoList selectedDate={selectedDate} filteredTodos={filteredTodos} handleModalOpen={handleModalOpen} />
+          <TodoList
+            selectedDate={selectedDate}
+            filteredTodos={filteredTodos}
+            handleModalOpen={handleModalOpen}
+            setTodos={setTodos}
+          />
         </div>
         <AddTodoModal show={openModal} setOpenModal={setOpenModal} selectedDate={selectedDate} setTodos={setTodos} />
       </div>
