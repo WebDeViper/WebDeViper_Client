@@ -21,6 +21,7 @@ export default function CalendarPage() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
   const [openModal, setOpenModal] = useState(false);
+  const [updateTodos, setUpdateTodos] = useState<Todo | null>(null);
 
   useEffect(() => {
     if (isAuth) {
@@ -92,9 +93,16 @@ export default function CalendarPage() {
             filteredTodos={filteredTodos}
             handleModalOpen={handleModalOpen}
             setTodos={setTodos}
+            setUpdateTodos={setUpdateTodos}
           />
         </div>
-        <AddTodoModal show={openModal} setOpenModal={setOpenModal} selectedDate={selectedDate} setTodos={setTodos} />
+        <AddTodoModal
+          show={openModal}
+          updateTodos={updateTodos}
+          setOpenModal={setOpenModal}
+          selectedDate={selectedDate}
+          setTodos={setTodos}
+        />
       </div>
     </div>
   );

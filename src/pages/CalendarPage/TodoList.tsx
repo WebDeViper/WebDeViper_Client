@@ -9,6 +9,7 @@ interface Props {
   filteredTodos: Todo[];
   handleModalOpen: () => void;
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+  setUpdateTodos: React.Dispatch<React.SetStateAction<Todo | null>>;
 }
 
 export type TodoSelectedMenu = {
@@ -16,7 +17,7 @@ export type TodoSelectedMenu = {
   isOpen: boolean;
 };
 
-export default function TodoList({ selectedDate, filteredTodos, handleModalOpen, setTodos }: Props) {
+export default function TodoList({ selectedDate, filteredTodos, handleModalOpen, setTodos, setUpdateTodos }: Props) {
   const [selectedMenu, setSelectedMenu] = useState<TodoSelectedMenu | null>(null);
 
   const handleMenuOpen = (id: string) => {
@@ -36,7 +37,10 @@ export default function TodoList({ selectedDate, filteredTodos, handleModalOpen,
   return (
     <div className="pt-20 pb-16 bg-white relative lg:w-96 w-full">
       <button
-        onClick={handleModalOpen}
+        onClick={() => {
+          handleModalOpen();
+          setUpdateTodos(null);
+        }}
         className="rounded-full bg-lime-400 p-2.5 text-xl absolute top-6 hover:rotate-180 transition right-7"
       >
         <AiOutlinePlus />
@@ -53,6 +57,9 @@ export default function TodoList({ selectedDate, filteredTodos, handleModalOpen,
               selectedMenu={selectedMenu}
               handleMenuOpen={handleMenuOpen}
               setTodos={setTodos}
+              setUpdateTodos={setUpdateTodos}
+              handleModalOpen={handleModalOpen}
+              setSelectedMenu={setSelectedMenu}
             />
           ))
         ) : (

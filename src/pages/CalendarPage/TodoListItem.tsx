@@ -8,11 +8,22 @@ import { API } from '../../utils/axios';
 interface Props {
   item: Todo;
   selectedMenu: TodoSelectedMenu | null;
+  setSelectedMenu: React.Dispatch<React.SetStateAction<TodoSelectedMenu | null>>;
   handleMenuOpen: (id: string) => void;
+  handleModalOpen: () => void;
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+  setUpdateTodos: React.Dispatch<React.SetStateAction<Todo | null>>;
 }
 
-export default function TodoListItem({ selectedMenu, item, handleMenuOpen, setTodos }: Props) {
+export default function TodoListItem({
+  selectedMenu,
+  item,
+  handleMenuOpen,
+  setTodos,
+  setUpdateTodos,
+  handleModalOpen,
+  setSelectedMenu,
+}: Props) {
   const handleDeleteTodo = async (id: string) => {
     try {
       await API.delete(`/todo_list/${id}`);
@@ -21,9 +32,15 @@ export default function TodoListItem({ selectedMenu, item, handleMenuOpen, setTo
         const updatedTodos = prev.filter(todo => todo.todo_id !== id);
         return updatedTodos;
       });
+      hadleMenuClose();
     } catch (err) {
       console.log(err);
     }
+  };
+  const handleUpdateTodo = async (item: Todo) => {
+    setUpdateTodos(item);
+    handleModalOpen();
+    hadleMenuClose();
   };
   const handleToggleTodoCompletion = async (item: Todo) => {
     const body = {
@@ -41,10 +58,15 @@ export default function TodoListItem({ selectedMenu, item, handleMenuOpen, setTo
           return todo;
         });
       });
+      hadleMenuClose();
     } catch (err) {
       console.log(err);
     }
   };
+  const hadleMenuClose = () => {
+    setSelectedMenu(null);
+  };
+  console.log(selectedMenu, 'selectedMenu');
   return (
     <div className="py-3 px-2 relative rounded-md shadow-md shadow-cyan-200">
       <div className="flex justify-between items-center">
@@ -72,7 +94,10 @@ export default function TodoListItem({ selectedMenu, item, handleMenuOpen, setTo
             >
               <FaCheck />
             </button>
-            <button className="bg-white text-xs absolute flex justify-center items-center shadow-md top-0 bottom-0 my-auto right-[4.5rem] text-blue-300 rounded-full shadow-sky-200 w-6 h-6">
+            <button
+              onClick={() => handleUpdateTodo(item)}
+              className="bg-white text-xs absolute flex justify-center items-center shadow-md top-0 bottom-0 my-auto right-[4.5rem] text-blue-300 rounded-full shadow-sky-200 w-6 h-6"
+            >
               <FaPen />
             </button>
             <button
