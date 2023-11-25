@@ -21,7 +21,7 @@ export default function Overlay({ isOpen, children, setIsOpen }: Props) {
   }, [setIsOpen]);
   return (
     isOpen && (
-      <div className="absolute right-0 shadow-lg rounded-md bg-white mt-12 -top-1 py-1 w-fit" ref={ref}>
+      <div className="absolute right-0 shadow-lg rounded-md bg-white mt-12 -top-1 py-1 w-fit z-10" ref={ref}>
         {children}
       </div>
     )

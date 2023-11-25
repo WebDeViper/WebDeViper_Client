@@ -13,6 +13,8 @@ export default function AlarmOverlay({ isOpen, setIsOpen }: Props) {
   const alarmMessage = useAppSelector(state => state.user.userInfo.alarmMessage);
   const dispatch = useAppDispatch();
 
+  // console.log(alarmMessage);
+
   const handleDeleteAlarm = async (id: string) => {
     const data = { _id: id };
     dispatch(deleteAlarm(data));
@@ -75,7 +77,7 @@ export default function AlarmOverlay({ isOpen, setIsOpen }: Props) {
 
   return (
     <>
-      {alarmMessage.length > 0 && (
+      {alarmMessage && alarmMessage.length > 0 && (
         <Overlay isOpen={isOpen} setIsOpen={setIsOpen}>
           <div className="px-2 py-2 w-72 max-h-96 overflow-y-auto">
             <div className="mt-10 flex flex-col gap-2">{alarmMessage.map(value => renderNotification(value))}</div>
