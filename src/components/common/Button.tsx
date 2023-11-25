@@ -1,9 +1,11 @@
 import { ReactNode } from 'react';
+import { motion } from 'framer-motion';
 
 type Color = 'primary' | 'blue' | 'red' | 'white';
 type Size = 'sm' | 'md' | 'full';
 type Type = 'button' | 'submit';
-interface Props {
+
+interface ButtonProps {
   children: ReactNode;
   onClick?: (e?: any) => void;
   color?: Color;
@@ -12,7 +14,14 @@ interface Props {
   className?: string;
 }
 
-export function Button({ children, onClick, color = 'primary', type = 'button', size = 'md', className = '' }: Props) {
+export function Button({
+  children,
+  onClick,
+  color = 'primary',
+  type = 'button',
+  size = 'md',
+  className = '',
+}: ButtonProps) {
   return (
     <button
       className={`${buttonTheme.color[color]} ${buttonTheme.size[size]} align-middle text-center rounded-md font-semibold uppercase transition-all active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ${className}`}
@@ -38,3 +47,21 @@ const buttonTheme = {
     full: 'py-2 w-full text-base',
   },
 };
+
+interface MotionButtonProps {
+  children: ReactNode;
+  onClick?: () => void;
+}
+
+export function MotionButton({ children, onClick }: MotionButtonProps) {
+  return (
+    <motion.button
+      className="bg-primary-400 rounded-md px-6 py-3 text-white font-bold text-lg"
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      onClick={onClick}
+    >
+      {children}
+    </motion.button>
+  );
+}

@@ -4,13 +4,13 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard, Autoplay, EffectFade } from 'swiper/modules';
 import { images } from './image-data';
-import { motion } from 'framer-motion';
 import 'swiper/css/autoplay';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { useNavigate } from 'react-router-dom';
+import { MotionButton } from '../../components/common/Button';
 
 export default function VisualComponent() {
   const navPrevButton = useRef<HTMLButtonElement>(null);
@@ -45,7 +45,7 @@ export default function VisualComponent() {
         <SwiperSlide className="relative">
           <div
             style={{ backgroundImage: `url(${item.src})` }}
-            className="bg-cover absolute top-0 left-0 w-full h-full bg-no-repeat bg-center"
+            className="absolute top-0 left-0 w-full h-full bg-no-repeat bg-center bg-cover"
           >
             <div className="lg:w-[1200px] md:w-[768px] w-full mx-auto h-[400px]">
               <div className="md:pl-[50%] md:pt-60 pt-14 text-center md:text-left">
@@ -53,14 +53,7 @@ export default function VisualComponent() {
                   dangerouslySetInnerHTML={{ __html: item.text }}
                   className={`md:text-5xl text-3xl md:leading-relaxed leading-normal text-${item.textColor} drop-shadow-md font-bold`}
                 />
-                <motion.button
-                  className="bg-primary-400 rounded-md px-6 py-3 text-white font-bold text-lg"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => navigate('/study')}
-                >
-                  스터디 참여하기
-                </motion.button>
+                <MotionButton onClick={() => navigate('/study')}>스터디 참여하기</MotionButton>
               </div>
             </div>
           </div>
