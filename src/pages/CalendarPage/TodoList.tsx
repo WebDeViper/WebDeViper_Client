@@ -8,6 +8,7 @@ interface Props {
   selectedDate: TodoSelectedDateValue;
   filteredTodos: Todo[];
   handleModalOpen: () => void;
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 }
 
 export type TodoSelectedMenu = {
@@ -15,7 +16,7 @@ export type TodoSelectedMenu = {
   isOpen: boolean;
 };
 
-export default function TodoList({ selectedDate, filteredTodos, handleModalOpen }: Props) {
+export default function TodoList({ selectedDate, filteredTodos, handleModalOpen, setTodos }: Props) {
   const [selectedMenu, setSelectedMenu] = useState<TodoSelectedMenu | null>(null);
 
   const handleMenuOpen = (id: string) => {
@@ -45,8 +46,14 @@ export default function TodoList({ selectedDate, filteredTodos, handleModalOpen 
       </div>
       <div className="overflow-y-scroll md:h-[32rem] h-96 px-8 py-4 flex flex-col gap-5">
         {filteredTodos.length ? (
-          filteredTodos.map((item, index) => (
-            <TodoListItem key={item.todo_id} item={item} selectedMenu={selectedMenu} handleMenuOpen={handleMenuOpen} />
+          filteredTodos.map(item => (
+            <TodoListItem
+              key={item.todo_id}
+              item={item}
+              selectedMenu={selectedMenu}
+              handleMenuOpen={handleMenuOpen}
+              setTodos={setTodos}
+            />
           ))
         ) : (
           <p className="text-slate-400">일정이 없습니다.</p>
