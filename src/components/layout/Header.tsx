@@ -8,6 +8,7 @@ import { HiMiniBars3 } from 'react-icons/hi2';
 import useModalToggle from '../../hooks/useModalToggle';
 import { IoCloseSharp } from 'react-icons/io5';
 import { useMediaQuery } from 'react-responsive';
+import AlarmOverlay from '../AlarmOverlay';
 
 const navigation = [
   { name: '공부하기', href: '/study', current: false },
@@ -25,11 +26,16 @@ export default function Header() {
   const [isProfileOpen, selectProfileRef, toggleProfileOpen] = useModalToggle();
   const [isMobileMenu, setIsMobileMenu] = useState(false);
   const isPC = useMediaQuery({ query: '(min-width: 768px)' });
+  const [isAlarmOpen, setIsAlarmOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleGotoAlarm = () => {
     navigate('/alarm');
     handleToggleMobile();
+  };
+
+  const handleAlarmOpen = () => {
+    setIsAlarmOpen(true);
   };
 
   const handleModalOpen = () => {
@@ -90,7 +96,10 @@ export default function Header() {
               {/* 로그인 사용자만 보일 수 있게 처리 */}
               {isAuth ? (
                 <>
-                  <button className="relative text-2xl text-gray-400 hover:text-white p-1 focus:outline-none rounded-full">
+                  <button
+                    onClick={handleAlarmOpen}
+                    className="relative text-2xl text-gray-400 hover:text-white p-1 focus:outline-none rounded-full"
+                  >
                     <GoBell />
                     {alarmMessage && alarmMessage.length > 0 && (
                       <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
@@ -98,6 +107,8 @@ export default function Header() {
                       </span>
                     )}
                   </button>
+                  {/* 알림 클릭 */}
+                  <AlarmOverlay isOpen={isAlarmOpen} setIsOpen={setIsAlarmOpen} />
                   <button className="p-1" onClick={toggleProfileOpen}>
                     <img
                       className="h-8 w-8 rounded-full"
