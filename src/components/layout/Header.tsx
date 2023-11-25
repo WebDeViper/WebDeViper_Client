@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LoginModal from '../LoginModal';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { logout } from '../../store/userSlice';
@@ -25,6 +25,12 @@ export default function Header() {
   const [isProfileOpen, selectProfileRef, toggleProfileOpen] = useModalToggle();
   const [isMobileMenu, setIsMobileMenu] = useState(false);
   const isPC = useMediaQuery({ query: '(min-width: 768px)' });
+  const navigate = useNavigate();
+
+  const handleGotoAlarm = () => {
+    navigate('/alarm');
+    handleToggleMobile();
+  };
 
   const handleModalOpen = () => {
     setModalOpen(true);
@@ -192,7 +198,10 @@ export default function Header() {
                             <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
                           </div>
                         </div>
-                        <button className="relative text-2xl text-gray-400 hover:text-white p-1 focus:outline-none rounded-full">
+                        <button
+                          onClick={handleGotoAlarm}
+                          className="relative text-2xl text-gray-400 hover:text-white p-1 focus:outline-none rounded-full"
+                        >
                           <GoBell />
                           {alarmMessage && alarmMessage.length > 0 && (
                             <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
