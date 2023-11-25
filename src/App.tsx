@@ -15,7 +15,7 @@ import DetailNoticePage from './pages/DetailNoticePage';
 import AlarmPage from './pages/AlarmPage';
 import DetailGroupPage from './pages/DetailGroupPage';
 import RankingPage from './pages/RankingPage';
-// import { socket } from './utils/socket';
+import ProfilePage from './pages/ProfilePage';
 import CalendarPage from './pages/CalendarPage';
 import { io } from 'socket.io-client';
 
@@ -64,6 +64,7 @@ function App() {
         <Route element={<NotAdminRoutes isServiceAdmin={isServiceAdmin} />}>
           <Route path="/notice/create" element={<CreateNoticePage />} />
         </Route>
+        <Route path="/profile" element={<ProfilePage />}></Route>
       </Route>
     </Routes>
   );
