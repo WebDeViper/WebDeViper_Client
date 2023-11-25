@@ -13,27 +13,32 @@ interface Props {
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   selectedDate: TodoSelectedDateValue;
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+  updateTodos: Todo | null;
 }
 
 export type TodoFormValues = {
-  title: string;
-  startHour: string;
-  startMinute: string;
-  endHour: string;
-  endMinute: string;
-  content: string;
+  yourDetails: {
+    title: string;
+    startHour: string;
+    startMinute: string;
+    endHour: string;
+    endMinute: string;
+    content: string;
+  };
 };
 
 const defaultValues = {
-  title: '',
-  startHour: '18',
-  startMinute: '00',
-  endHour: '18',
-  endMinute: '00',
-  content: '',
+  yourDetails: {
+    title: '',
+    startHour: '18',
+    startMinute: '00',
+    endHour: '18',
+    endMinute: '00',
+    content: '',
+  },
 };
 
-export default function AddTodoModal({ show, selectedDate, setTodos, setOpenModal }: Props) {
+export default function AddTodoModal({ show, selectedDate, setTodos, setOpenModal, updateTodos }: Props) {
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
 
@@ -42,7 +47,25 @@ export default function AddTodoModal({ show, selectedDate, setTodos, setOpenModa
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm({ defaultValues });
+
+  useEffect(() => {
+    if (updateTodos) {
+      setValue('yourDetails', {
+        title: updateTodos.title,
+        content: updateTodos.content,
+        startHour: '18',
+        startMinute: '00',
+        endHour: '18',
+        endMinute: '00',
+      });
+    } else {
+      setValue('yourDetails', {
+        ...defaultValues.yourDetails,
+      });
+    }
+  }, [updateTodos, setValue]);
 
   useEffect(() => {
     setStartDate(selectedDate as Date);
@@ -69,10 +92,10 @@ export default function AddTodoModal({ show, selectedDate, setTodos, setOpenModa
   };
   const onSubmit: SubmitHandler<TodoFormValues> = async data => {
     const ERR_MESSAGE = '시작 시간이 종료 시간보다 빨라야 합니다.';
-    const startHour = Number(data.startHour);
-    const endHour = Number(data.endHour);
-    const startMinute = Number(data.startMinute);
-    const endMinute = Number(data.endMinute);
+    const startHour = Number(data.yourDetails.startHour);
+    const endHour = Number(data.yourDetails.endHour);
+    const startMinute = Number(data.yourDetails.startMinute);
+    const endMinute = Number(data.yourDetails.endMinute);
 
     if (startDate === endDate) {
       if (startHour > endHour) return toast.info(ERR_MESSAGE, { type: toast.TYPE.ERROR });
@@ -94,15 +117,28 @@ export default function AddTodoModal({ show, selectedDate, setTodos, setOpenModa
       newEndDate.setMinutes(endMinute);
 
       const body = {
-        title: data.title,
-        content: data.content,
+        title: data.yourDetails.title,
+        content: data.yourDetails.content,
         start_time: newStateDate,
         end_time: newEndDate,
       };
-      const response = await API.post('/todo_list', body);
-      const newData = response.data.result;
-      console.log(newData);
-      setTodos(prev => [...prev, newData]);
+      if (updateTodos === null) {
+        const response = await API.post('/todo_list', body);
+        const newData = response.data.result;
+        setTodos(prev => [...prev, newData]);
+      } else {
+        const response = await API.patch(`/todo_lists/${updateTodos.todo_id}`, body);
+        const newData = response.data.updatedResult;
+
+        setTodos(prev => {
+          return prev.map(todo => {
+            if (todo.todo_id === updateTodos.todo_id) {
+              return newData;
+            }
+            return todo;
+          });
+        });
+      }
       reset();
       setOpenModal(false);
     } catch (err) {
@@ -125,12 +161,12 @@ export default function AddTodoModal({ show, selectedDate, setTodos, setOpenModa
                 autoComplete="title"
                 required
                 className="block pl-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                {...register('title', {
+                {...register('yourDetails.title', {
                   required: '제목을 입력하세요.',
                 })}
               />
             </div>
-            {errors?.title && <p className="text-danger">{errors.title.message}</p>}
+            {errors?.yourDetails?.title && <p className="text-danger">{errors.yourDetails?.title.message}</p>}
           </div>
           <CustomDatePicker
             label="시작"
@@ -159,7 +195,7 @@ export default function AddTodoModal({ show, selectedDate, setTodos, setOpenModa
                 id="content"
                 rows={5}
                 className="block w-full px-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                {...register('content')}
+                {...register('yourDetails.content')}
               />
             </div>
           </div>

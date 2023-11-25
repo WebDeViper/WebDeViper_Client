@@ -28,6 +28,7 @@ export default function CustomDatePicker({
     const inputValue = e.target.value.replace(/[^0-9]/g, '');
     e.target.value = inputValue;
   };
+  console.log(errors);
 
   const isWithinMaxValue = (value: string, max: number): boolean => {
     const numericValue = parseFloat(value);
@@ -52,7 +53,7 @@ export default function CustomDatePicker({
                 type="text"
                 className="w-16 text-center rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
                 placeholder="18"
-                {...register(hourName, {
+                {...register(`yourDetails.${hourName}`, {
                   validate: {
                     withinMaxValue: value => isWithinMaxValue(value, 23) || '시간의 최대값은 23입니다.',
                   },
@@ -67,7 +68,7 @@ export default function CustomDatePicker({
                 placeholder="00"
                 maxLength={2}
                 onInput={handleInputChange}
-                {...register(minuteName, {
+                {...register(`yourDetails.${minuteName}`, {
                   validate: {
                     withinMaxValue: value => isWithinMaxValue(value, 59) || '분의 최대값은 59입니다.',
                   },
@@ -75,8 +76,10 @@ export default function CustomDatePicker({
               />
             </div>
           </div>
-          {errors[hourName]?.message || errors[minuteName]?.message ? (
-            <p className="text-danger text-right">{errors[hourName]?.message || errors[minuteName]?.message}</p>
+          {errors.yourDetails?.[hourName]?.message || errors.yourDetails?.[minuteName]?.message ? (
+            <p className="text-danger text-right">
+              {errors.yourDetails?.[hourName]?.message || errors.yourDetails?.[minuteName]?.message}
+            </p>
           ) : null}
         </div>
       </div>
