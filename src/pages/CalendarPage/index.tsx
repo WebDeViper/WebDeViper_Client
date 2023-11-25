@@ -1,31 +1,40 @@
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../../styles/calendar.css';
 import TodoList from './TodoList';
 import { API } from '../../utils/axios';
+import { useAppSelector } from '../../store/store';
+import AddTodoModal from './AddTodoModal';
 
 type ValuePiece = Date | null;
-export type Value = ValuePiece | [ValuePiece, ValuePiece];
+export type TodoSelectedDateValue = ValuePiece | [ValuePiece, ValuePiece];
 
 type TodoCalendarTileProps = {
   date: Date;
 };
 
 export default function CalendarPage() {
-  const [selectedDate, setSelectedDate] = useState<Value>(new Date());
+  const isAuth = useAppSelector(state => state.user.isAuth);
+  const [selectedDate, setSelectedDate] = useState<TodoSelectedDateValue>(new Date());
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [updateTodos, setUpdateTodos] = useState<Todo | null>(null);
 
   useEffect(() => {
-    const fetchTodoList = async () => {
-      const response = await API.get('/todo_lists');
-      const data = await response.data;
-      setTodos(data.todos);
-    };
-    fetchTodoList();
-  }, []);
+    if (isAuth) {
+      const fetchTodoList = async () => {
+        const response = await API.get('/todo_lists');
+        const data = await response.data;
+        setTodos(data.todos);
+      };
+      fetchTodoList();
+    } else {
+      setTodos([]);
+    }
+  }, [isAuth]);
 
   useEffect(() => {
     const selectedTodos = [...todos].filter(date => {
@@ -49,7 +58,7 @@ export default function CalendarPage() {
     });
   };
 
-  const TodoCalendarTile = ({ date }: TodoCalendarTileProps) => {
+  const todoCalendarTile = ({ date }: TodoCalendarTileProps) => {
     const matchingEvents = filterMatchingEvents(date, todos);
 
     return (
@@ -61,26 +70,39 @@ export default function CalendarPage() {
     );
   };
 
+  const handleModalOpen = () => {
+    setOpenModal(true);
+  };
+
   return (
     <div className="container">
       <h2 className="mt-10">일정</h2>
       <div className="calendar">
-        <div className="flex shadow-2xl md:flex-row flex-col">
+        <div className="flex shadow-2xl lg:flex-row flex-col">
           <Calendar
             onChange={setSelectedDate}
             value={selectedDate}
             minDetail="year"
             formatDay={(_, date) => moment(date).format('D')}
             className="mx-auto flex-1 relative p-3 z-10"
-            tileContent={TodoCalendarTile}
+            tileContent={todoCalendarTile}
             // showNeighboringMonth={false}
           />
           <TodoList
             selectedDate={selectedDate}
             filteredTodos={filteredTodos}
-            // handleAddTodo={handleAddTodo}
+            handleModalOpen={handleModalOpen}
+            setTodos={setTodos}
+            setUpdateTodos={setUpdateTodos}
           />
         </div>
+        <AddTodoModal
+          show={openModal}
+          updateTodos={updateTodos}
+          setOpenModal={setOpenModal}
+          selectedDate={selectedDate}
+          setTodos={setTodos}
+        />
       </div>
     </div>
   );

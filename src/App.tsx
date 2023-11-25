@@ -15,26 +15,32 @@ import DetailNoticePage from './pages/DetailNoticePage';
 import AlarmPage from './pages/AlarmPage';
 import DetailGroupPage from './pages/DetailGroupPage';
 import RankingPage from './pages/RankingPage';
-import { socket } from './utils/socket';
 import ProfilePage from './pages/ProfilePage';
-// import TimerPage from './pages/TimerPage';
-// import CalendarPage from './pages/CalendarPage';
+import CalendarPage from './pages/CalendarPage';
+import { io } from 'socket.io-client';
 
 function App() {
   const isAuth = useAppSelector(state => state.user.isAuth);
   const isServiceAdmin = useAppSelector(state => state.user.userInfo.isServiceAdmin);
+  const userId = useAppSelector(state => state.user.userInfo.id);
+  const socket = io('http://localhost:8001/', { auth: { userId } });
   const dispatch = useAppDispatch();
   // const category = useAppSelector(state => state.user.userInfo.category);
 
   const { pathname } = useLocation();
 
   useEffect(() => {
-    socket.on('newNotice', message => {
-      console.log(message);
-      dispatch(getAlarmMessage(message));
-    });
-    console.log(socket);
-  }, [dispatch]);
+    if (isAuth) {
+      socket.on('newNotice', message => {
+        console.log(message, 'message');
+        dispatch(getAlarmMessage(message));
+      });
+      socket.on('newGroupRequest', message => {
+        console.log(message, '그룹 메세지');
+        dispatch(getAlarmMessage(message));
+      });
+    }
+  }, [dispatch, isAuth, socket]);
 
   useEffect(() => {
     if (isAuth) {
@@ -52,8 +58,7 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/alarm" element={<AlarmPage />} />
         <Route path="/ranking" element={<RankingPage />} />
-        {/* <Route path="/timer" element={<TimerPage />} /> */}
-        {/* <Route path="/calendar" element={<CalendarPage />} /> */}
+        <Route path="/calendar" element={<CalendarPage />} />
         <Route path="/notice" element={<NoticePage isServiceAdmin={isServiceAdmin} />} />
         <Route path="/notice/:noticeId" element={<DetailNoticePage isServiceAdmin={isServiceAdmin} />} />
         <Route element={<NotAdminRoutes isServiceAdmin={isServiceAdmin} />}>
