@@ -19,6 +19,7 @@
     "@tiptap/react": "^2.1.12",
     "@tiptap/starter-kit": "^2.1.12",
     "@types/react-datepicker": "^4.19.3",
+    "aos": "^2.3.4",
     "axios": "^1.6.1",
     "framer-motion": "^10.16.5",
     "moment": "^2.29.4",

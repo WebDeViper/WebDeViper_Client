@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import SwiperCore from 'swiper';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -61,12 +61,14 @@ export default function VisualComponent() {
       ))}
       <button
         ref={navPrevButton}
+        style={{ background: 'linear-gradient(to right,rgba(0,0,0,0.4),rgba(0,0,0,0))' }}
         className="text-6xl text-white opacity-40 absolute z-10 top-0 bottom-0 my-auto left-0 pl-3 pr-2 hidden md:block"
       >
         <IoIosArrowBack />
       </button>
       <button
         ref={navNextButton}
+        style={{ background: 'linear-gradient(to left,rgba(0,0,0,0.4),rgba(0,0,0,0))' }}
         className="text-6xl text-white opacity-40 absolute z-10 top-0 bottom-0 my-auto right-0 pl-2 pr-3 hidden md:block"
       >
         <IoIosArrowForward />
