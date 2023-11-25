@@ -52,6 +52,10 @@
 }
 
 @layer components {
+  .skip {
+    @apply absolute w-0 h-0 text-[0px] leading-[0px];
+  }
+
   .badge {
     @apply inline-flex items-center rounded-md font-medium ring-1 ring-inset;
   }
