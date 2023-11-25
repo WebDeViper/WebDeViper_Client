@@ -3,6 +3,8 @@ import moment from 'moment';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { TodoSelectedDateValue } from './index';
 import TodoListItem from './TodoListItem';
+import { useAppSelector } from '../../store/store';
+import { toast } from 'react-toastify';
 
 interface Props {
   selectedDate: TodoSelectedDateValue;
@@ -19,6 +21,7 @@ export type TodoSelectedMenu = {
 
 export default function TodoList({ selectedDate, filteredTodos, handleModalOpen, setTodos, setUpdateTodos }: Props) {
   const [selectedMenu, setSelectedMenu] = useState<TodoSelectedMenu | null>(null);
+  const isAuth = useAppSelector(state => state.user.isAuth);
 
   const handleMenuOpen = (id: string) => {
     if (!selectedMenu) {
@@ -34,13 +37,19 @@ export default function TodoList({ selectedDate, filteredTodos, handleModalOpen,
     setSelectedMenu(null);
   }, [selectedDate]);
 
+  const handleAddTodo = () => {
+    if (isAuth) {
+      handleModalOpen();
+      setUpdateTodos(null);
+    } else {
+      toast.info('로그인 후 이용해주세요.', { type: 'error' });
+    }
+  };
+
   return (
     <div className="pt-20 pb-16 bg-white relative lg:w-96 w-full">
       <button
-        onClick={() => {
-          handleModalOpen();
-          setUpdateTodos(null);
-        }}
+        onClick={handleAddTodo}
         className="rounded-full bg-lime-400 p-2.5 text-xl absolute top-6 hover:rotate-180 transition right-7"
       >
         <AiOutlinePlus />
