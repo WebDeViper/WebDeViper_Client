@@ -32,9 +32,13 @@ function App() {
   useEffect(() => {
     if (isAuth) {
       socket.on('newNotice', message => {
+        console.log(message, 'message');
         dispatch(getAlarmMessage(message));
       });
-      console.log(socket);
+      socket.on('newGroupRequest', message => {
+        console.log(message, '그룹 메세지');
+        dispatch(getAlarmMessage(message));
+      });
     }
   }, [dispatch, isAuth, socket]);
 
