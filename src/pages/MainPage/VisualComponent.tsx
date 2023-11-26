@@ -36,7 +36,7 @@ export default function VisualComponent() {
       keyboard={true}
       modules={[Navigation, Pagination, Keyboard, Autoplay, EffectFade]}
       slidesPerView={1}
-      // autoplay={{ delay: 3000 }}
+      autoplay={{ delay: 3000 }}
       allowTouchMove={false}
       loop={true}
       className="h-full"
