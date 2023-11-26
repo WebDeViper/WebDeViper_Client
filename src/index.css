@@ -56,6 +56,13 @@
     @apply absolute w-0 h-0 text-[0px] leading-[0px];
   }
 
+  .multiline-ellipsis {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 텍스트를 보여줄 최대 라인 수 */
+    -webkit-box-orient: vertical;
+  }
+
   .badge {
     @apply inline-flex items-center rounded-md font-medium ring-1 ring-inset;
   }
