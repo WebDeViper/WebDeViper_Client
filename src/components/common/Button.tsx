@@ -56,7 +56,7 @@ interface MotionButtonProps {
 export function MotionButton({ children, onClick }: MotionButtonProps) {
   return (
     <motion.button
-      className="bg-primary-400 rounded-md px-6 py-3 text-white font-bold text-lg"
+      className="bg-primary-400 rounded-md lg:px-6 lg:py-3 py-2 px-4 text-white font-bold text-lg"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onClick={onClick}

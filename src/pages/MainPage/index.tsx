@@ -15,7 +15,7 @@ export default function MainPage() {
 
   return (
     <div className="-mt-5">
-      <section className="w-screen relative overflow-hidden md:h-[820px] h-[600px]">
+      <section className="w-full relative overflow-hidden md:h-[820px] h-[600px]">
         <h2 className="skip">visual</h2>
         <VisualComponent />
       </section>
@@ -87,7 +87,7 @@ export default function MainPage() {
                 data-aos="flip-up"
                 data-aos-delay="400"
                 data-aos-offset="0"
-                data-aos-duration="3000"
+                data-aos-duration="2500"
                 className="sm:h-[480px] h-[360px] shadow-2xl rounded-md bg-no-repeat bg-center bg-cover w-11/12 md:w-[480px] lg:m-0 mx-auto lg:w-9/12"
               />
             </div>

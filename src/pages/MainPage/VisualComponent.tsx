@@ -51,7 +51,7 @@ export default function VisualComponent() {
               <div className="md:pl-[50%] md:pt-60 pt-14 text-center md:text-left">
                 <h3
                   dangerouslySetInnerHTML={{ __html: item.text }}
-                  className={`md:text-5xl text-3xl md:leading-relaxed leading-normal text-${item.textColor} drop-shadow-md font-bold`}
+                  className={`lg:text-4xl text-3xl md:leading-relaxed lg:leading-normal leading-snug text-${item.textColor} drop-shadow-md font-bold`}
                 />
                 <MotionButton onClick={() => navigate('/study')}>스터디 참여하기</MotionButton>
               </div>
