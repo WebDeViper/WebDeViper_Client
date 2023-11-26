@@ -70,7 +70,9 @@ export default function NoticePage({ isServiceAdmin }: Props) {
           ))}
         </tbody>
       </table>
-      <div>{isServiceAdmin === 'y' && <Button onClick={handleCreateNotice}>글쓰기</Button>}</div>
+      <div className="mt-7 text-right">
+        {isServiceAdmin === 'y' && <Button onClick={handleCreateNotice}>글쓰기</Button>}
+      </div>
     </div>
   );
 }
