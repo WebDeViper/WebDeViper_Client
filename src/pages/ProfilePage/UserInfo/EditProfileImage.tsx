@@ -89,7 +89,7 @@ export default function EditProfileImage() {
 
             {isImgChanged ? (
               <div>
-                <Button type="button" className={'mb-3 me-2'}>
+                <Button type="submit" className={'mb-3 me-2'}>
                   적용
                 </Button>
                 <Button className={'mb-3 !bg-red-400'} onClick={handleCancelChange}>
