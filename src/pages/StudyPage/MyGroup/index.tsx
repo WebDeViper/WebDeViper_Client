@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import MyGoal from './MyGoal';
 import '../../../styles/study.css';
 
+
 export default function MyGroup() {
   const [myGroups, setMyGroups] = useState([]);
 

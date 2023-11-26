@@ -17,6 +17,7 @@ export default function GroupItem({ groupInfo }: Props) {
       }}
     >
       <div className="relative lg:h-60 h-full hover:scale-105 transition-all">
+
         <div className="absolute top-2 left-3 opacity-75">
           <Badge color="yellow">{category}</Badge>
         </div>
