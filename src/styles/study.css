@@ -1,0 +1,35 @@
+.swiper .swiper-button-prev.swiper-button-disabled,
+.swiper .swiper-button-next.swiper-button-disabled {
+  color: gray;
+}
+.swiper .swiper-button-prev,
+.swiper .swiper-button-next {
+  color: black;
+  top: -38px;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+}
+
+@media all and (max-width: 640px) {
+  .swiper .swiper-button-prev,
+  .swiper .swiper-button-next {
+    top: -32px;
+  }
+}
+
+.swiper .swiper-button-prev:hover,
+.swiper .swiper-button-next:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+.swiper .swiper-button-prev {
+  right: 36px;
+  left: auto;
+}
+
+.swiper .swiper-button-prev::after,
+.swiper .swiper-button-next::after {
+  font-size: 16px;
+  font-weight: bold;
+}
