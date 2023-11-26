@@ -4,7 +4,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard, Autoplay } from 'swiper/modules';
 import { API } from '../../../utils/axios';
 import { useEffect, useState } from 'react';
-// import { Card } from 'flowbite-react';
 
 export default function MyGroup() {
   const [myGroups, setMyGroups] = useState([]);

@@ -41,8 +41,8 @@ export default function VisualComponent() {
       loop={true}
       className="h-full"
     >
-      {images.map(item => (
-        <SwiperSlide className="relative">
+      {images.map((item, index) => (
+        <SwiperSlide key={index} className="relative">
           <div
             style={{ backgroundImage: `url(${item.src})` }}
             className="absolute top-0 left-0 w-full h-full bg-no-repeat bg-center bg-cover"
