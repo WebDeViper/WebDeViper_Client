@@ -14,13 +14,13 @@ export default function MainPage() {
   }, []);
 
   return (
-    <div className="-mt-5">
+    <div>
       <section className="w-full relative overflow-hidden md:h-[820px] h-[600px]">
         <h2 className="skip">visual</h2>
         <VisualComponent />
       </section>
       <section className="container">
-        <div className="lg:flex py-24">
+        <div className="lg:flex py-12">
           <div className="flex-1 text-center lg:text-left lg:py-10">
             <h2
               className="md:text-4xl text-3xl md:leading-normal leading-snug"
@@ -78,9 +78,9 @@ export default function MainPage() {
           </div>
         </div>
       </section>
-      <section className="bg-gray-100 -mb-20">
+      <section className="bg-gray-100">
         <div className="container">
-          <div className="flex lg:flex-row flex-col py-36">
+          <div className="flex lg:flex-row flex-col py-12">
             <div className="flex-1">
               <div
                 style={{ backgroundImage: `url('/images/main_visual_01.jpg')` }}

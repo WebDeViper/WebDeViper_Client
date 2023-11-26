@@ -7,13 +7,17 @@
     font-family: 'Roboto', system-ui, sans-serif;
   }
 
+  main .container {
+    @apply pt-12 pb-20;
+  }
+
   textarea {
     resize: none;
   }
-
+  /* 
   section + section {
     @apply mt-12;
-  }
+  } */
 
   h2 {
     @apply text-2xl font-bold mb-8;

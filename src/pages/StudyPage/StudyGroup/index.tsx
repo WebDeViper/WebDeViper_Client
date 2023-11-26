@@ -59,13 +59,13 @@ export default function StudyGroup({ userId }: Props) {
   return (
     <section className="relative container">
       <h2>이런 스터디는 어떠세요?</h2>
-      <div className="absolute -top-1 right-4 sm:right-0">
+      <div className="absolute top-11 right-4 sm:right-0">
         <Button onClick={handleCreateGroup}>스터디 만들기</Button>
       </div>
       {!studyGroup.length ? (
-        <div className="h-20 w-full flex flex-col justify-center p-2 rounded-lg">
-          <p className="text-lg font-medium">아직 생성된 스터디그룹이 없어요!</p>
-          <p>그룹을 생성해보세요!</p>
+        <div className="h-20 w-full flex flex-col justify-center">
+          <h3>아직 생성된 스터디그룹이 없어요 !</h3>
+          <p className="text-slate-500">그룹을 생성해보세요 !</p>
         </div>
       ) : (
         <div className="grid lg:grid-cols-5 grid-cols-3 md:grid-cols-4 gap-2 grid-flow-row auto-rows-fr">

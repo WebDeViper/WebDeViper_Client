@@ -57,7 +57,7 @@ export default function TodoList({ selectedDate, filteredTodos, handleModalOpen,
       <div className="mb-3 font-semibold px-8">
         <span>{moment(selectedDate as Date).format('yyyy년 MM월 DD일')}</span>
       </div>
-      <div className="overflow-y-scroll md:h-[32rem] h-96 px-8 py-4 flex flex-col gap-5">
+      <div className="overflow-y-auto md:h-[32rem] h-96 px-8 py-4 flex flex-col gap-5">
         {filteredTodos.length ? (
           filteredTodos.map(item => (
             <TodoListItem
