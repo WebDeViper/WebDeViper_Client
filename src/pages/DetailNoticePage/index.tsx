@@ -4,6 +4,8 @@ import moment from 'moment';
 import { API } from '../../utils/axios';
 import { useAppSelector } from '../../store/store';
 import Badge from '../../components/common/Badge';
+import { Button } from '../../components/common/Button';
+import { toast } from 'react-toastify';
 
 type Notice = {
   notice_id: number;
@@ -43,11 +45,13 @@ export default function DetailNoticePage({ isServiceAdmin }: Props) {
     });
   };
   const handleDelete = async () => {
+    const isDelete = confirm('정말 삭제 하겠습니까?');
+    if (!isDelete) return;
     try {
       const response = await API.delete(`/notice/${noticeId}`);
       const data = response.data;
       navigate('/notice');
-      console.log(data);
+      toast.info('공지사항이 삭제되었습니다.');
     } catch (err) {
       console.log(err);
     }
@@ -71,21 +75,18 @@ export default function DetailNoticePage({ isServiceAdmin }: Props) {
                 <div dangerouslySetInnerHTML={{ __html: notice.content }}></div>
               </div>
             </div>
-
-            {/* 버튼을 추가합니다 */}
-            {isServiceAdmin === 'y' && (
-              <div>
-                <button onClick={handleUpdate} className="bg-white shadow-md text-black p-2 rounded-md mr-2">
-                  수정
-                </button>
-                <button onClick={handleDelete} className="bg-white shadow-md text-black p-2 rounded-md">
-                  삭제
-                </button>
-              </div>
-            )}
           </div>
         )}
       </div>
+      {/* 버튼을 추가합니다 */}
+      {isServiceAdmin === 'y' && (
+        <div className="mt-7 flex gap-3 justify-end">
+          <Button onClick={handleUpdate}>수정</Button>
+          <Button onClick={handleDelete} color="red">
+            삭제
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
