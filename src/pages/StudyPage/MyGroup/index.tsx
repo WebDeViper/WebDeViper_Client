@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import MyGoal from './MyGoal';
 import '../../../styles/study.css';
 
-
 export default function MyGroup() {
   const [myGroups, setMyGroups] = useState([]);
 
@@ -32,9 +31,9 @@ export default function MyGroup() {
           <div className="lg:w-[480px] lg:mr-16 lg:mt-0 mt-8 overflow-visible md:overflow-hidden">
             <h2>내 스터디</h2>
             {!myGroups.length && (
-              <div className="h-20 w-full flex flex-col justify-center p-2 shadow-lg rounded-lg">
-                <h1 className="text-lg font-medium">아직 생성된 스터디그룹이 없어요!</h1>
-                <p>그룹을 생성해보세요!</p>
+              <div className="h-20 w-full flex flex-col justify-center">
+                <h3>아직 생성된 스터디그룹이 없어요 !</h3>
+                <p className=" text-slate-500">그룹을 생성해보세요 !</p>
               </div>
             )}
             {myGroups.length > 0 && (

@@ -63,7 +63,7 @@ export default function StudyGroup({ userId }: Props) {
         <Button onClick={handleCreateGroup}>스터디 만들기</Button>
       </div>
       {!studyGroup.length ? (
-        <div className="h-20 w-full flex flex-col justify-center p-2 shadow-lg rounded-lg">
+        <div className="h-20 w-full flex flex-col justify-center p-2 rounded-lg">
           <p className="text-lg font-medium">아직 생성된 스터디그룹이 없어요!</p>
           <p>그룹을 생성해보세요!</p>
         </div>
