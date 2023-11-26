@@ -13,23 +13,6 @@ export default function GroupItem({ groupInfo }: Props) {
     description && description.length > maxLength
       ? description.slice(0, maxLength) + '...' // 긴 경우 잘라내고 '...'을 추가
       : description; // 길이가 작은 경우 그대로 둡니다
-  // useEffect(() => {
-  //   const handleRooms = async () => {
-  //     try {
-  //       const res = await API.get('/group/rooms');
-  //       console.log('요청', res.data);
-
-  //       const foundRoom = res.data.data.find((room: any) => room.group_id === group_id);
-  //       if (foundRoom) {
-  //         setRoomId(foundRoom._id); // 찾은 roomId를 설정
-  //       }
-  //     } catch (err) {
-  //       console.error('에러!!!', err);
-  //     }
-  //   };
-
-  //   handleRooms();
-  // }, [group_id]);
 
   return (
     <Link
