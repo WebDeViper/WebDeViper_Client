@@ -25,7 +25,7 @@ export default function MyGroup() {
     getMyGroups();
   }, []);
   return (
-    <section className="bg-slate-100 -mt-5">
+    <section className="bg-slate-100">
       <div className="container pt-12 pb-20">
         <div className="flex lg:flex-row flex-col ">
           <div className="lg:w-[480px] lg:mr-16 lg:mt-0 mt-8 overflow-visible md:overflow-hidden">

@@ -16,7 +16,10 @@ export default function GroupItem({ groupInfo }: Props) {
         groupInfo,
       }}
     >
-      <div className="relative lg:h-60 h-40 hover:scale-105 transition-all">
+      <div
+        style={{ background: 'linear-gradient(180deg,rgba(0,0,0,0) 65%,rgba(0,0,0,0.3) 100%)' }}
+        className="relative lg:h-60 h-40 hover:scale-105 transition-all"
+      >
         <div className="absolute top-2 left-3 opacity-75">
           <Badge color="yellow">{category}</Badge>
         </div>
