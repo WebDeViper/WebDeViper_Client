@@ -7,7 +7,7 @@ interface Props {
 export default function Main({ children }: Props) {
   return (
     <div className="flex-1">
-      <main className="overflow-hidden">{children}</main>
+      <main className="overflow-hidden h-full">{children}</main>
     </div>
   );
 }
