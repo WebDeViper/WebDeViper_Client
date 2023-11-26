@@ -17,9 +17,10 @@ export default function EditNickName({ dispatch }: Props) {
   const handleCheckDuplicate = async () => {
     // 중복체크
     const res = await API.get(`/user/nick/${nickName}/duplicateCheck`);
-    setMessage(!res.data ? '사용 가능' : '닉네임 중복');
-    setIsDuplicate(!res.data ? false : true);
+    setMessage(!res.data.isDuplicate ? '사용 가능' : '닉네임 중복');
+    setIsDuplicate(!res.data.isDuplicate ? false : true);
   };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputNick = e.target.value;
     // console.log(inputNick.trim().length);
@@ -60,7 +61,7 @@ export default function EditNickName({ dispatch }: Props) {
       location.reload();
     }
   };
-  const messageStyled = !isDuplicate ? 'text-primary' : 'text-red-600';
+  const messageStyled = !isDuplicate && isValidate ? 'text-primary-500' : 'text-red-600';
   const buttonStyled = isValidate ? '!bg-blue-400' : '!bg-gray-500';
   return (
     <div className="flex flex-col items-between justify-center border-2 rounded-lg border-semi_primary p-2 md:mb-3 mb-1">
