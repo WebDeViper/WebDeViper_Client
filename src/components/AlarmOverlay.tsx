@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import Overlay from './common/Overlay';
 import { deleteAlarm } from '../store/thunkFunctions';
@@ -12,12 +12,16 @@ interface Props {
 export default function AlarmOverlay({ isOpen, setIsOpen }: Props) {
   const alarmMessage = useAppSelector(state => state.user.userInfo.alarmMessage);
   const dispatch = useAppDispatch();
-
-  // console.log(alarmMessage);
+  const navigate = useNavigate();
 
   const handleDeleteAlarm = async (id: string) => {
     const data = { _id: id };
     dispatch(deleteAlarm(data));
+  };
+
+  const handleGotoAlarmPage = () => {
+    navigate('/alarm');
+    setIsOpen(false);
   };
 
   const renderNotification = (value: Alarm) => {
@@ -30,6 +34,7 @@ export default function AlarmOverlay({ isOpen, setIsOpen }: Props) {
                 to={`/notice/${value.content_id}`}
                 onClick={() => {
                   handleDeleteAlarm(value._id);
+                  setIsOpen(false);
                 }}
                 className="truncate block w-52 text-sm"
               >
@@ -54,6 +59,7 @@ export default function AlarmOverlay({ isOpen, setIsOpen }: Props) {
                 to={`/profile`}
                 onClick={() => {
                   handleDeleteAlarm(value._id);
+                  setIsOpen(false);
                 }}
                 className="truncate block w-52 text-sm"
               >
@@ -79,8 +85,13 @@ export default function AlarmOverlay({ isOpen, setIsOpen }: Props) {
     <>
       {alarmMessage && alarmMessage.length > 0 && (
         <Overlay isOpen={isOpen} setIsOpen={setIsOpen}>
-          <div className="px-2 py-2 w-72 max-h-96 overflow-y-auto">
-            <div className="mt-10 flex flex-col gap-2">{alarmMessage.map(value => renderNotification(value))}</div>
+          <div className="px-2 py-2 w-72 max-h-80 overflow-y-auto">
+            <div className="mt-4 flex flex-col gap-2">{alarmMessage.map(value => renderNotification(value))}</div>
+          </div>
+          <div className="py-1 text-center">
+            <button onClick={handleGotoAlarmPage} className="text-sm text-blue-400 font-semibold">
+              더 보기
+            </button>
           </div>
         </Overlay>
       )}
