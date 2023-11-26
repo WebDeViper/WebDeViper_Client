@@ -16,8 +16,7 @@ export default function GroupItem({ groupInfo }: Props) {
         groupInfo,
       }}
     >
-      <div className="relative lg:h-60 h-full hover:scale-105 transition-all">
-
+      <div className="relative lg:h-60 h-40 hover:scale-105 transition-all">
         <div className="absolute top-2 left-3 opacity-75">
           <Badge color="yellow">{category}</Badge>
         </div>
@@ -27,7 +26,9 @@ export default function GroupItem({ groupInfo }: Props) {
           alt="귀여운 우유"
         />
         <div className="absolute bottom-1 left-3 text-white text-sm">
-          <div>{name.length > 10 ? name.slice(0, 9) + '...' : name}</div>
+          <div className="truncate">
+            <span>{name}</span>
+          </div>
 
           <div className="flex items-center gap-2">
             <MdOutlinePerson />
