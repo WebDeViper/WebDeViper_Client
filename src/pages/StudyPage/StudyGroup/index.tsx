@@ -57,9 +57,9 @@ export default function StudyGroup({ userId }: Props) {
   };
 
   return (
-    <section className="relative flex flex-col container">
+    <section className="relative container">
       <h2>이런 스터디는 어떠세요?</h2>
-      <div className="absolute top-1 right-0">
+      <div className="absolute -top-1 right-4 sm:right-0">
         <Button onClick={handleCreateGroup}>스터디 만들기</Button>
       </div>
       {!studyGroup.length ? (
@@ -68,11 +68,10 @@ export default function StudyGroup({ userId }: Props) {
           <p>그룹을 생성해보세요!</p>
         </div>
       ) : (
-        <div className="grid lg:grid-cols-5 grid-cols-4 gap-2 grid-flow-row auto-rows-fr">
-          {studyGroup?.map(item => {
-            const { group_id } = item;
-            return <GroupItem key={group_id} groupInfo={item} />;
-          })}
+        <div className="grid lg:grid-cols-5 grid-cols-3 md:grid-cols-4 gap-2 grid-flow-row auto-rows-fr">
+          {studyGroup?.map(item => (
+            <GroupItem key={item.group_id} groupInfo={item} />
+          ))}
         </div>
       )}
       {hasMoreGroup && (
