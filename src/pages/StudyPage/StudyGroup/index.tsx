@@ -20,9 +20,6 @@ export default function StudyGroup({ userId }: Props) {
         const response = await API.get(`/group/all`);
         const data = response.data;
         console.log('모든 스터디그룹 :: ', data);
-        // if (data.data) {
-        //   setStudyGroup(data.data.filter((group: GroupInfoType) => !group.members.includes(userId)));
-        // }
         setStudyGroup(data.data);
         setLastGroupId(data.data[data.data.length - 1].group_id);
         if (data.isEnd) {
@@ -44,9 +41,6 @@ export default function StudyGroup({ userId }: Props) {
       const response = await API.get(`/group/all/${lastGroupId}`);
       const data = response.data;
       console.log('모든 스터디그룹 :: ', data);
-      // if (data.data) {
-      //   setStudyGroup(data.data.filter((group: GroupInfoType) => !group.members.includes(userId)));
-      // }
       if (data.data.length) {
         const newStudyGroup = studyGroup.concat(data.data);
         setStudyGroup(newStudyGroup);
@@ -63,10 +57,8 @@ export default function StudyGroup({ userId }: Props) {
   };
 
   return (
-    <section className="relative flex flex-col">
-      <h2 className="font-bold text-2xl underline decoration-4 decoration-sky-500/40 underline-offset-8">
-        이런 스터디는 어떠세요?
-      </h2>
+    <section className="relative flex flex-col container">
+      <h2>이런 스터디는 어떠세요?</h2>
       <div className="absolute top-1 right-0">
         <Button onClick={handleCreateGroup}>스터디 만들기</Button>
       </div>
