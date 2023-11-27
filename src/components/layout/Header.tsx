@@ -102,7 +102,7 @@ export default function Header() {
                   >
                     <GoBell />
                     {alarmMessage && alarmMessage.length > 0 && (
-                      <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
+                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
                         {alarmMessage.length}
                       </span>
                     )}
@@ -215,7 +215,7 @@ export default function Header() {
                         >
                           <GoBell />
                           {alarmMessage && alarmMessage.length > 0 && (
-                            <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
+                            <span className="absolute top-0 right-0 w-5 h-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
                               {alarmMessage.length}
                             </span>
                           )}
