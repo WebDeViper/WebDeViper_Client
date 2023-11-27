@@ -18,13 +18,13 @@ export default function GroupItem({ groupInfo }: Props) {
     >
       <div
         style={{ background: 'linear-gradient(180deg,rgba(0,0,0,0) 65%,rgba(0,0,0,0.3) 100%)' }}
-        className="relative lg:h-60 h-40 hover:scale-105 transition-all"
+        className="relative lg:h-60 h-40 overflow-hidden transition-all group rounded-md"
       >
-        <div className="absolute top-2 left-3 opacity-75">
+        <div className="absolute top-2 left-3 opacity-80">
           <Badge color="yellow">{category}</Badge>
         </div>
         <img
-          className="w-full h-full rounded-md object-cover"
+          className="w-full h-full object-cover absolute -z-10 group-hover:scale-110 transition-all"
           src={`${import.meta.env.VITE_APP_BACK_URL}${img_path}`}
           alt="귀여운 우유"
         />
