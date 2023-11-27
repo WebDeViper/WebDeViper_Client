@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
 import { API } from '../../utils/axios';
-import { useAppSelector } from '../../store/store';
 import Badge from '../../components/common/Badge';
 import { Button } from '../../components/common/Button';
 import { toast } from 'react-toastify';
@@ -48,8 +47,7 @@ export default function DetailNoticePage({ isServiceAdmin }: Props) {
     const isDelete = confirm('정말 삭제 하겠습니까?');
     if (!isDelete) return;
     try {
-      const response = await API.delete(`/notice/${noticeId}`);
-      const data = response.data;
+      await API.delete(`/notice/${noticeId}`);
       navigate('/notice');
       toast.info('공지사항이 삭제되었습니다.');
     } catch (err) {

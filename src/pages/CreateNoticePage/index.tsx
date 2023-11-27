@@ -70,12 +70,9 @@ export default function MyComponent() {
     };
     try {
       if (isUpdate) {
-        const response = await API.patch(`/notice/${noticeId}`, data);
-        const result = response.data;
-        console.log(result);
+        await API.patch(`/notice/${noticeId}`, data);
       } else {
-        const response = await API.post('/notice', data);
-        const result = response.data;
+        await API.post('/notice', data);
       }
       setTitle('');
       setContent('');
