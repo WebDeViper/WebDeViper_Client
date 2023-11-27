@@ -5,15 +5,16 @@ import { API } from '../../../utils/axios';
 // import { Card } from 'flowbite-react';
 
 export default function GroupInfo() {
-  const [myOwnGroup, setMyOwnGroup] = useState([]);
+  const [myOwnGroup, setMyOwnGroup] = useState<any[]>([]);
   const [pendingGroups, setPendingGroups] = useState([]);
 
   useEffect(() => {
     const getGroups = async () => {
-      const res = await API.get('/group/studyGroups/users');
-      console.log(res.data);
-      const filteredGroup = res.data.study_groups;
-      setMyOwnGroup(filteredGroup);
+      // const res = await API.get('/group/studyGroups/users');
+      const res = await API.get('/group/getJoinRequest');
+      console.log('내 그룹에 들어온 신청 리스트 :: ', res.data);
+      const requestLists = res.data.groupWithMembers.data;
+      setMyOwnGroup(requestLists);
     };
     const getPendingGroups = async () => {
       try {
@@ -36,17 +37,17 @@ export default function GroupInfo() {
         <h2>그룹 가입 요청</h2>
         {/* <Card>요청이 없습니다.</Card> */}
         <div className="myOwnGroupWrap flex flex-wrap md:gap-1 md:mb-5 mb-1">
-          {/* {myOwnGroup.map(
-            group =>
-              group.join_requests.length > 0 && (
+          {myOwnGroup.map(
+            (group: any) =>
+              group.data.length > 0 && (
                 <GroupRequest
-                  key={group._id}
+                  key={group.data._id}
                   requests={group.join_requests}
                   groupName={group.group_name}
                   groupId={group._id}
                 />
               )
-          )} */}
+          )}
         </div>
       </section>
       <section>
