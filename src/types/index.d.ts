@@ -38,7 +38,7 @@ type Alarm = {
   content_id: string;
   group_id: null | string;
   is_read: 'n' | 'y';
-  notification_kind: 'new_notice' | 'group_request';
+  notification_kind: 'new_notice' | 'group_request' | 'group_approve';
   updated_at: Date;
   user_id: string;
   __v: number;
