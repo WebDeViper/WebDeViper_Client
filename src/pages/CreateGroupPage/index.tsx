@@ -4,9 +4,7 @@ import { API } from '../../utils/axios';
 import { useNavigate } from 'react-router-dom';
 import { SimpleDropdown } from '../../components/common/Dropdown';
 import categories from '../../data/category';
-import './index.css';
 import { useState } from 'react';
-import SelectMenu from '../../components/common/SelectMenu';
 
 interface GroupFormType {
   name: string;
@@ -105,7 +103,7 @@ export default function CreateGroupPage() {
             <div className="md:pl-40 mt-3 md:mt-0">
               {!watch('groupImgFile') ? (
                 <label
-                  className="md:w-[280px] w-full h-[200px] bg-primary-100 flex flex-col justify-center items-center text-center p-2 rounded-lg"
+                  className="md:w-[280px] w-full h-[200px] cursor-pointer bg-primary-100 flex flex-col justify-center items-center text-center p-2 rounded-lg"
                   htmlFor="groupImgFile"
                 >
                   <span className="font-semibold">그룹 이미지 등록</span>
