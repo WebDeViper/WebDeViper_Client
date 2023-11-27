@@ -89,7 +89,7 @@ export default function EditNickName({ dispatch }: Props) {
         </div>
         <Button onClick={handleUserInfo}>완료</Button>
       </div>
-      {message ? <span className={`font-semibold text-sm mt-2 ms-2 ${messageStyled}`}>{message}</span> : <br />}
+      {message ? <span className={`font-semibold self-end ms-2 ${messageStyled}`}>{message}</span> : <br />}
     </div>
   );
 }
