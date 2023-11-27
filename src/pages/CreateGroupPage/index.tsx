@@ -1,5 +1,6 @@
 import { Button } from '../../components/common/Button';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 import { API } from '../../utils/axios';
 import { useNavigate } from 'react-router-dom';
 import { SimpleDropdown } from '../../components/common/Dropdown';
@@ -20,7 +21,13 @@ export default function CreateGroupPage() {
   const navigate = useNavigate();
 
   // react hook form 사용하기
-  const { register, handleSubmit, setValue, watch } = useForm<GroupFormType>({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<GroupFormType>({
     mode: 'onSubmit',
     defaultValues: {
       name: '',
@@ -135,6 +142,11 @@ export default function CreateGroupPage() {
                 placeholder="스터디 이름을 입력하세요."
               />
             </div>
+            <ErrorMessage
+              errors={errors}
+              name="name"
+              render={({ message }) => <div className="text-red-600">{message}</div>}
+            />
           </div>
           <div className="relative">
             <label className="md:absolute font-medium">카테고리</label>
@@ -150,6 +162,11 @@ export default function CreateGroupPage() {
               {...register('category', {
                 required: '카테고리를 선택해주세요!',
               })}
+            />
+            <ErrorMessage
+              errors={errors}
+              name="category"
+              render={({ message }) => <div className="text-red-600">{message}</div>}
             />
           </div>
           <div>
@@ -178,6 +195,11 @@ export default function CreateGroupPage() {
                 required: '그룹 목표시간을 선택해주세요!',
               })}
             />
+            <ErrorMessage
+              errors={errors}
+              name="dailyGoalTime"
+              render={({ message }) => <div className="text-red-600">{message}</div>}
+            />
           </div>
           <div className="relative">
             <label className="md:absolute font-medium">모집인원</label>
@@ -192,6 +214,13 @@ export default function CreateGroupPage() {
                 maxLength={2}
                 placeholder="50명 이하로 입력해주세요."
               />
+              <p className="h-[50px]">
+                <ErrorMessage
+                  errors={errors}
+                  name="maximumNumberMember"
+                  render={({ message }) => <div className="text-red-600">{message}</div>}
+                />
+              </p>
             </div>
           </div>
 
