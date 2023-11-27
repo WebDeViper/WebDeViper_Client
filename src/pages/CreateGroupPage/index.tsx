@@ -4,9 +4,7 @@ import { API } from '../../utils/axios';
 import { useNavigate } from 'react-router-dom';
 import { SimpleDropdown } from '../../components/common/Dropdown';
 import categories from '../../data/category';
-import './index.css';
 import { useState } from 'react';
-import SelectMenu from '../../components/common/SelectMenu';
 
 interface GroupFormType {
   name: string;
