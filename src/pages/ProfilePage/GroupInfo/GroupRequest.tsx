@@ -29,7 +29,7 @@ export default function GroupRequest({ group }: Props) {
 
   return (
     <>
-      {group.nickNames.length > 0 ? (
+      {group.nickNames.length > 0 && (
         <div className="mb-5 flex flex-col w-fit h-fit gap-2 border-2 rounded-lg border-primary p-2">
           <span className="bg-blue-100 text-blue-800 text-lg font-medium px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 h-fit w-fit self-center">
             {group.name}
@@ -57,8 +57,6 @@ export default function GroupRequest({ group }: Props) {
             </div>
           ))}
         </div>
-      ) : (
-        <div>요청이 없습니다</div>
       )}
     </>
   );
