@@ -18,6 +18,7 @@ import RankingPage from './pages/RankingPage';
 import ProfilePage from './pages/ProfilePage';
 import CalendarPage from './pages/CalendarPage';
 import { io } from 'socket.io-client';
+import ZoomPage from './pages/ZoomPage';
 
 function App() {
   const isAuth = useAppSelector(state => state.user.isAuth);
@@ -61,6 +62,7 @@ function App() {
         <Route path="/calendar" element={<CalendarPage />} />
         <Route path="/notice" element={<NoticePage isServiceAdmin={isServiceAdmin} />} />
         <Route path="/notice/:noticeId" element={<DetailNoticePage isServiceAdmin={isServiceAdmin} />} />
+        <Route path="/zoom" element={<ZoomPage />} />
         <Route element={<NotAdminRoutes isServiceAdmin={isServiceAdmin} />}>
           <Route path="/notice/create" element={<CreateNoticePage />} />
         </Route>

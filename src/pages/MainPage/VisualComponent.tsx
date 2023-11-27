@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import SwiperCore from 'swiper';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { Swiper, SwiperSlide } from 'swiper/react';
