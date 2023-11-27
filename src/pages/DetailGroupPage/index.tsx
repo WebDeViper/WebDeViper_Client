@@ -187,11 +187,12 @@ export default function DetailGroupPage() {
                 <IoArrowBackOutline />
               </button>
               <div className="requestBtn">
-                {isPending ? (
-                  <Button onClick={handleCancelRequest}>신청취소</Button>
-                ) : (
-                  <Button onClick={() => handleGroupRequest(groupId)}>신청하기</Button>
-                )}
+                {!members.includes(userId) &&
+                  (isPending ? (
+                    <Button onClick={handleCancelRequest}>신청취소</Button>
+                  ) : (
+                    <Button onClick={() => handleGroupRequest(groupId)}>신청하기</Button>
+                  ))}
 
                 <Button className="ms-2" onClick={handleChat}>
                   채팅하기

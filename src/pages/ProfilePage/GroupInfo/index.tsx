@@ -4,7 +4,8 @@ import MyGroupRequest from './MyGroupRequest';
 import { API } from '../../../utils/axios';
 
 export default function GroupInfo() {
-  const [requestLists, setRequestLists] = useState<any[]>([]);
+  const [myOwnGroup, setMyOwnGroup] = useState<any[]>([]);
+  const [hasGroupRequests, setHasGroupRequests] = useState<boolean>(false);
   const [pendingGroups, setPendingGroups] = useState([]);
 
   useEffect(() => {
@@ -12,6 +13,9 @@ export default function GroupInfo() {
       const res = await API.get('/group/getJoinRequest');
       console.log('내 그룹에 신청중인 사람들 :: ', res.data);
       const filteredGroup = res.data.groups;
+      filteredGroup.map((group: any) => {
+        group.nickNames.length > 0 ? setHasGroupRequests(true) : '';
+      });
       setMyOwnGroup(filteredGroup);
     };
     const getPendingGroups = async () => {
@@ -33,9 +37,11 @@ export default function GroupInfo() {
       <section>
         <h2>그룹 가입 요청</h2>
         <div className="myOwnGroupWrap flex flex-wrap md:gap-1 md:mb-5 mb-1">
-          {myOwnGroup?.map((group: any) => (
-            <GroupRequest key={group.group_id} group={group} />
-          ))}
+          {hasGroupRequests ? (
+            myOwnGroup?.map((group: any) => <GroupRequest key={group.group_id} group={group} />)
+          ) : (
+            <div>요청 없음</div>
+          )}
         </div>
       </section>
       <section>
