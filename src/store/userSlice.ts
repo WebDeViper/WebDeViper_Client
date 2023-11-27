@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { authUser, profileUser, loginUser, deleteAlarm } from './thunkFunctions';
+import { authUser, profileUser, loginUser, deleteAlarm, socialUser, socialRefreshUser } from './thunkFunctions';
 import { toast } from 'react-toastify';
 
 interface UserState {
@@ -55,6 +55,36 @@ const userSlice = createSlice({
         localStorage.setItem('accessToken', action.payload.accessToken);
       })
       .addCase(loginUser.rejected, (state, action: any) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        toast.info('로그인 정보를 확인 해주세요!', { type: toast.TYPE.ERROR });
+      })
+      .addCase(socialUser.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(socialUser.fulfilled, (state, action: PayloadAction<{ userInfo: UserInfo; refreshToken: string }>) => {
+        state.isLoading = false;
+        state.error = '';
+        localStorage.setItem('refreshToken', action.payload.refreshToken);
+      })
+      .addCase(socialUser.rejected, (state, action: any) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        toast.info('로그인 정보를 확인 해주세요!', { type: toast.TYPE.ERROR });
+      })
+      .addCase(socialRefreshUser.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(
+        socialRefreshUser.fulfilled,
+        (state, action: PayloadAction<{ userInfo: UserInfo; accessToken: string }>) => {
+          state.isLoading = false;
+          state.isAuth = true;
+          state.error = '';
+          localStorage.setItem('accessToken', action.payload.accessToken);
+        }
+      )
+      .addCase(socialRefreshUser.rejected, (state, action: any) => {
         state.isLoading = false;
         state.error = action.payload;
         toast.info('로그인 정보를 확인 해주세요!', { type: toast.TYPE.ERROR });
