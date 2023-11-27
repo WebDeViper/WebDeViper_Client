@@ -4,7 +4,7 @@ import MyGroupRequest from './MyGroupRequest';
 import { API } from '../../../utils/axios';
 
 export default function GroupInfo() {
-  const [myOwnGroup, setMyOwnGroup] = useState([]);
+  const [requestLists, setRequestLists] = useState<any[]>([]);
   const [pendingGroups, setPendingGroups] = useState([]);
 
   useEffect(() => {
@@ -27,9 +27,6 @@ export default function GroupInfo() {
     getGroups();
     getPendingGroups();
   }, []);
-
-  console.log('그룹 가입 요청 어쩌구', myOwnGroup);
-  console.log('내 신청 중 그룹', pendingGroups);
 
   return (
     <div>

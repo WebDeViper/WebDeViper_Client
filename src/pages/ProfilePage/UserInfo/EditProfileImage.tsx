@@ -101,7 +101,7 @@ export default function EditProfileImage() {
                 변경
               </Button>
             )}
-            <span className="font-semibold">확장자: png, jpg, jpeg / 용량 1MB 이하</span>
+            <span className="text-sm">확장자 : png, jpg, jpeg / 용량 1MB 이하</span>
           </div>
         </form>
       </div>

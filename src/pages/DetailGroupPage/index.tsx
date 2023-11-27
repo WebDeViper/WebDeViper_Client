@@ -91,55 +91,56 @@ export default function DetailGroupPage() {
 
   useEffect(() => {
     // console.log('@#$@#$', groupInfo);
+    // groupId로 그룹 정보 조회 (groupId 바뀔 때 리랜더링)
+    const getGroupInfo = async () => {
+      try {
+        const res = await API.get(`/group/find/${groupId}`);
+        if (res.data.isSuccess) {
+          setGroupInfo(() => {
+            const newGroupInfo = res.data.groupInfo;
+            if (Object.keys(newGroupInfo).length) {
+              // 응답으로 받은 groupInfo에 대해 그룹장 프로필사진, 이름 얻어오기
+              (async () => {
+                const leaderRes = await API.get(`/user/${newGroupInfo.leader_id}`);
+                if (leaderRes.data.isSuccess) {
+                  const leaderInfo = leaderRes.data.userInfo;
+                  setLeaderName(leaderInfo.nick_name);
+                  setProfileImgPath(leaderInfo.image_path);
+                }
+              })();
+            }
+            return newGroupInfo;
+          });
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
     getGroupInfo();
   }, [groupId]);
 
-  useEffect(() => {
-    console.log('그룹 정보 잘 설정되나 :: ', groupInfo);
-  }, [groupInfo]);
+  // useEffect(() => {
+  //   console.log('그룹 정보 잘 설정되나 :: ', groupInfo);
+  // }, [groupInfo]);
 
   useEffect(() => {
+    // 로그인한 유저의 신청중인 그룹 가져오기
+    const getPendingGroups = async () => {
+      try {
+        const res = await API.get('/group/pendingGroups');
+        console.log('신청중인 그룹 :: ', res.data.pendingGroups);
+        const result = res.data.pendingGroups.find((item: any) => item.group_id === groupId);
+        if (result) {
+          setIsPending(true);
+        } else {
+          setIsPending(false);
+        }
+      } catch (error) {
+        console.error('Error fetching pending groups:', error);
+      }
+    };
     getPendingGroups();
   }, [groupId, isPending]);
-
-  // groupId로 그룹 정보 조회 (groupId 바뀔 때 리랜더링)
-  const getGroupInfo = async () => {
-    try {
-      const res = await API.get(`/group/find/${groupId}`);
-      if (res.data.isSuccess) {
-        setGroupInfo(() => {
-          const newGroupInfo = res.data.groupInfo;
-          if (Object.keys(newGroupInfo).length) {
-            // 응답으로 받은 groupInfo에 대해 그룹장 프로필사진, 이름 얻어오기
-            (async () => {
-              const leaderRes = await API.get(`/user/${newGroupInfo.leader_id}`);
-              if (leaderRes.data.isSuccess) {
-                const leaderInfo = leaderRes.data.userInfo;
-                setLeaderName(leaderInfo.nick_name);
-                setProfileImgPath(leaderInfo.image_path);
-              }
-            })();
-          }
-          return newGroupInfo;
-        });
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  // 로그인한 유저의 신청중인 그룹 가져오기
-  const getPendingGroups = async () => {
-    try {
-      const res = await API.get('/group/pendingGroups');
-      console.log('신청중인 그룹 :: ', res.data.pendingGroups);
-      res.data.pendingGroups.map((group: GroupInfoType) =>
-        group.group_id === groupId ? setIsPending(true) : setIsPending(false)
-      );
-    } catch (error) {
-      console.error('Error fetching pending groups:', error);
-    }
-  };
 
   // 그룹 가입 요청
   const handleGroupRequest = async (groupId: string) => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import './index.css';
 // import { Container } from '@mui/system';
 // import { Box } from '@mui/material';
