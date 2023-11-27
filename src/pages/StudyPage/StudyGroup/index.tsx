@@ -68,7 +68,7 @@ export default function StudyGroup({ userId }: Props) {
           <p className="text-slate-500">그룹을 생성해보세요 !</p>
         </div>
       ) : (
-        <div className="grid lg:grid-cols-5 grid-cols-3 md:grid-cols-4 gap-2 grid-flow-row auto-rows-fr">
+        <div className="grid lg:grid-cols-5 grid-cols-2 sm:grid-cols-3 lg:gap-5 md:gap-3 gap-2 grid-flow-row auto-rows-fr">
           {studyGroup?.map(item => (
             <GroupItem key={item.group_id} groupInfo={item} />
           ))}

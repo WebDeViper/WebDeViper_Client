@@ -33,7 +33,11 @@ export default function GroupItem({ groupInfo }: Props) {
             style={{ background: 'linear-gradient(180deg,rgba(0,0,0,0) 65%,rgba(0,0,0,0.3) 100%)' }}
             className="h-40"
           >
-            <img className="w-full h-full" src={`${import.meta.env.VITE_APP_BACK_URL}${img_path}`} alt="귀여운 우유" />
+            <img
+              className="relative -z-10 w-full h-full"
+              src={`${import.meta.env.VITE_APP_BACK_URL}${img_path}`}
+              alt="귀여운 우유"
+            />
           </div>
           <div className="flex flex-col p-2">
             <h3 className="my-2 truncate">{name}</h3>
