@@ -57,17 +57,17 @@ export default function GroupRequest({ requests, groupName, groupId }: Props) {
                   </button>
                 </div>
               </div>
-              {/* <div className="request-right flex text-sm items-center gap-3">
-            <div>{request.user_name}</div>
-            <div className="btnWrap flex gap-1">
-              <button className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
-                수락
-              </button>
-              <button className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
-                삭제
-              </button>
-            </div>
-          </div> */}
+              <div className="request-right flex text-sm items-center gap-3">
+                <div>{request.user_name}</div>
+                <div className="btnWrap flex gap-1">
+                  <button className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                    수락
+                  </button>
+                  <button className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                    삭제
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
         </div>

@@ -122,6 +122,9 @@ export default function Header() {
                       className="absolute z-10 right-0 shadow-lg rounded-md bg-white mt-12 top-0 py-1 w-48"
                       ref={selectProfileRef}
                     >
+                      <div className="hover:bg-gray-100 block px-4 py-2 text-sm text-gray-700">
+                        <b>{userInfo.nickName}</b> 님
+                      </div>
                       <div className="hover:bg-gray-100">
                         <Link
                           to="/profile"
