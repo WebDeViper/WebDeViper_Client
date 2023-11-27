@@ -87,9 +87,10 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="container mt-8">
-      <div className="flex min-h-full flex-1 flex-col justify-center pb-12 py-6 md:w-96 m-auto">
+    <div className="container">
+      <div className="flex min-h-full flex-1 flex-col justify-center pb-12 md:w-96 m-auto">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+          <h2>회원 가입</h2>
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label htmlFor="nickName" className="block text-sm font-medium leading-6 text-gray-900">
@@ -108,6 +109,11 @@ export default function SignupPage() {
                 />
               </div>
               {errors.nickName && <span className="text-danger">{errors.nickName?.message}</span>}
+            </div>
+            <div className="mt-2">
+              {categories && (
+                <SelectMenu title="카테고리" data={categories} selected={selected} setSelected={setSelected} />
+              )}
             </div>
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
@@ -171,11 +177,6 @@ export default function SignupPage() {
                 />
               </div>
               {errors.password_confirm && <span className="text-danger">{errors.password_confirm?.message}</span>}
-            </div>
-            <div className="!mb-12">
-              {categories && (
-                <SelectMenu title="카테고리" data={categories} selected={selected} setSelected={setSelected} />
-              )}
             </div>
 
             <div>
