@@ -7,7 +7,6 @@ export default function StudyPage() {
   const userId = useAppSelector((state: RootState) => state.user.userInfo.id);
   return (
     <div>
-
       {userId ? <MyGroup /> : null}
       <StudyGroup userId={userId} />
     </div>

@@ -57,7 +57,7 @@ export default function StudyGroup({ userId }: Props) {
   };
 
   return (
-    <section className="relative container">
+    <section className="relative container flex flex-col">
       <h2>이런 스터디는 어떠세요?</h2>
       <div className="absolute top-11 right-4 sm:right-0">
         <Button onClick={handleCreateGroup}>스터디 만들기</Button>
