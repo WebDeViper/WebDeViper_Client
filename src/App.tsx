@@ -20,8 +20,6 @@ import CalendarPage from './pages/CalendarPage';
 import { io } from 'socket.io-client';
 import ZoomPage from './pages/ZoomPage';
 import KakaoPage from './pages/OAuthPage/KakaoPage';
-import GooglePage from './pages/OAuthPage/GooglePage';
-import NaverPage from './pages/OAuthPage/NaverPage';
 
 function App() {
   const isAuth = useAppSelector(state => state.user.isAuth);
@@ -67,8 +65,6 @@ function App() {
         <Route path="/notice/:noticeId" element={<DetailNoticePage isServiceAdmin={isServiceAdmin} />} />
         <Route path="/zoom" element={<ZoomPage />} />
         <Route path="/oauth/kakao" element={<KakaoPage />} />
-        <Route path="/oauth/google" element={<GooglePage />} />
-        <Route path="/oauth/naver" element={<NaverPage />} />
         <Route element={<NotAdminRoutes isServiceAdmin={isServiceAdmin} />}>
           <Route path="/notice/create" element={<CreateNoticePage />} />
         </Route>
