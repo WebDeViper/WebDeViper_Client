@@ -119,25 +119,31 @@ export default function Header() {
                   {/* 프로필 클릭 */}
                   {isProfileOpen && (
                     <div
-                      className="absolute z-10 right-0 shadow-lg rounded-md bg-white mt-12 top-0 py-1 w-48"
+                      className="absolute z-10 right-0 shadow-lg rounded-md bg-white mt-12 top-0 py-1 w-48 flex flex-col justify-center items-center text-center"
                       ref={selectProfileRef}
                     >
-                      <div className="hover:bg-gray-100 block px-4 py-2 text-sm text-gray-700">
-                        <b>{userInfo.nickName}</b> 님
+                      <div className="rounded-md w-3/4 block px-4 py-2 text-sm text-gray-700">
+                        {userInfo.nickName ? (
+                          <span className="underline decoration-primary-400/50 decoration-4 underline-offset-4">
+                            <b>{userInfo.nickName}</b> 님{' '}
+                          </span>
+                        ) : (
+                          <span>닉네임을 설정해주세요.</span>
+                        )}
                       </div>
-                      <div className="hover:bg-gray-100">
+                      <div className="w-full flex justify-center">
                         <Link
                           to="/profile"
-                          className="block px-4 py-2 text-sm text-gray-700"
+                          className="w-3/4 block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md"
                           onClick={toggleProfileOpen}
                         >
                           프로필
                         </Link>
                       </div>
-                      <div className="hover:bg-gray-100">
+                      <div className="w-full flex justify-center">
                         <button
                           onClick={handleLogout}
-                          className="block w-full text-left px-4 py-2 text-sm text-gray-700"
+                          className="block w-3/4 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md"
                         >
                           로그아웃
                         </button>

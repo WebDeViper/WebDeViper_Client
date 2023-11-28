@@ -34,13 +34,17 @@ export default function GroupInfo() {
 
   return (
     <div>
-      <section>
+      <section className="mb-5">
         <h2>그룹 가입 요청</h2>
         <div className="myOwnGroupWrap flex flex-wrap md:gap-1 md:mb-5 mb-1">
           {hasGroupRequests ? (
-            myOwnGroup?.map((group: any) => <GroupRequest key={group.group_id} group={group} />)
+            myOwnGroup?.map((group: any) => (
+              <GroupRequest key={group.group_id} group={group} setHasGroupRequests={setHasGroupRequests} />
+            ))
           ) : (
-            <div>요청 없음</div>
+            <div className="block md:max-w-sm w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+              <p className="font-normal text-gray-700 dark:text-gray-400">요청이 없습니다.</p>
+            </div>
           )}
         </div>
       </section>
@@ -52,7 +56,9 @@ export default function GroupInfo() {
               <MyGroupRequest key={index} groupInfo={group} setPendingGroups={setPendingGroups} />
             ))
           ) : (
-            <div>요청이 없습니다.</div>
+            <div className="block md:max-w-sm w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+              <p className="font-normal text-gray-700 dark:text-gray-400">요청이 없습니다.</p>
+            </div>
           )}
         </div>
       </section>
