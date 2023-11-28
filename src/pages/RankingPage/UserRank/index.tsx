@@ -1,10 +1,12 @@
 // import { Card } from 'flowbite-react';
 // import React from 'react';
 import { useMediaQuery } from 'react-responsive';
+import FadeLoader from 'react-spinners/FadeLoader';
 
 interface Props {
   userRanking: IUserRank[];
   calculateTime: (seconds: number) => string;
+  isLoading: boolean;
 }
 
 interface IUserRank {
@@ -13,16 +15,20 @@ interface IUserRank {
   user_total_time: number;
 }
 
-export default function UserRank({ userRanking, calculateTime }: Props) {
+export default function UserRank({ userRanking, calculateTime, isLoading }: Props) {
   const isTablet = useMediaQuery({ maxWidth: 768 });
 
   // console.log('유저 랭킹 :: ', userRanking);
 
   return (
-    <section className="">
-      {!userRanking.length && <div className="font-bold mb-5">아직 랭킹이 없어요!</div>}
+    <section className="flex flex-col">
+      {isLoading ? (
+        <FadeLoader className="self-center" loading={isLoading} color="#1f87b2" />
+      ) : (
+        !userRanking.length && <div className="font-bold mb-5">아직 랭킹이 없어요!</div>
+      )}
       {/* card 형식으로 바꿔야함 */}
-      {userRanking.length > 0 && (
+      {!isLoading && userRanking.length > 0 && (
         <div>
           <div className="top3 flex flex-col gap-2 mb-2">
             {userRanking?.slice(0, 3)?.map((user, index) => (
