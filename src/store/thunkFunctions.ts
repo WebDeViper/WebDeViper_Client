@@ -1,4 +1,4 @@
-import { API } from '../utils/axios';
+import { API, AUTH } from '../utils/axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 interface CustomError extends Error {
@@ -26,6 +26,19 @@ export const loginUser = createAsyncThunk('user/loginUser', async (body: object,
   }
 });
 
+export const socialUser = createAsyncThunk('user/socialUser', async (body: object, thunkAPI) => {
+  try {
+    // const response = await API.post(`/user/join?provider=${provider}`, body);
+    const response = await API.post(`/user/kakaologin`, body);
+
+    return response.data;
+  } catch (error: unknown) {
+    const customErr = error as CustomError;
+    console.log(customErr);
+    return thunkAPI.rejectWithValue(customErr.response?.data || customErr.message);
+  }
+});
+
 export const authUser = createAsyncThunk('user/authUser', async (_, thunkAPI) => {
   try {
     const response = await API.get(`/user`);
@@ -40,6 +53,18 @@ export const authUser = createAsyncThunk('user/authUser', async (_, thunkAPI) =>
 export const profileUser = createAsyncThunk('user/profileUser', async (body: object, thunkAPI) => {
   try {
     const response = await API.patch('/user/profile', body);
+    console.log(response);
+    return response.data;
+  } catch (error: unknown) {
+    const customErr = error as CustomError;
+    console.log(customErr);
+    return thunkAPI.rejectWithValue(customErr.response?.data || customErr.message);
+  }
+});
+
+export const socialRefreshUser = createAsyncThunk('auth/socialRefreshUser', async (_, thunkAPI) => {
+  try {
+    const response = await AUTH.get('/auth/refresh');
     console.log(response);
     return response.data;
   } catch (error: unknown) {
