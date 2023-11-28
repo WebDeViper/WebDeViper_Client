@@ -19,10 +19,11 @@ export default function RankingPage() {
   // 디폴트로 보여주기 위해 로그인한 유저가 속한 카테고리 선택
   const userCategory = useAppSelector(state => state.user?.userInfo?.category);
   // 카테고리 변경, top3, top3제외 를 관리하기 위한 state
-  const [category, setCategory] = useState(userCategory ? userCategory : categories[0]);
+  const [category, setCategory] = useState(userCategory ? userCategory : '카테고리를 선택해주세요!');
   const [groupRanking, setGroupRanking] = useState([]);
   const [userRanking, setUserRanking] = useState([]);
   const [rankType, setRankType] = useState('user');
+  const [isLoading, setIsLoading] = useState(true);
 
   // console.log('뭐지??', top3, other);
 
@@ -30,7 +31,10 @@ export default function RankingPage() {
   const getFirstRank = async () => {
     try {
       const res = await API.get('/ranking');
-      setRank(res.data);
+      if (res.data) {
+        setRank(res.data);
+        setIsLoading(false);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -38,6 +42,7 @@ export default function RankingPage() {
 
   // 서버에서 응답받은 데이터로 랭킹 state 업데이트하는 함수
   const setRank = (data: any) => {
+    console.log('setRank 실행!!!');
     const { topUsers, topGroups } = data;
     if (topUsers && topGroups) {
       setUserRanking(topUsers);
@@ -58,12 +63,18 @@ export default function RankingPage() {
   const getCategory = useCallback(async () => {
     // 바뀐 카테고리에 해당하는 랭킹 데이터 요청
     console.log('카테고리 바뀔 때 마다 다시 정의하는 getCategory 함수 실행!!');
-    try {
-      const res = await API.get(`/ranking?category=${category}`);
-      // console.log('카테고리 바뀐 후 랭킹 데이터 :: ', res.data);
-      setRank(res.data);
-    } catch (err) {
-      console.error(err);
+    setIsLoading(true);
+    if (category !== '카테고리를 선택해주세요!') {
+      try {
+        const res = await API.get(`/ranking?category=${category}`);
+        console.log('카테고리 바뀐 후 랭킹 데이터 :: ', res.data);
+        if (res.data) {
+          setRank(res.data);
+          setIsLoading(false);
+        }
+      } catch (err) {
+        console.error(err);
+      }
     }
   }, [category]);
 
@@ -84,13 +95,16 @@ export default function RankingPage() {
   }, [getCategory]);
 
   return (
-    <div className="container relative">
-      <h2>랭킹</h2>
+    <div className="container">
+      <div className="flex justify-between items-start">
+        <h2>랭킹</h2>
+        <div className="">
+          <Badge color="pink">어제 기준 랭킹 12시마다 업데이트</Badge>
+        </div>
+      </div>
       <SelectMenu selected={category} data={items} setSelected={setCategory}></SelectMenu>
       {/* 초단위 */}
-      <div className="absolute top-2 right-0">
-        <Badge color="pink">어제 기준 랭킹 12시마다 업데이트</Badge>
-      </div>
+
       <ul className="rankTypeWrap flex my-2">
         <li
           className={`-mb-px mr-3 bg-white inline-block rounded-t cursor-pointer ${
@@ -110,11 +124,9 @@ export default function RankingPage() {
         </li>
       </ul>
       {rankType === 'user' ? (
-        <>
-          <UserRank userRanking={userRanking} calculateTime={calculateTime} />
-        </>
+        <UserRank userRanking={userRanking} calculateTime={calculateTime} isLoading={isLoading} />
       ) : (
-        <GroupRank groupRanking={groupRanking} calculateTime={calculateTime} />
+        <GroupRank groupRanking={groupRanking} calculateTime={calculateTime} isLoading={isLoading} />
       )}
     </div>
   );

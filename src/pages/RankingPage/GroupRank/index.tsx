@@ -1,9 +1,12 @@
 // import { Card } from 'flowbite-react';
 // import React from 'react';
 import { useMediaQuery } from 'react-responsive';
+import FadeLoader from 'react-spinners/FadeLoader';
+
 interface Props {
   groupRanking: GroupRank[];
   calculateTime: (seconds: number) => string;
+  isLoading: boolean;
 }
 
 interface GroupRank {
@@ -12,15 +15,19 @@ interface GroupRank {
   group_img_path?: string;
 }
 
-export default function GroupRank({ groupRanking, calculateTime }: Props) {
+export default function GroupRank({ groupRanking, calculateTime, isLoading }: Props) {
   const isTablet = useMediaQuery({ maxWidth: 768 });
 
   // console.log('그룹 랭킹 :: ', groupRanking);
 
   return (
-    <section className="">
-      {!groupRanking.length && <div className="font-bold">아직 랭킹이 없어요!</div>}
-      {groupRanking.length > 0 && (
+    <section className="flex flex-col">
+      {isLoading ? (
+        <FadeLoader className="self-center" loading={isLoading} color="#1f87b2" />
+      ) : (
+        !groupRanking.length && <div className="font-bold">아직 랭킹이 없어요!</div>
+      )}
+      {!isLoading && groupRanking.length > 0 && (
         <div className="groupRankingWrap">
           <div className="top3 flex flex-col gap-2 mb-2">
             {groupRanking?.slice(0, 3)?.map((group: GroupRank, index: number) => (
