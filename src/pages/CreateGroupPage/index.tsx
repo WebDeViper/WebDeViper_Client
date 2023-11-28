@@ -137,9 +137,10 @@ export default function CreateGroupPage() {
                 type="text"
                 {...register('name', {
                   required: '스터디 이름을 작성해주세요!',
+                  maxLength: { value: 10, message: '스터디 이름은 최대 10글자입니다!' },
                 })}
                 className="w-full border rounded-md py-1 pl-3"
-                placeholder="스터디 이름을 입력하세요."
+                placeholder="스터디 이름을 입력하세요. (최대 10글자)"
               />
             </div>
             <ErrorMessage
@@ -208,11 +209,11 @@ export default function CreateGroupPage() {
                 type="number"
                 {...register('maximumNumberMember', {
                   required: '그룹 모집인원을 선택해주세요!',
+                  min: { value: 2, message: '최소인원은 2명입니다!' },
+                  max: { value: 10, message: '최대 10명 이내로 선택해주세요!' },
                 })}
                 className="w-full border rounded-md py-1 pl-3 pr-2"
-                max={50}
-                maxLength={2}
-                placeholder="50명 이하로 입력해주세요."
+                placeholder="10명 이하로 입력해주세요."
               />
               <p className="h-[50px]">
                 <ErrorMessage
