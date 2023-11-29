@@ -59,7 +59,9 @@ export default function Header() {
   const user = {
     nickname: userInfo.nickName,
     email: userInfo.email,
-    imageUrl: 'https://data.onnada.com/character/201105/C3528_2048931593_266362f8_3.JPG',
+    imageUrl: userInfo.profileImg
+      ? import.meta.env.VITE_APP_BACK_URL + userInfo.profileImg
+      : 'https://data.onnada.com/character/201105/C3528_2048931593_266362f8_3.JPG',
   };
 
   return (
@@ -110,11 +112,7 @@ export default function Header() {
                   {/* 알림 클릭 */}
                   <AlarmOverlay isOpen={isAlarmOpen} setIsOpen={setIsAlarmOpen} />
                   <button className="p-1" onClick={toggleProfileOpen}>
-                    <img
-                      className="h-8 w-8 rounded-full"
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5allhVIDcWziGtl4Rhu3Ccm5SkkTi50ageg&usqp=CAU"
-                      alt="profile"
-                    />
+                    <img className="h-8 w-8 rounded-full" src={user.imageUrl} alt="profile" />
                   </button>
                   {/* 프로필 클릭 */}
                   {isProfileOpen && (
@@ -207,11 +205,7 @@ export default function Header() {
                     <>
                       <div className="flex justify-between px-3 py-3">
                         <div className="flex gap-3 items-center">
-                          <img
-                            className="h-10 w-10 rounded-full"
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5allhVIDcWziGtl4Rhu3Ccm5SkkTi50ageg&usqp=CAU"
-                            alt="profile"
-                          />
+                          <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="profile" />
 
                           <div className="flex flex-col gap-1">
                             <div className="text-base font-medium leading-none text-white">{user.nickname}</div>
