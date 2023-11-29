@@ -1,64 +1,38 @@
 import { useRef, useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+import { useAppSelector } from '../../store/store';
+import { chatSocket } from '../../utils/socket';
+import Chat from './Chat';
+import { ChatData, GetUsers, JoinRoomCb } from './type';
 
 export default function ZoomPage() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [audioEnabled, setAudioEnabled] = useState<boolean>(true);
-  const [videoEnabled, setVideoEnabled] = useState<boolean>(true);
-  const [stream, setStream] = useState<MediaStream | null>(null);
+  const { groupId } = useParams();
+  const userInfo = useAppSelector(state => state.user.userInfo);
+
+  const [users, setUsers] = useState<GetUsers[]>([]);
+
+  const [chatLog, setChatLog] = useState<ChatData[]>([]);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
-    const setupWebcam = async () => {
-      try {
-        // 사용자의 비디오 및 오디오에 접근
-        const mediaStream = await navigator.mediaDevices.getUserMedia({ video: videoEnabled, audio: audioEnabled });
-
-        // video 엘리먼트에 스트림 연결
-        if (videoRef.current) {
-          videoRef.current.srcObject = mediaStream;
-        }
-
-        console.log(mediaStream.getTracks(), 'tracks');
-
-        // 스트림 상태 저장
-        setStream(mediaStream);
-        console.log(stream);
-      } catch (error) {
-        console.error('Error accessing webcam:', error);
+    chatSocket.emit('joinRoom', userInfo.nickName, groupId, (cb: JoinRoomCb) => {
+      console.log(cb);
+      if (cb.isOk && cb.data) {
+        setChatLog(cb.data);
       }
-    };
+    });
 
-    setupWebcam();
-  }, [audioEnabled, videoEnabled]); // useEffect가 audioEnabled 또는 videoEnabled 값이 변경될 때마다 다시 실행
+    chatSocket.on('getUsers', (users: GetUsers[]) => {
+      setUsers(users);
+    });
+  }, [userInfo, groupId]);
 
-  useEffect(() => {
-    const setupCameras = async () => {
-      try {
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        console.log(devices, 'devices');
-      } catch (error) {
-        console.error('ERROR', error);
-      }
-    };
-    setupCameras();
-  }, []);
-
-  const toggleAudio = () => {
-    setAudioEnabled(!audioEnabled);
-  };
-
-  const toggleVideo = () => {
-    setVideoEnabled(!videoEnabled);
-  };
+  console.log(users, 'users');
 
   return (
-    <div>
-      <h1>Webcam Demo</h1>
-      <div>
-        <video ref={videoRef} autoPlay playsInline />
-      </div>
-      <div>
-        <button onClick={toggleAudio}>{audioEnabled ? '음성 끄기' : '음성 켜기'}</button>
-        <button onClick={toggleVideo}>{videoEnabled ? '카메라 끄기' : '카메라 켜기'}</button>
+    <div className="container">
+      <div className="flex">
+        <Chat chatLog={chatLog} />
       </div>
     </div>
   );
