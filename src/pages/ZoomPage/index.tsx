@@ -10,11 +10,10 @@ export default function ZoomPage() {
   const chatSocket = useSocket('http://localhost:8001/chat');
   const { groupId } = useParams();
   const userInfo = useAppSelector(state => state.user.userInfo);
-
+  const [message, setMessage] = useState('');
   const [users, setUsers] = useState<GetUser[]>([]);
 
   const [chatLog, setChatLog] = useState<ChatData[]>([]);
-  const [message, setMessage] = useState('');
 
   useEffect(() => {
     if (!chatSocket) return;
@@ -25,21 +24,28 @@ export default function ZoomPage() {
       }
     });
 
+    chatSocket.on('message', (message: ChatData) => {
+      setChatLog(prev => [...prev, message]);
+    });
+
     chatSocket.on('getUsers', (users: GetUser[]) => {
       setUsers(users);
     });
 
-    chatSocket.on('disconnect', data => {
-      chatSocket.emit('customDisconnectEvent', userInfo.id, groupId, (users: any) => {
-        // console.log('Custom disconnect event received:', data);
-        console.log('Custom disconnect event received:', users);
-      });
-      console.log(data, 'data');
-      console.log('Custom disconnect event received:');
-    });
+    chatSocket.on('disconnect', () => {});
   }, [userInfo, groupId, chatSocket]);
 
-  console.log(users, 'users');
+  const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (message.trim() === '') return;
+    if (!chatSocket) return;
+    chatSocket.emit('sendMessage', groupId, userInfo.nickName, message, (res: any) => {
+      if (!res.isOk) {
+        console.log('error message', res.error);
+      }
+      setMessage('');
+    });
+  };
 
   return (
     <div className="h-full">
@@ -48,7 +54,7 @@ export default function ZoomPage() {
           <Zoom users={users} />
         </section>
         <section className="w-96">
-          <Chat chatLog={chatLog} />
+          <Chat chatLog={chatLog} sendMessage={sendMessage} message={message} setMessage={setMessage} />
         </section>
       </div>
     </div>
