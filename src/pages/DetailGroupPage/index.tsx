@@ -37,6 +37,7 @@ export default function DetailGroupPage() {
 
   const navigate = useNavigate();
 
+  console.log(members, 'membersmembers');
   // 채팅창 이동
   const handleChat = () => {
     if (userId) {
@@ -176,6 +177,10 @@ export default function DetailGroupPage() {
     }
   };
 
+  const handleGroupEnter = () => {
+    navigate(`/zoom/${groupId}`);
+  };
+
   return (
     <div className="container">
       <div className={`allWrap relative ${isChatOn ? 'chat-open' : ''}`}>
@@ -193,7 +198,7 @@ export default function DetailGroupPage() {
                   ) : (
                     <Button onClick={() => handleGroupRequest(groupId)}>신청하기</Button>
                   ))}
-
+                <Button onClick={handleGroupEnter}>입장하기</Button>
                 <Button className="ms-2" onClick={handleChat}>
                   채팅하기
                 </Button>
