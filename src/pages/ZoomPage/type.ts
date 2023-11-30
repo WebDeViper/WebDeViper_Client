@@ -19,8 +19,8 @@ export type JoinRoomCb = {
   data?: ChatData[];
 };
 
-export type GetUsers = {
-  socketId: string;
+export type GetUser = {
+  userId: string;
   nickName: string;
   userProfile: string;
 };
