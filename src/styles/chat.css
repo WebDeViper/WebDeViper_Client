@@ -1,3 +1,8 @@
+/* 채팅창 스크롤바 속성 */
+.message-container::-webkit-scrollbar {
+  background: transparent;
+}
+
 .message-container span {
   text-shadow: 0 0 0.05em #000, 0 0 0.05em #000, 0 0 0.05em #000, 0 0 0.05em #000, 0 0 0.05em #000, 0 0 0.05em #000,
     0 0 0.05em #000, 0 0 0.05em #000, 0 0 0.05em #000, 0 0 0.05em #000, 0 0 0.05em #000, 0 0 0.05em #000,

@@ -1,9 +1,8 @@
 import { ChatData } from '../type';
-import '../../../styles/chat.css';
+import React from 'react';
 
 interface Props {
   chatLog: ChatData;
-  index: number;
 }
 
 function getRandomNumber() {
@@ -12,12 +11,12 @@ function getRandomNumber() {
 
 const colorList = ['#37b737', '#2a74ff', '#56bfa8', '#fb6767', '#1cc24d', '#8383de', '#49cc49', '#dc8444', '#ff4a4a'];
 
-export default function ChatItem({ chatLog, index }: Props) {
+function ChatItem({ chatLog }: Props) {
   const chatColor = {
     color: colorList[getRandomNumber()],
   };
   return (
-    <div className="message-container">
+    <div>
       <span style={chatColor} className={`drop-shadow-md font-bold inline-block mr-3 relative`}>
         {chatLog.sender.name}
         <span className="absolute -top-[2px] -right-[7px]">:</span>
@@ -26,3 +25,6 @@ export default function ChatItem({ chatLog, index }: Props) {
     </div>
   );
 }
+
+// export default React.memo(ChatItem);
+export const MemoizedChatItem = React.memo(ChatItem);

@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
-import { Button } from '../../../components/common/Button';
+import { useEffect, useRef } from 'react';
 import { ChatData } from '../type';
-import ChatItem from './ChatItem';
+import { MemoizedChatItem } from './ChatItem';
+import InputField from './InputField';
+import '../../../styles/chat.css';
 
 interface Props {
   chatLog: ChatData[];
@@ -19,32 +20,15 @@ export default function Chat({ chatLog, message, setMessage, sendMessage }: Prop
     }
   }, [chatLog]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMessage(e.target.value);
-  };
-
   return (
     <div className="bg-slate-300 flex flex-col h-full">
-      <div className="overflow-y-auto p-3 flex-1" ref={messageRef}>
+      <div className="overflow-y-auto p-3 flex-1 message-container" ref={messageRef}>
         <div className="max-h-96">
-          {chatLog &&
-            chatLog.length > 0 &&
-            chatLog.map((chat, index) => <ChatItem index={index} key={chat._id} chatLog={chat} />)}
+          {chatLog && chatLog.length > 0 && chatLog.map(chat => <MemoizedChatItem key={chat._id} chatLog={chat} />)}
         </div>
       </div>
       <div className="p-3">
-        <form
-          onSubmit={sendMessage}
-          className="border-[2px] border-primary h-[60px] rounded-lg flex justify-between py-2 px-3 items-center w-full"
-        >
-          <input
-            value={message}
-            onChange={handleInputChange}
-            className="h-full outline-none font-medium border-none bg-transparent flex-1"
-            type="text"
-          />
-          <Button type="submit">전송</Button>
-        </form>
+        <InputField message={message} setMessage={setMessage} sendMessage={sendMessage} />
       </div>
     </div>
   );
