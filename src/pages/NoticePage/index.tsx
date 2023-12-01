@@ -16,13 +16,6 @@ interface Props {
   isServiceAdmin: IsServiceAdmin;
 }
 
-interface IPagination {
-  currentPage: number;
-  currentPageGroup: number;
-  totalPage: number;
-  pageList: number[];
-}
-
 export default function NoticePage({ isServiceAdmin }: Props) {
   const navigate = useNavigate();
 
