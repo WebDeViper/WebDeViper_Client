@@ -78,7 +78,7 @@ export default function NoticePage({ isServiceAdmin }: Props) {
   }, [setShowPageList]);
 
   const handleCreateNotice = () => {
-    navigate('./create');
+    navigate('/create');
   };
 
   // 현재 페이지 설정
@@ -95,13 +95,17 @@ export default function NoticePage({ isServiceAdmin }: Props) {
     if (text === 'next') {
       if (currentPageGroup !== Math.ceil(totalPage / 5)) {
         setPagination(prev => {
-          return { ...prev, currentPageGroup: prev.currentPageGroup + 1 };
+          return { ...prev, currentPageGroup: prev.currentPageGroup + 1, currentPage: prev.currentPageGroup * 5 + 1 };
         });
       }
     } else {
       if (currentPageGroup !== 1) {
         setPagination(prev => {
-          return { ...prev, currentPageGroup: prev.currentPageGroup - 1 };
+          return {
+            ...prev,
+            currentPageGroup: prev.currentPageGroup - 1,
+            currentPage: (prev.currentPageGroup - 2) * 5 + 1,
+          };
         });
       }
     }
