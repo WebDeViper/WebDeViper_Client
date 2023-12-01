@@ -38,7 +38,7 @@ type Alarm = {
   content_id: string;
   group_id: null | string;
   is_read: 'n' | 'y';
-  notification_kind: 'new_notice' | 'group_request' | 'group_approve';
+  notification_kind: 'new_notice' | 'group_request' | 'group_approve' | 'group_rejection';
   updated_at: Date;
   user_id: string;
   __v: number;
@@ -56,3 +56,10 @@ type Todo = {
   end_time: Date;
   done: 'y' | 'n';
 };
+
+interface IPagination {
+  currentPage: number;
+  currentPageGroup: number;
+  totalPage: number;
+  pageList: number[];
+}
