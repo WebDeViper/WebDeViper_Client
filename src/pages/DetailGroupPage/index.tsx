@@ -198,10 +198,7 @@ export default function DetailGroupPage() {
                   ) : (
                     <Button onClick={() => handleGroupRequest(groupId)}>신청하기</Button>
                   ))}
-                <Button onClick={handleGroupEnter}>입장하기</Button>
-                <Button className="ms-2" onClick={handleChat}>
-                  채팅하기
-                </Button>
+                {members.includes(userId) && <Button onClick={handleGroupEnter}>입장하기</Button>}
               </div>
             </div>
             {/* 그룹 제목 */}
