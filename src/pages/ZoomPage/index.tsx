@@ -1,51 +1,61 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { IoArrowBack } from 'react-icons/io5';
 import { useParams, useNavigate } from 'react-router';
 import { useAppSelector } from '../../store/store';
 import Chat from './Chat';
 import { ChatData, GetUser, JoinRoomCb } from './type';
 import Zoom from './Zoom';
-import useSocket from '../../hooks/useSocket';
+import { io } from 'socket.io-client';
 
 export default function ZoomPage() {
-  const chatSocket = useSocket('http://localhost:8001/chat');
   const { groupId } = useParams();
   const userInfo = useAppSelector(state => state.user.userInfo);
   const [message, setMessage] = useState('');
   const [users, setUsers] = useState<GetUser[]>([]);
+  const groupSocket = useMemo(
+    () =>
+      io('http://localhost:8001/chat', {
+        auth: {
+          userId: userInfo.id,
+          groupId: groupId,
+        },
+      }),
+    [userInfo.id, groupId]
+  );
   const navigate = useNavigate();
 
   const [chatLog, setChatLog] = useState<ChatData[]>([]);
 
+  // 채팅에 관한 소켓
   useEffect(() => {
-    if (!chatSocket) return;
-    chatSocket.emit('joinRoom', userInfo.nickName, groupId, (cb: JoinRoomCb) => {
+    // if (!groupSocket) return;
+    groupSocket.emit('joinRoom', userInfo.nickName, groupId, (cb: JoinRoomCb) => {
       console.log(cb);
       if (cb.isOk && cb.data) {
         setChatLog(cb.data);
       }
     });
 
-    chatSocket.on('getUsers', (users: GetUser[]) => {
+    groupSocket.on('getUsers', (users: GetUser[]) => {
       setUsers(users);
     });
 
-    chatSocket.on('disconnect', () => {});
-  }, [userInfo, groupId, chatSocket]);
+    groupSocket.on('disconnect', () => {});
+  }, [userInfo, groupId, groupSocket]);
 
   useEffect(() => {
-    if (!chatSocket) return;
-    chatSocket.on('message', (message: ChatData) => {
+    // if (!groupSocket) return;
+    groupSocket.on('message', (message: ChatData) => {
       setChatLog(prev => [...prev, message]);
     });
-  }, [chatSocket]);
+  }, [groupSocket]);
 
   // 채팅창 떠날 때
   const leaveRoom = () => {
-    if (!chatSocket) return;
+    if (!groupSocket) return;
     const isLeaving = confirm('정말 나가시겠습니까?');
     if (isLeaving) {
-      chatSocket.emit('leaveRoom', userInfo.nickName, groupId, userInfo.id);
+      groupSocket.emit('leaveRoom', userInfo.nickName, groupId, userInfo.id);
       navigate(-1);
     }
   };
@@ -53,14 +63,23 @@ export default function ZoomPage() {
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (message.trim() === '') return;
-    if (!chatSocket) return;
-    chatSocket.emit('sendMessage', groupId, userInfo.nickName, message, (res: any) => {
+    if (!groupSocket) return;
+    groupSocket.emit('sendMessage', groupId, userInfo.nickName, message, (res: any) => {
       if (!res.isOk) {
         console.log('error message', res.error);
       }
       setMessage('');
     });
   };
+
+  // 타이머에 관한 소켓
+  useEffect(() => {
+    if (!groupSocket) return;
+    groupSocket.emit('setTimer', userInfo.id, groupId);
+    groupSocket.on('getTimer', userTimer => {
+      console.log(userTimer);
+    });
+  }, [groupSocket, userInfo, groupId]);
 
   return (
     <div className="h-screen">
