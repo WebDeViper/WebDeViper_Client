@@ -239,7 +239,10 @@ export default function DetailGroupPage() {
 
             <h3>그룹 소개</h3>
             <div className="mb-5">
-              <div className="studyContent_postContent rounded-md w-full p-5 shadow-md min-h-[200px] break-all md:break-keep">
+              <div
+                className="studyContent_postContent rounded-md w-full p-5 shadow-md min-h-[200px] break-all md:break-keep"
+                style={{ whiteSpace: 'pre-line' }}
+              >
                 {description ? description : ''}
               </div>
             </div>
