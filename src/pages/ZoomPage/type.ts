@@ -21,6 +21,6 @@ export type JoinRoomCb = {
 
 export type GetUser = {
   userId: string;
-  nickName: string;
+  userNickName: string;
   userProfile: string;
 };
