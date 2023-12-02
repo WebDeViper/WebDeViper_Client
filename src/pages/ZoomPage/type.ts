@@ -13,10 +13,16 @@ export type ChatData = {
   _id: string;
 };
 
-export type JoinRoomCb = {
+export type GetMessage = {
   isOk: boolean;
   msg?: string;
   data?: ChatData[];
+};
+
+export type SendMessage = {
+  isOk: boolean;
+  error: string;
+  message: ChatData;
 };
 
 export type GetUser = {
