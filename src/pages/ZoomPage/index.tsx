@@ -25,40 +25,31 @@ export default function ZoomPage() {
     });
 
     setSocket(newSocket);
+    return () => {
+      newSocket.disconnect();
+    };
   }, [groupId, userInfo]);
 
-  // 채팅에 관한 소켓
   useEffect(() => {
     if (!socket) return;
     socket.emit('joinRoom');
     socket.on('getUsers', (users: GetUser[]) => {
       setUsers(users);
     });
+    socket.on('leaveRoom', (users: GetUser[]) => {
+      setUsers(users);
+    });
 
     return () => {
-      socket.off('joinRoom');
       socket.off('getUsers');
+      socket.off('leaveRoom');
     };
   }, [socket]);
 
   // 채팅창 떠날 때
   const leaveRoom = () => {
-    // if (!socket) return;
-    // const isLeaving = confirm('정말 나가시겠습니까?');
-    // if (isLeaving) {
-    // socket.emit('leaveRoom', userInfo.nickName, groupId, userInfo.id);
     navigate(-1);
-    // }
   };
-
-  // // 타이머에 관한 소켓
-  // useEffect(() => {
-  //   if (!socket) return;
-  //   socket.emit('setTimer', userInfo.id, groupId);
-  //   socket.on('getTimer', userTimer => {
-  //     console.log(userTimer);
-  //   });
-  // }, [userInfo, groupId]);
 
   return (
     <div className="h-screen">
@@ -72,7 +63,7 @@ export default function ZoomPage() {
         </header>
         <div className="flex h-full">
           <section className="flex-1">
-            <Zoom users={users} />
+            <Zoom users={users} socket={socket} />
           </section>
           <section className="w-96">
             <Chat socket={socket} />

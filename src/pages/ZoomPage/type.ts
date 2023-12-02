@@ -30,3 +30,15 @@ export type GetUser = {
   userNickName: string;
   userProfile: string;
 };
+
+export type GetTimer = {
+  daily: {
+    date: Date;
+    data: string[];
+  };
+  is_running: 'y' | 'n';
+  total_time: number;
+  user_id: string;
+  __v: number;
+  _id: string;
+};
