@@ -25,8 +25,9 @@ export default function ZoomPage() {
     });
 
     setSocket(newSocket);
+
     return () => {
-      newSocket.disconnect();
+      // newSocket.disconnect();
     };
   }, [groupId, userInfo]);
 
