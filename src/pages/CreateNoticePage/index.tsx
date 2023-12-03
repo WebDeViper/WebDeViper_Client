@@ -51,8 +51,6 @@ export default function MyComponent() {
     getNotice();
   }, [noticeId]);
 
-  console.log(isUpdate);
-
   useEffect(() => {
     if (titleRef.current) {
       titleRef.current.focus();

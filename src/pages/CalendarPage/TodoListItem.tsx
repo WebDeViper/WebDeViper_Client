@@ -66,7 +66,6 @@ export default function TodoListItem({
   const hadleMenuClose = () => {
     setSelectedMenu(null);
   };
-  console.log(selectedMenu, 'selectedMenu');
   return (
     <div className="py-3 px-2 relative rounded-md shadow-md shadow-cyan-200">
       <div className="flex justify-between items-center">

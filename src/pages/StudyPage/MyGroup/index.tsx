@@ -15,7 +15,6 @@ export default function MyGroup() {
     const getMyGroups = async () => {
       try {
         const res = await API.get('/group/studyGroups/users');
-        console.log('내가 속한 그룹 ', res.data.study_groups);
         setMyGroups(res.data.study_groups);
       } catch (err) {
         console.error('에러!!!', err);

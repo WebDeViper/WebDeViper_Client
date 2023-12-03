@@ -1,14 +1,10 @@
 import { useEffect, useState } from 'react';
 import { API } from '../../utils/axios';
-// import { socket } from '../../App';
-// import { socket } from '../../utils/socket';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '../../components/common/Button';
 import Badge from '../../components/common/Badge';
 import { useAppSelector } from '../../store/store';
 import { IoArrowBackOutline } from 'react-icons/io5';
-import ChatPage from '../ChatPage';
-import './index.css';
 
 export default function DetailGroupPage() {
   // groupId를 params로 가져옴
@@ -33,33 +29,8 @@ export default function DetailGroupPage() {
   const [isPending, setIsPending] = useState<boolean | null>(null);
   const [leaderName, setLeaderName] = useState('');
   const [profileImgPath, setProfileImgPath] = useState('');
-  const [isChatOn, setIsChatOn] = useState<boolean>(false);
 
   const navigate = useNavigate();
-
-  console.log(members, 'membersmembers');
-  // 채팅창 이동
-  const handleChat = () => {
-    if (userId) {
-      if (members.includes(userId)) {
-        setIsChatOn(!isChatOn);
-        // socket.emit('login', userName, (res: any) => {
-        //   if (res && res.isOk) {
-        //     console.log('successfully login', res);
-        //     // navigate(`/group/chat/${groupId}`);
-        //     // setIsChatOn(true);
-        //   } else {
-        //     console.log('fail to login', res);
-        //     alert('로그인해주세요!');
-        //   }
-        // });
-      } else {
-        alert('그룹 가입 후 이용 가능합니다.');
-      }
-    } else {
-      alert('로그인 후 이용해주세요!');
-    }
-  };
 
   // 뒤로가기
   const handleGoBack = () => {
@@ -70,7 +41,6 @@ export default function DetailGroupPage() {
   const deleteGroup = async () => {
     try {
       const res: any = await API.delete(`group/studyGroup/${groupId}/members`);
-      // console.log(res.data.message);
       alert(`${res.data.message}`);
       navigate('/');
     } catch (error) {
@@ -82,7 +52,6 @@ export default function DetailGroupPage() {
   const leaveGroup = async () => {
     try {
       const res: any = await API.delete(`group/studyGroup/${groupId}`);
-      // console.log(res.data.msg);
       alert(`${res.data.msg}`);
       navigate('/');
     } catch (error) {
@@ -91,7 +60,6 @@ export default function DetailGroupPage() {
   };
 
   useEffect(() => {
-    // console.log('@#$@#$', groupInfo);
     // groupId로 그룹 정보 조회 (groupId 바뀔 때 리랜더링)
     const getGroupInfo = async () => {
       try {
@@ -120,16 +88,11 @@ export default function DetailGroupPage() {
     getGroupInfo();
   }, [groupId]);
 
-  // useEffect(() => {
-  //   console.log('그룹 정보 잘 설정되나 :: ', groupInfo);
-  // }, [groupInfo]);
-
   useEffect(() => {
     // 로그인한 유저의 신청중인 그룹 가져오기
     const getPendingGroups = async () => {
       try {
         const res = await API.get('/group/pendingGroups');
-        console.log('신청중인 그룹 :: ', res.data.pendingGroups);
         const result = res.data.pendingGroups.find((item: any) => item.group_id === groupId);
         if (result) {
           setIsPending(true);
@@ -183,7 +146,7 @@ export default function DetailGroupPage() {
 
   return (
     <div className="container">
-      <div className={`allWrap relative ${isChatOn ? 'chat-open' : ''}`}>
+      <div className="relative">
         {Object.keys(groupInfo).length === 0 && <div className="loading">로딩 중...</div>}
         {groupInfo && Object.keys(groupInfo).length > 0 && (
           <div className="studyContentWrap flex flex-col break-all">
@@ -266,9 +229,6 @@ export default function DetailGroupPage() {
               )}
             </div>
           </div>
-        )}
-        {isChatOn && (
-          <div className="chatPage h-screen">{<ChatPage setIsChatOn={setIsChatOn} groupId={groupId} />}</div>
         )}
       </div>
     </div>
