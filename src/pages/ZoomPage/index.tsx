@@ -27,7 +27,7 @@ export default function ZoomPage() {
     setSocket(newSocket);
 
     return () => {
-      // newSocket.disconnect();
+      newSocket.disconnect();
     };
   }, [groupId, userInfo]);
 
@@ -62,11 +62,11 @@ export default function ZoomPage() {
             </button>
           </div>
         </header>
-        <div className="flex h-full">
+        <div className="flex flex-col md:flex-row h-full">
           <section className="flex-1">
             <Zoom users={users} socket={socket} />
           </section>
-          <section className="w-96">
+          <section className="lg:w-96 md:w-80 w-full md:h-full h-64 md:relative absolute bottom-0">
             <Chat socket={socket} />
           </section>
         </div>
