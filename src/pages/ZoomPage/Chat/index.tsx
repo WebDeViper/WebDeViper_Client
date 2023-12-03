@@ -1,24 +1,57 @@
-import { useEffect, useRef } from 'react';
-import { ChatData } from '../type';
+import { useEffect, useRef, useState } from 'react';
+import { ChatData, GetMessage, SendMessage } from '../type';
 import { MemoizedChatItem } from './ChatItem';
 import InputField from './InputField';
 import '../../../styles/chat.css';
+import { Socket } from 'socket.io-client';
 
 interface Props {
-  chatLog: ChatData[];
-  sendMessage: (e: React.FormEvent<HTMLFormElement>) => void;
-  message: string;
-  setMessage: React.Dispatch<React.SetStateAction<string>>;
+  socket: Socket | null;
 }
 
-export default function Chat({ chatLog, message, setMessage, sendMessage }: Props) {
+export default function Chat({ socket }: Props) {
+  const [chatLog, setChatLog] = useState<ChatData[]>([]);
+  const [message, setMessage] = useState('');
   const messageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.emit('getMessage', (cb: GetMessage) => {
+      if (cb.isOk && cb.data) {
+        setChatLog(cb.data);
+      }
+    });
+  }, [socket]);
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.on('message', (message: ChatData) => {
+      setChatLog(prev => [...prev, message]);
+    });
+    return () => {
+      socket.off('message');
+    };
+  }, [socket]);
 
   useEffect(() => {
     if (messageRef.current) {
       messageRef.current.scrollTop = messageRef.current.scrollHeight;
     }
   }, [chatLog]);
+
+  const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (message.trim() === '') return;
+    if (!socket) return;
+    socket.emit('sendMessage', message, (res: SendMessage) => {
+      if (!res.isOk) {
+        console.log('error message', res.error);
+      } else {
+        setChatLog(prev => [...prev, res.message]);
+      }
+      setMessage('');
+    });
+  };
 
   return (
     <div className="bg-slate-300 flex flex-col h-full">

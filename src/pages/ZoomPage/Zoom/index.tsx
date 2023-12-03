@@ -1,10 +1,22 @@
-import { GetUser } from '../type';
+import { Socket } from 'socket.io-client';
+import { GetTimer, GetUser } from '../type';
+import { useEffect } from 'react';
 
 interface Props {
   users: GetUser[];
+  socket: Socket | null;
 }
 
-export default function Zoom({ users }: Props) {
+export default function Zoom({ users, socket }: Props) {
+  useEffect(() => {
+    if (!socket) return;
+    socket.emit('setTimer');
+    socket.on('getTimer', (res: GetTimer[]) => {
+      console.log(res);
+    });
+  }, [socket]);
+
+  useEffect(() => {}, []);
   return (
     <div className="h-full">
       <div className="h-full bg-gray-900">
@@ -19,7 +31,7 @@ export default function Zoom({ users }: Props) {
                     alt="프로필 이미지"
                   />
                 </div>
-                <div>{user.nickName}</div>
+                <div>{user.userNickName}</div>
               </div>
             ))}
         </div>
