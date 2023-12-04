@@ -42,7 +42,6 @@ export default function CreateGroupPage() {
 
   // form 제출
   const onSubmit: SubmitHandler<GroupFormType> = async data => {
-    console.log('폼 제출 데이터 :: ', data);
     try {
       const res = await API.post('/group/studyGroup', data, {
         headers: {

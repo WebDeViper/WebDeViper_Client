@@ -19,7 +19,6 @@ export default function StudyGroup({ userId }: Props) {
       try {
         const response = await API.get(`/group/all`);
         const data = response.data;
-        console.log('모든 스터디그룹 :: ', data);
         setStudyGroup(data.data);
         setLastGroupId(data.data[data.data.length - 1].group_id);
         if (data.isEnd) {
@@ -40,7 +39,6 @@ export default function StudyGroup({ userId }: Props) {
     try {
       const response = await API.get(`/group/all/${lastGroupId}`);
       const data = response.data;
-      console.log('모든 스터디그룹 :: ', data);
       if (data.data.length) {
         const newStudyGroup = studyGroup.concat(data.data);
         setStudyGroup(newStudyGroup);

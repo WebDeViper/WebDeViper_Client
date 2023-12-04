@@ -28,7 +28,6 @@ export default function CustomDatePicker({
     const inputValue = e.target.value.replace(/[^0-9]/g, '');
     e.target.value = inputValue;
   };
-  console.log(errors);
 
   const isWithinMaxValue = (value: string, max: number): boolean => {
     const numericValue = parseFloat(value);
