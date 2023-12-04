@@ -29,16 +29,18 @@ export type GetUser = {
   userId: string;
   userNickName: string;
   userProfile: string;
+  isRunning: 'y' | 'n';
+  totalTime: number;
 };
 
-export type GetTimer = {
-  daily: {
-    date: Date;
-    data: string[];
-  };
-  is_running: 'y' | 'n';
-  total_time: number;
-  user_id: string;
-  __v: number;
-  _id: string;
-};
+// export type GetTimer = {
+//   daily: {
+//     date: Date;
+//     data: string[];
+//   };
+//   is_running: 'y' | 'n';
+//   total_time: number;
+//   user_id: string;
+//   __v: number;
+//   _id: string;
+// };

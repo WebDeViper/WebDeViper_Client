@@ -31,6 +31,8 @@ export default function ZoomPage() {
     };
   }, [groupId, userInfo]);
 
+  console.log(users);
+
   useEffect(() => {
     if (!socket) return;
     socket.emit('joinRoom');

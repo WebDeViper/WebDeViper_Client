@@ -26,5 +26,4 @@ function ChatItem({ chatLog }: Props) {
   );
 }
 
-// export default React.memo(ChatItem);
 export const MemoizedChatItem = React.memo(ChatItem);
