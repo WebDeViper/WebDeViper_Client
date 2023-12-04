@@ -12,7 +12,6 @@ export default function ZoomPage() {
   const userInfo = useAppSelector(state => state.user.userInfo);
   const [users, setUsers] = useState<GetUser[]>([]);
   const [socket, setSocket] = useState<Socket | null>(null);
-
   const navigate = useNavigate();
 
   useEffect(() => {

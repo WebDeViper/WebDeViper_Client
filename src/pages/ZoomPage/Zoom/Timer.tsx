@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { GetUser } from '../type';
 import { Socket } from 'socket.io-client';
 import calculateTime from '../../../utils/calculateTime';
@@ -14,6 +14,11 @@ export default function Timer({ user, socket }: Props) {
   const [timer, setTimer] = useState(0);
   const userInfo = useAppSelector(state => state.user.userInfo);
   const [startTime, setStartTime] = useState<Date>();
+  const copyUser = useRef<GetUser | null>(null);
+
+  useEffect(() => {
+    copyUser.current = user;
+  }, [user]);
 
   useEffect(() => {
     setTimer(user.totalTime);
@@ -32,8 +37,14 @@ export default function Timer({ user, socket }: Props) {
 
   useEffect(() => {
     if (!socket) return;
-    socket.emit('setTimer', { subject: '수학', time: user.totalTime, is_running: user.isRunning, startTime });
-  }, [socket, user, startTime]);
+    if (!copyUser.current) return;
+    socket.emit('setTimer', {
+      subject: '수학',
+      time: copyUser.current.totalTime,
+      is_running: copyUser.current.isRunning,
+      startTime,
+    });
+  }, [socket, startTime]);
 
   const handleToggleTimer = (user: GetUser) => {
     if (!socket) return;
