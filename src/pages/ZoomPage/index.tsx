@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoArrowBack } from 'react-icons/io5';
 import { useParams, useNavigate } from 'react-router';
 import { useAppSelector } from '../../store/store';
