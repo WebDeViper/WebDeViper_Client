@@ -19,7 +19,7 @@ export default function RankingPage() {
   // 디폴트로 보여주기 위해 로그인한 유저가 속한 카테고리 선택
   const userCategory = useAppSelector(state => state.user?.userInfo?.category);
   // 카테고리 변경, top3, top3제외 를 관리하기 위한 state
-  const [category, setCategory] = useState(userCategory ? userCategory : '카테고리를 선택해주세요!');
+  const [category, setCategory] = useState(userCategory ? userCategory : '인기 있는 카테고리');
   const [groupRanking, setGroupRanking] = useState([]);
   const [userRanking, setUserRanking] = useState([]);
   const [rankType, setRankType] = useState('user');
@@ -31,6 +31,7 @@ export default function RankingPage() {
   const getFirstRank = async () => {
     try {
       const res = await API.get('/ranking');
+      console.log(res.data);
       if (res.data) {
         setRank(res.data);
         setIsLoading(false);
@@ -64,7 +65,7 @@ export default function RankingPage() {
     // 바뀐 카테고리에 해당하는 랭킹 데이터 요청
     console.log('카테고리 바뀔 때 마다 다시 정의하는 getCategory 함수 실행!!');
     setIsLoading(true);
-    if (category !== '카테고리를 선택해주세요!') {
+    if (category !== '인기 있는 카테고리') {
       try {
         const res = await API.get(`/ranking?category=${category}`);
         console.log('카테고리 바뀐 후 랭킹 데이터 :: ', res.data);
