@@ -71,7 +71,7 @@ export default function NoticePage({ isServiceAdmin }: Props) {
   }, [setShowPageList]);
 
   const handleCreateNotice = () => {
-    navigate('/create');
+    navigate('/notice/create');
   };
 
   // 현재 페이지 설정
