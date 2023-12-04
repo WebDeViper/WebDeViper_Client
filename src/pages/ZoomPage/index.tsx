@@ -31,12 +31,14 @@ export default function ZoomPage() {
     };
   }, [groupId, userInfo]);
 
-  console.log(users);
-
   useEffect(() => {
     if (!socket) return;
     socket.emit('joinRoom');
     socket.on('getUsers', (users: GetUser[]) => {
+      setUsers(users);
+    });
+    socket.on('updateUser', (users: GetUser[]) => {
+      console.log(users, 'updateUser');
       setUsers(users);
     });
     socket.on('leaveRoom', (users: GetUser[]) => {
