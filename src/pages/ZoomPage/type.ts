@@ -31,6 +31,7 @@ export type GetUser = {
   userProfile: string;
   isRunning: 'y' | 'n';
   totalTime: number;
+  startTime: Date;
 };
 
 // export type GetTimer = {

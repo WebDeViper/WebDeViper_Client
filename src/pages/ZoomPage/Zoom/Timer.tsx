@@ -11,33 +11,37 @@ interface Props {
 }
 
 export default function Timer({ user, socket }: Props) {
-  const [timer, setTimer] = useState(user.totalTime);
+  const [timer, setTimer] = useState(0);
   const userInfo = useAppSelector(state => state.user.userInfo);
-  // const [isRunning, setIsRunning] = useState(false);
+  const [startTime, setStartTime] = useState<Date>();
+
+  useEffect(() => {
+    setTimer(user.totalTime);
+  }, [user.totalTime]);
 
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval>;
-    // let intervalId;
     if (user.isRunning === 'y') {
       intervalId = setInterval(() => {
         setTimer(prevTimer => prevTimer + 1);
       }, 1000);
     }
 
-    // Clean up the interval on component unmount or when isRunning changes
     return () => clearInterval(intervalId);
   }, [user.isRunning]);
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.emit('setTimer', { subject: '수학', time: user.totalTime, is_running: user.isRunning, startTime });
+  }, [socket, user, startTime]);
 
   const handleToggleTimer = (user: GetUser) => {
     if (!socket) return;
 
+    const currentTime = new Date();
     const isRunning = user.isRunning === 'y' ? 'n' : 'y';
-    // const time = user.totalTime;
-    socket.emit('setTimer', { subject: '수학', time: timer, is_running: isRunning });
-
-    console.log(user, 'user');
-
-    // if (isRunning === 'n') setTimer(0);
+    socket.emit('setTimer', { subject: '수학', time: timer, is_running: isRunning, startTime: currentTime });
+    setStartTime(currentTime);
   };
 
   return (
