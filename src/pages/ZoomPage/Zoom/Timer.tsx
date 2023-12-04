@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function Timer({ user, socket }: Props) {
-  const [timer, setTimer] = useState(0);
+  const [timer, setTimer] = useState(user.totalTime);
   const userInfo = useAppSelector(state => state.user.userInfo);
   // const [isRunning, setIsRunning] = useState(false);
 
@@ -32,16 +32,19 @@ export default function Timer({ user, socket }: Props) {
     if (!socket) return;
 
     const isRunning = user.isRunning === 'y' ? 'n' : 'y';
-    const time = user.totalTime + timer;
+    // const time = user.totalTime;
+    socket.emit('setTimer', { subject: '수학', time: timer, is_running: isRunning });
 
-    socket.emit('setTimer', { subject: '수학', time, is_running: isRunning });
+    console.log(user, 'user');
+
+    // if (isRunning === 'n') setTimer(0);
   };
 
   return (
     <>
       <div className="absolute flex items-center gap-3 right-0 bg-black text-white rounded-bl-md py-1 px-3 cursor-default">
         <span className={`w-2 h-2 ${user.isRunning === 'y' ? 'bg-lime-400' : 'bg-red-500'}  rounded-full`}></span>
-        <span className="md:text-lg">{calculateTime(user.totalTime)}</span>
+        <span className="md:text-lg">{calculateTime(timer)}</span>
         {user.userId === userInfo.id && (
           <>
             {user.isRunning === 'y' ? (
