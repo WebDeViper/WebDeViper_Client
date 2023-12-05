@@ -6,6 +6,7 @@ import Chat from './Chat';
 import { GetUser } from './type';
 import Zoom from './Zoom';
 import { Socket, io } from 'socket.io-client';
+import '../../styles/chat.css';
 
 export default function ZoomPage() {
   const { groupId } = useParams();
@@ -55,7 +56,7 @@ export default function ZoomPage() {
   };
 
   return (
-    <div className="h-screen">
+    <div className="zoom-container bg-slate-500 relative">
       <div className="flex flex-col h-full">
         <header className="bg-gray-800">
           <div className="h-10 flex items-center ml-10">
@@ -65,10 +66,10 @@ export default function ZoomPage() {
           </div>
         </header>
         <div className="flex flex-col md:flex-row h-full">
-          <section className="flex-1">
+          <section className="profile-container h-[calc(100%-16rem)] md:h-full bg-[#1f1f1f] overflow-auto md:flex-1">
             <Zoom users={users} socket={socket} />
           </section>
-          <section className="lg:w-96 md:w-80 w-full md:h-full h-64 md:relative absolute bottom-0">
+          <section className="lg:w-96 md:w-80 w-full md:h-full h-64 md:relative">
             <Chat socket={socket} />
           </section>
         </div>
