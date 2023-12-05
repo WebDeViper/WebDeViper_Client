@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 interface Props {
   isAuth: boolean;
@@ -7,7 +8,7 @@ interface Props {
 
 const NotAuthRoutes = ({ isAuth }: Props) => {
   useEffect(() => {
-    !isAuth && alert('로그인 후 이용해주세요!');
+    !isAuth && toast.info('로그인 후 이용해주세요.', { type: 'error' });
   }, [isAuth]);
   return !isAuth ? <Navigate to={'/'} /> : <Outlet />;
 };

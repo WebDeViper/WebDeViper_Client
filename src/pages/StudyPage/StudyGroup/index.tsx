@@ -3,6 +3,7 @@ import { API } from '../../../utils/axios';
 import { Button } from '../../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 import GroupItem from './GroupItem';
+import { toast } from 'react-toastify';
 
 interface Props {
   userId: string;
@@ -32,7 +33,7 @@ export default function StudyGroup({ userId }: Props) {
   }, [userId]);
 
   const handleCreateGroup = () => {
-    navigate('/study/group/create');
+    userId ? navigate('/study/group/create') : toast.info('로그인 후 이용해주세요.', { type: 'error' });
   };
 
   const handleMoreGroup = async () => {
