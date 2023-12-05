@@ -7,7 +7,6 @@ export default function EditProfileImage() {
   const profileImgPath = useAppSelector(state => state.user?.userInfo.profileImg);
   const [isImgChanged, setIsImgChanged] = useState(false);
   const imgRef = useRef<HTMLInputElement>(null);
-  // console.log('마이페이지 유저>>>', profileImgPath);
 
   // 프로필 사진 변경 (버튼 누르면 input 클릭되게)
   const handleChangeProfileImg = (e: React.MouseEvent) => {
@@ -63,7 +62,6 @@ export default function EditProfileImage() {
       // 요청이 실패했을 때 실행할 코드
       console.error('요청 중 오류가 발생했습니다.', error);
     }
-    // console.log(imgRef.current.files[0]);
   };
 
   return (

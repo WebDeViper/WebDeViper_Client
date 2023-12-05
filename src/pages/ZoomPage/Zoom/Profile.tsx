@@ -5,7 +5,6 @@ interface Props {
 }
 
 export default function Profile({ user }: Props) {
-  console.log('렌더링');
   return (
     <>
       <div className="w-16 h-16 rounded-full overflow-hidden relative inset-2/4 -translate-x-2/4 -translate-y-2/4">

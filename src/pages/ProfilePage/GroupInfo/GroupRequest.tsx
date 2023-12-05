@@ -12,8 +12,7 @@ export default function GroupRequest({ group, setHasGroupRequests }: Props) {
 
   // 요청 수락
   const handleAccept = async (requestId: string) => {
-    const res = await API.post(`/group/studyGroup/${group.group_id}/${requestId}/requests/accept`);
-    console.log(res.data, '수락 응답!!');
+    await API.post(`/group/studyGroup/${group.group_id}/${requestId}/requests/accept`);
     const newRequest = request.filter(item => item.userId !== requestId);
     // 요청을 수락한 후 해당 요청을 배열에서 제거
     setRequest(newRequest);
@@ -24,14 +23,11 @@ export default function GroupRequest({ group, setHasGroupRequests }: Props) {
 
   // 요청 거절
   const handleReject = async (requestId: string) => {
-    const res = await API.post(`/group/studyGroup/${group.group_id}/${requestId}/requests/reject`);
-    console.log(res.data, '거절 응답!!');
+    await API.post(`/group/studyGroup/${group.group_id}/${requestId}/requests/reject`);
     const newRequest = request.filter(item => item.userId !== requestId);
     // 요청을 거절한 후 해당 요청을 배열에서 제거
     setRequest(newRequest);
   };
-
-  console.log('리퀘스트는 :: ', request);
 
   return (
     <>

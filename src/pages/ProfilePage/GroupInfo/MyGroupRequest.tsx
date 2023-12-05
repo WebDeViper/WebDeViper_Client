@@ -7,7 +7,6 @@ interface Props {
 
 export default function MyGroupRequest({ groupInfo, setPendingGroups }: Props) {
   const handleCancelRequest = async () => {
-    console.log('내가 신청중인 그룹 취소!!');
     try {
       const res = await API.delete(`/group/studyGroup/${groupInfo.group_id}/joinRequests`);
       if (res.data.isSuccess) {
