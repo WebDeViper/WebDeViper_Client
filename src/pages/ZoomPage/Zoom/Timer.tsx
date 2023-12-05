@@ -13,7 +13,8 @@ interface Props {
 export default function Timer({ user, socket }: Props) {
   const [timer, setTimer] = useState(0);
   const userInfo = useAppSelector(state => state.user.userInfo);
-  const [startTime, setStartTime] = useState<Date>();
+  // const [startTime, setStartTime] = useState<Date>();
+  const startTimeRef = useRef<Date>();
   const copyUser = useRef<GetUser | null>(null);
 
   useEffect(() => {
@@ -38,13 +39,14 @@ export default function Timer({ user, socket }: Props) {
   useEffect(() => {
     if (!socket) return;
     if (!copyUser.current) return;
-    socket.emit('setTimer', {
+    if (!startTimeRef.current) return;
+    socket.emit('initTimer', {
       subject: '수학',
       time: copyUser.current.totalTime,
       is_running: copyUser.current.isRunning,
-      startTime,
+      startTime: startTimeRef.current,
     });
-  }, [socket, startTime]);
+  }, [socket]);
 
   const handleToggleTimer = (user: GetUser) => {
     if (!socket) return;
@@ -52,7 +54,8 @@ export default function Timer({ user, socket }: Props) {
     const currentTime = new Date();
     const isRunning = user.isRunning === 'y' ? 'n' : 'y';
     socket.emit('setTimer', { subject: '수학', time: timer, is_running: isRunning, startTime: currentTime });
-    setStartTime(currentTime);
+    startTimeRef.current = currentTime;
+    console.log(timer);
   };
 
   return (
