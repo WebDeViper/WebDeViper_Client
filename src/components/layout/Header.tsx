@@ -50,6 +50,7 @@ export default function Header() {
     toggleProfileOpen();
     dispatch(logout());
     setModalOpen(false);
+    navigate('/');
   };
 
   useEffect(() => {
