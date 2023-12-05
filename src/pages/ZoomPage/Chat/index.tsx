@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ChatData, GetMessage, SendMessage } from '../type';
 import { MemoizedChatItem } from './ChatItem';
 import InputField from './InputField';
-import '../../../styles/chat.css';
+
 import { Socket } from 'socket.io-client';
 
 interface Props {

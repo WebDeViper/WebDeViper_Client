@@ -13,3 +13,11 @@
     0.05em 0.05em 0.05em #000, 0.05em 0.05em 0.05em #000, 0.05em 0.05em 0.05em #000;
   animation: fadeInUp 0.5s ease, fadeOut 1s ease 3s forwards;
 }
+
+.zoom-container {
+  height: calc(var(--vh, 1vh) * 100);
+}
+
+.profile-container::-webkit-scrollbar {
+  display: none;
+}

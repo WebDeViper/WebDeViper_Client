@@ -11,7 +11,7 @@ interface Props {
 export default function Zoom({ users, socket }: Props) {
   return (
     <div className="h-full">
-      <div className="h-full bg-[#1f1f1f]">
+      <div className="h-full">
         <div className="py-20 grid lg:grid-cols-3 sm:grid-cols-2">
           {users &&
             users.map((user: GetUser) => (
