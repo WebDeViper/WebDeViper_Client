@@ -135,10 +135,10 @@ export default function CreateGroupPage() {
                 type="text"
                 {...register('name', {
                   required: '스터디 이름을 작성해주세요!',
-                  maxLength: { value: 10, message: '스터디 이름은 최대 10글자입니다!' },
+                  maxLength: { value: 20, message: '스터디 이름은 최대 20글자입니다!' },
                 })}
                 className="w-full border rounded-md py-1 pl-3"
-                placeholder="스터디 이름을 입력하세요. (최대 10글자)"
+                placeholder="스터디 이름을 입력하세요. (최대 20글자)"
               />
             </div>
             <ErrorMessage
