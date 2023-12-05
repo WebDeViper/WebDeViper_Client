@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const API = axios.create({
   // baseURL: import.meta.env.PROD ? apiUrl() : import.meta.env.VITE_APP_API_URL,
-  baseURL: 'http://localhost:8001/api',
+  baseURL: `${import.meta.env.VITE_APP_BACK_URL}/api`,
 });
 
 API.interceptors.request.use(
@@ -30,7 +30,7 @@ API.interceptors.response.use(
 
 export const AUTH = axios.create({
   // baseURL: import.meta.env.PROD ? apiUrl() : import.meta.env.VITE_APP_API_URL,
-  baseURL: 'http://localhost:8001/api',
+  baseURL: `${import.meta.env.VITE_APP_BACK_URL}/api`,
 });
 
 AUTH.interceptors.request.use(

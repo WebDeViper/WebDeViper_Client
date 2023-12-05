@@ -27,7 +27,7 @@ function App() {
   const isAuth = useAppSelector(state => state.user.isAuth);
   const isServiceAdmin = useAppSelector(state => state.user.userInfo.isServiceAdmin);
   const userId = useAppSelector(state => state.user.userInfo.id);
-  const socket = io('http://localhost:8001/', { auth: { userId } });
+  const socket = io(`${import.meta.env.VITE_APP_BACK_URL}`, { auth: { userId } });
   const dispatch = useAppDispatch();
   // const category = useAppSelector(state => state.user.userInfo.category);
 

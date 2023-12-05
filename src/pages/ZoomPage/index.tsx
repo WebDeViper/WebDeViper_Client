@@ -15,7 +15,7 @@ export default function ZoomPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const newSocket = io('http://localhost:8001/chat', {
+    const newSocket = io(`${import.meta.env.VITE_APP_BACK_URL}/chat`, {
       auth: {
         userNickName: userInfo.nickName,
         userId: userInfo.id,
