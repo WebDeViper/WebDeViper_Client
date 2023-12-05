@@ -20,6 +20,8 @@ import CalendarPage from './pages/CalendarPage';
 import { io } from 'socket.io-client';
 import ZoomPage from './pages/ZoomPage';
 import KakaoPage from './pages/OAuthPage/KakaoPage';
+import ErrorPage from './pages/ErrorPage';
+import NotAuthRoutes from './components/NotAuthRoutes';
 
 function App() {
   const isAuth = useAppSelector(state => state.user.isAuth);
@@ -56,20 +58,23 @@ function App() {
         <Route index element={<MainPage />} />
         <Route path="/study" element={<StudyPage />} />
         <Route path="/study/group/:groupId" element={<DetailGroupPage />} />
-        <Route path="/study/group/create" element={<CreateGroupPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/alarm" element={<AlarmPage />} />
         <Route path="/ranking" element={<RankingPage />} />
-        <Route path="/calendar" element={<CalendarPage />} />
         <Route path="/notice" element={<NoticePage isServiceAdmin={isServiceAdmin} />} />
         <Route path="/notice/:noticeId" element={<DetailNoticePage isServiceAdmin={isServiceAdmin} />} />
         <Route path="/oauth/kakao" element={<KakaoPage />} />
         <Route element={<NotAdminRoutes isServiceAdmin={isServiceAdmin} />}>
           <Route path="/notice/create" element={<CreateNoticePage />} />
         </Route>
-        <Route path="/profile" element={<ProfilePage />}></Route>
+        <Route element={<NotAuthRoutes isAuth={isAuth} />}>
+          <Route path="/profile" element={<ProfilePage />}></Route>
+          <Route path="/study/group/create" element={<CreateGroupPage />} />
+          <Route path="/alarm" element={<AlarmPage />} />
+          <Route path="/calendar" element={<CalendarPage />} />
+        </Route>
       </Route>
       <Route path="/zoom/:groupId" element={<ZoomPage />} />
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   );
 }
