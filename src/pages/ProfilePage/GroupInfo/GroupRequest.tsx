@@ -4,10 +4,9 @@ import { API } from '../../../utils/axios';
 
 interface Props {
   group: any;
-  setHasGroupRequests: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function GroupRequest({ group, setHasGroupRequests }: Props) {
+export default function GroupRequest({ group }: Props) {
   const [request, setRequest] = useState<any[]>(group.nickNames.length ? group.nickNames : []);
 
   // 요청 수락
@@ -16,9 +15,6 @@ export default function GroupRequest({ group, setHasGroupRequests }: Props) {
     const newRequest = request.filter(item => item.userId !== requestId);
     // 요청을 수락한 후 해당 요청을 배열에서 제거
     setRequest(newRequest);
-    if (!newRequest.length) {
-      setHasGroupRequests(false);
-    }
   };
 
   // 요청 거절
