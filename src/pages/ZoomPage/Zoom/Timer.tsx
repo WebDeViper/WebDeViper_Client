@@ -1,4 +1,4 @@
-import { MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GetUser } from '../type';
 import { Socket } from 'socket.io-client';
 import calculateTime from '../../../utils/calculateTime';
@@ -13,13 +13,6 @@ interface Props {
 export default function Timer({ user, socket }: Props) {
   const [timer, setTimer] = useState(0);
   const userInfo = useAppSelector(state => state.user.userInfo);
-  // const [startTime, setStartTime] = useState<Date>();
-  const startTimeRef = useRef<Date>();
-  const copyUser = useRef<GetUser | null>(null);
-
-  useEffect(() => {
-    copyUser.current = user;
-  }, [user]);
 
   useEffect(() => {
     setTimer(user.totalTime);
@@ -36,26 +29,12 @@ export default function Timer({ user, socket }: Props) {
     return () => clearInterval(intervalId);
   }, [user.isRunning]);
 
-  useEffect(() => {
-    if (!socket) return;
-    if (!copyUser.current) return;
-    if (!startTimeRef.current) return;
-    socket.emit('initTimer', {
-      subject: '수학',
-      time: copyUser.current.totalTime,
-      is_running: copyUser.current.isRunning,
-      startTime: startTimeRef.current,
-    });
-  }, [socket]);
-
   const handleToggleTimer = (user: GetUser) => {
     if (!socket) return;
 
     const currentTime = new Date();
     const isRunning = user.isRunning === 'y' ? 'n' : 'y';
     socket.emit('setTimer', { subject: '수학', time: timer, is_running: isRunning, startTime: currentTime });
-    startTimeRef.current = currentTime;
-    console.log(timer);
   };
 
   return (
