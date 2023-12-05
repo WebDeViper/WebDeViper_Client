@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io-client';
 import { GetUser } from '../type';
 import Profile from './Profile';
-import Timer from './Timer.1';
+import Timer from './Timer';
 
 interface Props {
   users: GetUser[];
