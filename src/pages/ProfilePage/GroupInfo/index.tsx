@@ -11,7 +11,6 @@ export default function GroupInfo() {
   useEffect(() => {
     const getGroups = async () => {
       const res = await API.get('/group/getJoinRequest');
-      console.log('내 그룹에 신청중인 사람들 :: ', res.data);
       const filteredGroup = res.data.groups;
       filteredGroup.map((group: any) => {
         group.nickNames.length > 0 ? setHasGroupRequests(true) : '';
@@ -21,7 +20,6 @@ export default function GroupInfo() {
     const getPendingGroups = async () => {
       try {
         const res = await API.get('/group/pendingGroups');
-        console.log('팬딩 그룹 서버 요청 :: ', res.data);
         setPendingGroups(res.data.pendingGroups); // 서버에서 받은 데이터를 설정
       } catch (error) {
         console.error('Error fetching pending groups:', error);

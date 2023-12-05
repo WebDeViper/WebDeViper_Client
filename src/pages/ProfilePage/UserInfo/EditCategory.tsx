@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SimpleDropdown } from '../../../components/common/Dropdown';
 import { Button } from '../../../components/common/Button';
 import { profileUser } from '../../../store/thunkFunctions';
@@ -12,12 +12,8 @@ interface Props {
 }
 
 export default function EditCategory({ dispatch }: Props) {
-  const currentCategory = useAppSelector(state => state.user?.userInfo?.category);
+  const currentCategory = useAppSelector(state => state.user.userInfo.category);
   const [category, setCategory] = useState<string | null>(currentCategory);
-
-  useEffect(() => {
-    console.log('마이페이지 카테고리 변경 잘 되나 ::', category);
-  }, [category]);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.currentTarget;

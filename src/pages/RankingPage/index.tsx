@@ -1,12 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { API } from '../../utils/axios';
 import categories from '../../data/category';
-// import DropDown from '../../components/common/DropDown';
-// import UserRank from './userRank';
-// import GroupRank from './groupRank';
 import UserRank from './UserRank';
 import GroupRank from './GroupRank';
-// import { Badge } from 'flowbite-react';
 import calculateTime from '../../utils/calculateTime';
 import { useAppSelector } from '../../store/store';
 import Badge from '../../components/common/Badge';
@@ -25,13 +21,10 @@ export default function RankingPage() {
   const [rankType, setRankType] = useState('user');
   const [isLoading, setIsLoading] = useState(true);
 
-  // console.log('뭐지??', top3, other);
-
   // 처음 들어왔을 때 디폴트 카테고리로 조회한 결과 보여주기
   const getFirstRank = async () => {
     try {
       const res = await API.get('/ranking');
-      console.log(res.data);
       if (res.data) {
         setRank(res.data);
         setIsLoading(false);
@@ -43,7 +36,6 @@ export default function RankingPage() {
 
   // 서버에서 응답받은 데이터로 랭킹 state 업데이트하는 함수
   const setRank = (data: any) => {
-    console.log('setRank 실행!!!');
     const { topUsers, topGroups } = data;
     if (topUsers && topGroups) {
       setUserRanking(topUsers);
@@ -63,12 +55,10 @@ export default function RankingPage() {
   // 카테고리별 탑텐 요청하는 함수.. 카테고리 바뀔때만 함수 재정의(useCallback)
   const getCategory = useCallback(async () => {
     // 바뀐 카테고리에 해당하는 랭킹 데이터 요청
-    console.log('카테고리 바뀔 때 마다 다시 정의하는 getCategory 함수 실행!!');
     setIsLoading(true);
     if (category !== '인기 있는 카테고리') {
       try {
         const res = await API.get(`/ranking?category=${category}`);
-        console.log('카테고리 바뀐 후 랭킹 데이터 :: ', res.data);
         if (res.data) {
           setRank(res.data);
           setIsLoading(false);

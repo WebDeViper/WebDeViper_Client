@@ -28,7 +28,6 @@ export default function MyGoal() {
       } else {
         alert('상태 메세지를 작성해주세요!');
       }
-      // console.log(inputMsg);
     }
   };
 

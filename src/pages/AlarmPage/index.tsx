@@ -25,11 +25,8 @@ export default function AlarmPage() {
     const arr: number[] = [];
 
     for (let i = (currentPageGroup - 1) * 5 + 1; i <= Math.min(currentPageGroup * 5, totalPage); i++) {
-      console.log('추가!!!');
       arr.push(i);
     }
-    console.log('잘 추가됐나 :: ', arr);
-    // setPageList(arr);
     setPagination(prev => {
       return { ...prev, pageList: arr };
     });
@@ -46,23 +43,19 @@ export default function AlarmPage() {
 
   useEffect(() => {
     const newMessage = [...alarmMessage].reverse();
-    // console.log(newMessage.slice((currentPage - 1) * 10, (currentPage - 1) * 10 + 10));
     setAlarmList(newMessage.slice((currentPage - 1) * 10, (currentPage - 1) * 10 + 10));
-    // setAlarmList(newMessage);
     setPagination(prev => {
       return { ...prev, totalPage: Math.ceil(newMessage.length / 10) };
     });
-  }, [alarmMessage]);
+  }, [alarmMessage, currentPage]);
 
   useEffect(() => {
     const newMessage = [...alarmMessage].reverse();
     setAlarmList(newMessage.slice((currentPage - 1) * 10, (currentPage - 1) * 10 + 10));
-  }, [currentPage]);
+  }, [currentPage, alarmMessage]);
 
   // 현재 페이지 설정
   const handleSetPage = (page: number) => {
-    console.log(`페이지 ${page}로 변경!!!!`);
-    // setCurrentPage(page);
     setPagination(prev => {
       return { ...prev, currentPage: page };
     });
@@ -88,8 +81,6 @@ export default function AlarmPage() {
       }
     }
   };
-
-  // console.log('이 페이지 맞나');
 
   const renderNotification = (value: Alarm) => {
     switch (value.notification_kind) {

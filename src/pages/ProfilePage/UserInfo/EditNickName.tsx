@@ -23,7 +23,6 @@ export default function EditNickName({ dispatch }: Props) {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputNick = e.target.value;
-    // console.log(inputNick.trim().length);
     inputNick.trim() ? setNickName(inputNick) : setNickName('');
     if (!inputNick) {
       setMessage('');
@@ -42,7 +41,6 @@ export default function EditNickName({ dispatch }: Props) {
       setIsValidate(true);
     }
   };
-  console.log('닉네임 상태>>>', nickName);
 
   // input에서 엔터로 중복체크
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

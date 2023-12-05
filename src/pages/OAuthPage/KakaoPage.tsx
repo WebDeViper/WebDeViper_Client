@@ -23,13 +23,11 @@ export default function KakaoPage() {
             code,
           },
         });
-        // console.log('토큰값:: ', response.data);
 
         const { access_token } = response.data;
         const profile = await getFirebaseCustomToken(access_token);
         profile.provider = 'kakao';
 
-        // console.log('최종 profile :: ', profile);
         // 리덕스에서 로그인 로직 처리 후 리덕스로 상태관리
         await dispatch(socialUser(profile));
         dispatch(socialRefreshUser());
@@ -48,7 +46,6 @@ export default function KakaoPage() {
           Authorization: `Bearer ${access_token}`,
         },
       });
-      // console.log('두번째 토큰값::', response.data);
 
       const profile = response.data;
       return profile;
@@ -59,7 +56,6 @@ export default function KakaoPage() {
 
   useEffect(() => {
     const code = new URL(window.location.href).searchParams.get('code');
-    // console.log(code);
     if (code) {
       getToken(code);
     }

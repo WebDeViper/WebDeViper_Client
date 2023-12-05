@@ -37,7 +37,6 @@ export default function ZoomPage() {
       setUsers(users);
     });
     socket.on('updateUser', (users: GetUser[]) => {
-      console.log(users, 'updateUser');
       setUsers(users);
     });
     socket.on('leaveRoom', (users: GetUser[]) => {

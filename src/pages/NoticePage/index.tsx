@@ -33,11 +33,8 @@ export default function NoticePage({ isServiceAdmin }: Props) {
     const arr: number[] = [];
 
     for (let i = (currentPageGroup - 1) * 5 + 1; i <= Math.min(currentPageGroup * 5, totalPage); i++) {
-      console.log('추가!!!');
       arr.push(i);
     }
-    console.log('잘 추가됐나 :: ', arr);
-    // setPageList(arr);
     setPagination(prev => {
       return { ...prev, pageList: arr };
     });
@@ -48,7 +45,6 @@ export default function NoticePage({ isServiceAdmin }: Props) {
     try {
       const response = await API.get(`/notices?currentPage=${currentPage}`);
       const data = await response.data;
-      console.log('공지사항 :: ', data);
       const { notices, total } = data;
       // 공지사항 각 데이터 설정
       setNotice(notices.reverse());
@@ -76,8 +72,6 @@ export default function NoticePage({ isServiceAdmin }: Props) {
 
   // 현재 페이지 설정
   const handleSetPage = (page: number) => {
-    console.log(`페이지 ${page}로 변경!!!!`);
-    // setCurrentPage(page);
     setPagination(prev => {
       return { ...prev, currentPage: page };
     });

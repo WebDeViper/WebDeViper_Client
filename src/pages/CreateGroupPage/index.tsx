@@ -90,7 +90,6 @@ export default function CreateGroupPage() {
         setValue('groupImgFile', selectedFile);
         const url = URL.createObjectURL(selectedFile);
         setImgUrl(`${url}`);
-        console.log(url);
       }
     }
   };
