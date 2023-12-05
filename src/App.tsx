@@ -63,6 +63,7 @@ function App() {
         <Route path="/notice" element={<NoticePage isServiceAdmin={isServiceAdmin} />} />
         <Route path="/notice/:noticeId" element={<DetailNoticePage isServiceAdmin={isServiceAdmin} />} />
         <Route path="/oauth/kakao" element={<KakaoPage />} />
+        <Route path="/calendar" element={<CalendarPage />} />
         <Route element={<NotAdminRoutes isServiceAdmin={isServiceAdmin} />}>
           <Route path="/notice/create" element={<CreateNoticePage />} />
         </Route>
@@ -70,7 +71,6 @@ function App() {
           <Route path="/profile" element={<ProfilePage />}></Route>
           <Route path="/study/group/create" element={<CreateGroupPage />} />
           <Route path="/alarm" element={<AlarmPage />} />
-          <Route path="/calendar" element={<CalendarPage />} />
         </Route>
       </Route>
       <Route path="/zoom/:groupId" element={<ZoomPage />} />
