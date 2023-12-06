@@ -36,7 +36,7 @@ export default function VisualComponent() {
       keyboard={true}
       modules={[Navigation, Pagination, Keyboard, Autoplay, EffectFade]}
       slidesPerView={1}
-      autoplay={{ delay: 3000 }}
+      // autoplay={{ delay: 3000 }}
       allowTouchMove={false}
       loop={true}
       className="h-full"
@@ -44,17 +44,21 @@ export default function VisualComponent() {
       {images.map((item, index) => (
         <SwiperSlide key={index} className="relative">
           <div
-            style={{ backgroundImage: `url(${item.src})` }}
-            className="absolute top-0 left-0 w-full h-full bg-no-repeat bg-center bg-cover"
+            style={{
+              backgroundImage: `url(${item.src})`,
+            }}
+            className="absolute top-0 left-0 w-full h-full md:bg-center bg-top bg-no-repeat bg-[length:100%_100%]"
           >
-            <div className="lg:w-[1200px] md:w-[768px] w-full mx-auto h-[400px]">
-              <div className="md:pl-[50%] md:pt-60 pt-14 text-center md:text-left">
-                <h3
-                  dangerouslySetInnerHTML={{ __html: item.text }}
-                  className={`lg:text-4xl text-3xl md:leading-relaxed lg:leading-normal leading-snug text-${item.textColor} drop-shadow-md font-bold`}
-                />
-                <MotionButton onClick={() => navigate('/study')}>스터디 참여하기</MotionButton>
-              </div>
+            <div
+              style={{ backgroundColor: 'rgb(0 0 0 / 0.25)', backdropFilter: 'blur(2px)' }}
+              className="w-full h-full relative"
+            >
+              {/* <div className="lg:w-[1200px] md:w-[768px] w-full mx-auto h-[400px]"> */}
+              {/* <div className="md:pl-[50%] md:pt-60 pt-14 text-center md:text-left"> */}
+              <h3
+                dangerouslySetInnerHTML={{ __html: item.text }}
+                className={`lg:text-4xl text-3xl md:leading-relaxed lg:leading-normal leading-snug text-${item.textColor} drop-shadow-md font-bold absolute w-full h-full flex justify-center items-center text-center`}
+              ></h3>
             </div>
           </div>
         </SwiperSlide>
