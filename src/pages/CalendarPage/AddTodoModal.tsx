@@ -105,14 +105,15 @@ export default function AddTodoModal({ show, selectedDate, setTodos, setOpenModa
     }
 
     try {
-      const momentStartDate = moment(startDate).format('yyyy, MM, DD');
-      const momentEndDate = moment(endDate).format('yyyy, MM, DD');
+      // const momentStartDate = moment(startDate).format('yyyy, MM, DD');
+      // const momentEndDate = moment(endDate).format('yyyy, MM, DD');
+      // 사파리 날짜 버그로 인한 주석
 
-      const newStateDate = new Date(momentStartDate);
+      const newStateDate = new Date(startDate);
       newStateDate.setHours(startHour);
       newStateDate.setMinutes(startMinute);
 
-      const newEndDate = new Date(momentEndDate);
+      const newEndDate = new Date(endDate);
       newEndDate.setHours(endHour);
       newEndDate.setMinutes(endMinute);
 
@@ -122,6 +123,7 @@ export default function AddTodoModal({ show, selectedDate, setTodos, setOpenModa
         start_time: newStateDate,
         end_time: newEndDate,
       };
+
       if (updateTodos === null) {
         const response = await API.post('/todo_list', body);
         const newData = response.data.result;
